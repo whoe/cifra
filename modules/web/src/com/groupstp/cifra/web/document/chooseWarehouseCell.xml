@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://Warehouse and cell selection"
+        class="com.groupstp.cifra.web.document.ChooseWarehouseCell"
+        focusComponent="warehouse"
+        messagesPack="com.groupstp.cifra.web.document">
+    <dsContext>
+        <collectionDatasource id="warehousesDs"
+                              class="com.groupstp.cifra.entity.Warehouse"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$Warehouse e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <actions>
+        <action id="ok"
+                invoke="onOk"/>
+        <action id="cancel"
+                invoke="onCancel"/>
+    </actions>
+    <dialogMode forceDialog="true"/>
+    <layout expand="btnsbox">
+        <lookupPickerField id="warehouse"
+                           caption="msg://Склад"
+                           optionsDatasource="warehousesDs"
+                           width="400px"/>
+        <textField id="cell"
+                   caption="Ячейка (стелаж.полка.ячейка)"
+                   width="300px"/>
+        <hbox id="btnsbox"
+              spacing="true">
+            <button id="okBtn"
+                    action="ok"
+                    caption="Ok"/>
+            <button id="cancelButton"
+                    action="cancel"
+                    caption="Cancel"/>
+        </hbox>
+    </layout>
+</window>

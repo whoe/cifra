@@ -1,0 +1,3 @@
+alter table CIFRA_CHECK_LIST_ITEMS rename column check_list_id to check_list_id__u75477 ;
+drop index IDX_CIFRA_CHECK_LIST_ITEMS_CHECK_LIST ;
+alter table CIFRA_CHECK_LIST_ITEMS drop constraint FK_CIFRA_CHECK_LIST_ITEMS_CHECK_LIST ;

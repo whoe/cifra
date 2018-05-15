@@ -1,0 +1,5 @@
+alter table CIFRA_DOCUMENT add constraint FK_CIFRA_DOCUMENT_FILE foreign key (FILE_ID) references SYS_FILE(ID);
+alter table CIFRA_DOCUMENT add constraint FK_CIFRA_DOCUMENT_DOC_CAUSE foreign key (DOC_CAUSE_ID) references CIFRA_DOCUMENT(ID);
+create unique index IDX_CIFRA_DOCUMENT_UK_FILE_ID on CIFRA_DOCUMENT (FILE_ID) where DELETE_TS is null ;
+create index IDX_CIFRA_DOCUMENT_FILE on CIFRA_DOCUMENT (FILE_ID);
+create index IDX_CIFRA_DOCUMENT_DOC_CAUSE on CIFRA_DOCUMENT (DOC_CAUSE_ID);

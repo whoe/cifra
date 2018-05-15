@@ -1,0 +1,38 @@
+Log
+    private Logger log = LoggerFactory.getLogger(getClass());
+
+Datasource table
+    @Inject
+    private GroupDatasource<Document, UUID> {datasource name};
+
+Datasource form
+    @Inject
+    private Datasource<Document> {datasource name};
+	
+Подписка на событие
+public class DocumentEdit extends AbstractEditor<Document> {
+
+    @Named("fieldGroup.docType")
+    private PickerField docType;
+
+    @Inject
+    private Datasource<Customer> DocumentDs;
+
+     @Override
+    public void init(Map<String, Object> params) {
+        docType.addValueChangeListener(e -> {
+            System.out.println(e.getValue());
+        });
+        documentDs.addItemPropertyChangeListener(e -> {
+            if ("docType".equals(e.getProperty()))
+                System.out.println(e.getValue());
+        });        
+    }    
+}
+
+select e from cifra$Document e 
+where
+e.gotOriginal=true and 0=
+(select COUNT(b) from cifra$CheckList b
+where e.id=b.document.id
+)

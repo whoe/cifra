@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<views xmlns="http://schemas.haulmont.com/cuba/view.xsd">
+    <view class="com.groupstp.cifra.entity.DocType"
+          extends="_local"
+          name="docType-view">
+        <property fetch="JOIN"
+                  name="checkListItems"
+                  view="_minimal"/>
+    </view>
+    <view class="com.groupstp.cifra.entity.Document"
+          extends="_local"
+          name="document-view">
+        <property name="docType"
+                  view="_minimal"/>
+        <property name="file"
+                  view="_minimal"/>
+        <property name="checklist"
+                  view="_minimal">
+            <property name="item"
+                      view="_minimal"/>
+            <property name="checked"/>
+            <property name="comment"/>
+        </property>
+        <property name="division"
+                  view="_minimal"/>
+        <property name="company"
+                  view="_minimal"/>
+        <property name="contragent"
+                  view="_minimal"/>
+        <property name="warehouse"
+                  view="_minimal"/>
+    </view>
+    <view class="com.groupstp.cifra.entity.CheckListItems"
+          extends="_local"
+          name="checkListItems-view">
+        <property name="docType"
+                  view="_minimal"/>
+    </view>
+    <view class="com.groupstp.cifra.entity.Division"
+          extends="_local"
+          name="division-view">
+        <property name="company"
+                  view="_minimal"/>
+    </view>
+    <view class="com.groupstp.cifra.entity.CheckList"
+          extends="_local"
+          name="checkList-view">
+        <property name="document"
+                  view="_minimal"/>
+        <property name="item"
+                  view="_minimal"/>
+    </view>
+</views>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.groupstp.cifra.web.company.CompanyEdit"
+        datasource="companyDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.groupstp.cifra.web.company">
+    <dsContext>
+        <datasource id="companyDs"
+                    class="com.groupstp.cifra.entity.Company"
+                    view="_local"/>
+    </dsContext>
+    <dialogMode width="400"/>
+    <layout expand="windowActions"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="companyDs">
+            <column width="250px">
+                <field property="name"/>
+                <field property="inn"/>
+                <field property="fullName"/>
+            </column>
+        </fieldGroup>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

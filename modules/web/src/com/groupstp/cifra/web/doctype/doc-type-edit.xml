@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.groupstp.cifra.web.doctype.DocTypeEdit"
+        datasource="docTypeDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.groupstp.cifra.web.doctype">
+    <dsContext>
+        <datasource id="docTypeDs"
+                    class="com.groupstp.cifra.entity.DocType"
+                    view="docType-view">
+            <collectionDatasource id="checkListItemsDs"
+                                  property="checkListItems"/>
+        </datasource>
+    </dsContext>
+    <dialogMode closeOnClickOutside="true"
+                closeable="true"
+                forceDialog="true"
+                modal="false"/>
+    <layout expand="checkListItemsBox"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="docTypeDs">
+            <column width="250px">
+                <field property="name"/>
+            </column>
+        </fieldGroup>
+        <groupBox id="checkListItemsBox"
+                  caption="msg://com.groupstp.cifra.entity/DocType.checkListItems"
+                  collapsable="true">
+            <dataGrid id="checkListItemsGrid"
+                      datasource="checkListItemsDs"
+                      editorEnabled="true"
+                      height="200px"
+                      width="100%">
+                <actions>
+                    <action id="create"
+                            invoke="onCreate"/>
+                    <action id="edit"/>
+                    <action id="remove"/>
+                </actions>
+                <columns>
+                    <column property="item"/>
+                </columns>
+                <buttonsPanel>
+                    <button action="checkListItemsGrid.create"
+                            caption="msg://Create"
+                            icon="CREATE_ACTION"/>
+                    <button action="checkListItemsGrid.remove"
+                            caption="msg://Remove"
+                            icon="font-icon:REMOVE"/>
+                </buttonsPanel>
+            </dataGrid>
+        </groupBox>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

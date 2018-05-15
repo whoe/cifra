@@ -1,0 +1,2 @@
+alter table CIFRA_DOCUMENT add constraint FK_CIFRA_DOCUMENT_DOC_TYPE foreign key (DOC_TYPE_ID) references CIFRA_DOC_TYPE(ID);
+create index IDX_CIFRA_DOCUMENT_DOC_TYPE on CIFRA_DOCUMENT (DOC_TYPE_ID);

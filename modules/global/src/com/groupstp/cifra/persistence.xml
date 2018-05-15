@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             version="2.0">
+    <persistence-unit name="cifra"
+                      transaction-type="RESOURCE_LOCAL">
+        <class>com.groupstp.cifra.entity.CheckListItems</class>
+        <class>com.groupstp.cifra.entity.DocType</class>
+        <class>com.groupstp.cifra.entity.Document</class>
+        <class>com.groupstp.cifra.entity.Employee</class>
+        <class>com.groupstp.cifra.entity.Company</class>
+        <class>com.groupstp.cifra.entity.Division</class>
+        <class>com.groupstp.cifra.entity.Contragent</class>
+        <class>com.groupstp.cifra.entity.CheckList</class>
+        <class>com.groupstp.cifra.entity.Journal</class>
+        <class>com.groupstp.cifra.entity.Warehouse</class>
+    </persistence-unit>
+</persistence>

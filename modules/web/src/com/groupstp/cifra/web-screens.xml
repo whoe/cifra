@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<screen-config xmlns="http://schemas.haulmont.com/cuba/screens.xsd">
+    <include file="com/groupstp/cifra/screens.xml"/>
+    <screen id="cifra$Document.browse"
+            template="com/groupstp/cifra/web/document/document-browse.xml"/>
+    <screen id="cifra$Document.edit"
+            template="com/groupstp/cifra/web/document/document-edit.xml"/>
+    <screen id="cifra$DocType.browse"
+            template="com/groupstp/cifra/web/doctype/doc-type-browse.xml"/>
+    <screen id="cifra$DocType.edit"
+            template="com/groupstp/cifra/web/doctype/doc-type-edit.xml"/>
+    <screen id="cifra$Company.browse"
+            template="com/groupstp/cifra/web/company/company-browse.xml"/>
+    <screen id="cifra$Company.edit"
+            template="com/groupstp/cifra/web/company/company-edit.xml"/>
+    <screen id="cifra$Division.browse"
+            template="com/groupstp/cifra/web/division/division-browse.xml"/>
+    <screen id="cifra$Division.edit"
+            template="com/groupstp/cifra/web/division/division-edit.xml"/>
+    <screen id="chooseWarehouseCell"
+            template="com/groupstp/cifra/web/document/chooseWarehouseCell.xml"/>
+    <screen id="cifra$Warehouse.browse"
+            template="com/groupstp/cifra/web/warehouse/warehouse-browse.xml"/>
+    <screen id="cifra$Warehouse.edit"
+            template="com/groupstp/cifra/web/warehouse/warehouse-edit.xml"/>
+</screen-config>

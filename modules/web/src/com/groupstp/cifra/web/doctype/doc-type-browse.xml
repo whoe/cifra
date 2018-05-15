@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.groupstp.cifra.web.doctype.DocTypeBrowse"
+        focusComponent="docTypesTable"
+        lookupComponent="docTypesTable"
+        messagesPack="com.groupstp.cifra.web.doctype">
+    <dsContext>
+        <groupDatasource id="docTypesDs"
+                         class="com.groupstp.cifra.entity.DocType"
+                         view="_local">
+            <query>
+                <![CDATA[select e from cifra$DocType e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="docTypesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="docTypesTable"
+                datasource="docTypesDs">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="docTypesTable"
+                    width="100%">
+            <actions>
+                <action id="create"
+                        openType="DIALOG"/>
+                <action id="edit"
+                        openType="DIALOG"/>
+                <action id="remove"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+            </columns>
+            <rows datasource="docTypesDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn"
+                        action="docTypesTable.create"/>
+                <button id="editBtn"
+                        action="docTypesTable.edit"/>
+                <button id="removeBtn"
+                        action="docTypesTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

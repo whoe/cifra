@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.groupstp.cifra.web.document.DocumentEdit"
+        datasource="documentDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.groupstp.cifra.web.document">
+    <dsContext>
+        <datasource id="documentDs"
+                    class="com.groupstp.cifra.entity.Document"
+                    loadDynamicAttributes="true"
+                    view="document-view">
+            <collectionDatasource id="checklistDs"
+                                  property="checklist"/>
+        </datasource>
+        <collectionDatasource id="companiesDs"
+                              class="com.groupstp.cifra.entity.Company"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$Company e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <actions>
+        <action id="checkcheck"
+                invoke="onCheckcheck"/>
+        <action id="archive"
+                invoke="onArchive"/>
+    </actions>
+    <dialogMode height="800"
+                maximized="true"
+                resizable="true"
+                width="1000"/>
+    <layout expand="checklist"
+            spacing="true">
+        <buttonsPanel>
+            <button id="archive"
+                    action="archive"
+                    caption="msg://Помещение в архив"/>
+        </buttonsPanel>
+        <fieldGroup id="fieldGroup"
+                    datasource="documentDs">
+            <column width="200px">
+                <field property="docType"/>
+                <field property="description"/>
+                <field property="number"/>
+                <field property="date"/>
+                <field editable="false"
+                       property="docStatus"/>
+            </column>
+            <column>
+                <field optionsDatasource="companiesDs"
+                       property="company"/>
+                <field property="division"/>
+                <field property="contragent"/>
+            </column>
+            <column>
+                <field property="file"/>
+                <field editable="false"
+                       property="dateLoad"/>
+                <field property="gotOriginal"/>
+                <field property="fixDue"/>
+                <field property="warehouse"/>
+                <field property="cell"/>
+            </column>
+        </fieldGroup>
+        <button action="checkcheck"
+                caption="msg://Refresh checklist"/>
+        <dataGrid id="checklist"
+                  datasource="checklistDs"
+                  editorEnabled="true"
+                  height="100px"
+                  width="540px">
+            <columns>
+                <column editable="false"
+                        property="item"/>
+                <column property="checked"
+                        resizable="false"
+                        width="100"/>
+                <column property="comment"/>
+            </columns>
+        </dataGrid>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

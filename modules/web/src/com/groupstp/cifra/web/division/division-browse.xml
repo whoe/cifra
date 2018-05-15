@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.groupstp.cifra.web.division.DivisionBrowse"
+        focusComponent="divisionsTable"
+        lookupComponent="divisionsTable"
+        messagesPack="com.groupstp.cifra.web.division">
+    <dsContext>
+        <groupDatasource id="divisionsDs"
+                         class="com.groupstp.cifra.entity.Division"
+                         view="division-view">
+            <query>
+                <![CDATA[select e from cifra$Division e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="divisionsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="divisionsTable"
+                datasource="divisionsDs">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="divisionsTable"
+                    width="100%">
+            <actions>
+                <action id="create"/>
+                <action id="edit"/>
+                <action id="remove"/>
+            </actions>
+            <columns>
+                <column id="company"/>
+                <column id="name"/>
+            </columns>
+            <rows datasource="divisionsDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn"
+                        action="divisionsTable.create"/>
+                <button id="editBtn"
+                        action="divisionsTable.edit"/>
+                <button id="removeBtn"
+                        action="divisionsTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

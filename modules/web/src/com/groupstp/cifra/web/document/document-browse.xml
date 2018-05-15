@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.groupstp.cifra.web.document.DocumentBrowse"
+        messagesPack="com.groupstp.cifra.web.document">
+    <dsContext>
+        <groupDatasource id="documentsIncomeDs"
+                         class="com.groupstp.cifra.entity.Document"
+                         view="document-view">
+            <query>
+                <![CDATA[select e from cifra$Document e 
+where
+e.docStatus=10]]>
+            </query>
+        </groupDatasource>
+        <groupDatasource id="documentsOkDs"
+                         class="com.groupstp.cifra.entity.Document"
+                         view="document-view">
+            <query>
+                <![CDATA[select e from cifra$Document e 
+where
+e.docStatus=20]]>
+            </query>
+        </groupDatasource>
+        <groupDatasource id="documentsProblemsDs"
+                         class="com.groupstp.cifra.entity.Document"
+                         view="document-view">
+            <query>
+                <![CDATA[select e from cifra$Document e 
+where
+e.docStatus=30]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true">
+        <tabSheet>
+            <tab id="tabIncome"
+                 caption="msg://Income"
+                 margin="true,false,false,false"
+                 spacing="true">
+                <filter id="filter"
+                        applyTo="income"
+                        datasource="documentsIncomeDs">
+                    <properties include=".*"/>
+                </filter>
+                <groupTable id="income"
+                            height="100%"
+                            multiselect="true"
+                            width="100%">
+                    <actions>
+                        <action id="edit"
+                                openType="DIALOG"/>
+                        <action id="create"
+                                openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                    </actions>
+                    <columns>
+                        <column id="company"/>
+                        <column id="division"/>
+                        <column id="docType"/>
+                        <column id="description"/>
+                        <column id="number"/>
+                        <column id="date"/>
+                        <column id="dateLoad"/>
+                        <column id="problems"/>
+                        <column id="fixDue"/>
+                        <column id="contragent"/>
+                        <column id="warehouse"/>
+                        <column id="cell"/>
+                    </columns>
+                    <rows datasource="documentsIncomeDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanel"
+                                  alwaysVisible="true">
+                        <button id="createBtn"
+                                action="income.create"/>
+                        <button id="editBtn"
+                                action="income.edit"/>
+                        <button id="removeBtn"
+                                action="income.remove"/>
+                        <button id="refreshBtn"
+                                action="income.refresh"/>
+                    </buttonsPanel>
+                </groupTable>
+            </tab>
+            <tab id="tabOk"
+                 caption="msg://ok"
+                 margin="true,false,false,false"
+                 spacing="true">
+                <filter id="filter_1"
+                        applyTo="ok"
+                        datasource="documentsOkDs">
+                    <properties include=".*"/>
+                </filter>
+                <groupTable id="ok"
+                            height="100%"
+                            multiselect="true"
+                            width="100%">
+                    <actions>
+                        <action id="edit"
+                                openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"
+                                invoke="onRefresh"/>
+                    </actions>
+                    <columns>
+                        <column id="description"/>
+                        <column id="number"/>
+                        <column id="date"/>
+                        <column id="dateLoad"/>
+                        <column id="problems"/>
+                        <column id="fixDue"/>
+                        <column id="docType"/>
+                        <column id="company"/>
+                        <column id="division"/>
+                        <column id="contragent"/>
+                        <column id="warehouse"/>
+                        <column id="cell"/>
+                    </columns>
+                    <rows datasource="documentsOkDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonspanelOk"
+                                  alwaysVisible="true">
+                        <button id="editBtnOk"
+                                action="ok.edit"/>
+                        <button id="removeBtnOk"
+                                action="ok.remove"/>
+                        <button id="refreshBtnOk"
+                                action="ok.refresh"
+                                invoke="onRefreshBtnOkClick"/>
+                    </buttonsPanel>
+                </groupTable>
+            </tab>
+            <tab id="tabProblems"
+                 caption="msg://Problems"
+                 margin="true,false,false,false"
+                 spacing="true">
+                <filter id="filter_2"
+                        applyTo="ok"
+                        datasource="documentsOkDs">
+                    <properties include=".*"/>
+                </filter>
+                <groupTable id="problems"
+                            height="100%"
+                            multiselect="true"
+                            width="100%">
+                    <actions>
+                        <action id="edit"
+                                openType="DIALOG"/>
+                        <action id="remove"/>
+                        <action id="refresh"/>
+                        <action id="issue"
+                                invoke="onIssue"/>
+                    </actions>
+                    <columns>
+                        <column id="docStatus"/>
+                        <column id="gotOriginal"/>
+                        <column id="description"/>
+                        <column id="number"/>
+                        <column id="date"/>
+                        <column id="dateLoad"/>
+                        <column id="problems"/>
+                        <column id="fixDue"/>
+                        <column id="warehouse"/>
+                        <column id="cell"/>
+                    </columns>
+                    <rows datasource="documentsProblemsDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonspanelProblems"
+                                  alwaysVisible="true">
+                        <button id="editBtnProblems"
+                                action="problems.edit"/>
+                        <button id="removeBtnProblems"
+                                action="problems.remove"/>
+                        <button id="refreshBtnProblems"
+                                action="problems.refresh"/>
+                    </buttonsPanel>
+                </groupTable>
+            </tab>
+            <tab id="tabIssued"
+                 caption="msg://Issued"
+                 description="msg://Issued"
+                 margin="true,false,false,false"
+                 spacing="true"/>
+        </tabSheet>
+    </layout>
+</window>
