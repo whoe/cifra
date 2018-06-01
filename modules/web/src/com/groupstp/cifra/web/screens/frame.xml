@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        class="com.groupstp.cifra.web.screens.Frame"
+        messagesPack="com.groupstp.cifra.web.screens">
+    <dialogMode height="600"
+                width="800"/>
+    <layout>
+        <groupBox id="hbox"
+                  height="100%"
+                  spacing="true"
+                  width="840px">
+            <split id="split"
+                   height="100%"
+                   orientation="horizontal"
+                   width="100%">
+                <dataGrid height="100%"
+                          width="100%">
+                    <columns>
+                        <column id="a"/>
+                        <column id="b"/>
+                    </columns>
+                </dataGrid>
+                <groupTable height="100%"
+                            width="100%">
+                    <columns>
+                        <column id="a"/>
+                        <column id="b"/>
+                    </columns>
+                    <rows/>
+                </groupTable>
+            </split>
+        </groupBox>
+    </layout>
+</window>

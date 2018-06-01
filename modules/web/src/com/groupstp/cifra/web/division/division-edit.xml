@@ -9,6 +9,13 @@
         <datasource id="divisionDs"
                     class="com.groupstp.cifra.entity.Division"
                     view="division-view"/>
+        <collectionDatasource id="companiesDs"
+                              class="com.groupstp.cifra.entity.Company"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$Company e]]>
+            </query>
+        </collectionDatasource>
     </dsContext>
     <dialogMode height="600"
                 width="800"/>
@@ -18,7 +25,8 @@
                     datasource="divisionDs">
             <column width="250px">
                 <field property="name"/>
-                <field property="company"/>
+                <field optionsDatasource="companiesDs"
+                       property="company"/>
             </column>
         </fieldGroup>
         <frame id="windowActions"
