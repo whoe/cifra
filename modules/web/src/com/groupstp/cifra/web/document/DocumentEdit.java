@@ -1,6 +1,7 @@
 package com.groupstp.cifra.web.document;
 
 import com.groupstp.cifra.entity.*;
+import com.haulmont.cuba.core.global.PersistenceHelper;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
@@ -10,10 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class DocumentEdit extends AbstractEditor<Document> {
     @Inject
@@ -80,5 +78,27 @@ public class DocumentEdit extends AbstractEditor<Document> {
             documentService.ArchiveDocument(doc);
             documentDs.refresh();
         });
+    }
+
+    public void onOkBtnClick(Component source) {
+        Boolean gotOriginal = getItem().getGotOriginal() == null ? false : getItem().getGotOriginal();
+        if (gotOriginal) {
+
+            for (CheckList object : checklistDs.getItems()) {
+                Boolean checked = object.getChecked() == null ? false : object.getChecked();
+                Boolean commented = object.getComment() != null;
+                if (!checked && !commented) {
+                    showNotification("Введите комментарии в чек-лист");
+                    return;
+                }
+            }
+            commitAndClose();
+        } else {
+            commitAndClose();
+        }
+    }
+
+    public void onCancelBtnClick(Component source) {
+        this.close("close");
     }
 }

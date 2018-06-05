@@ -26,6 +26,10 @@
                 invoke="onCheckcheck"/>
         <action id="archive"
                 invoke="onArchive"/>
+        <action id="onOkBtnClick"
+                invoke="onOkBtnClick"/>
+        <action id="onCancelBtnClick"
+                invoke="onCancelBtnClick"/>
     </actions>
     <dialogMode height="800"
                 maximized="true"
@@ -81,6 +85,17 @@
             </columns>
         </dataGrid>
         <frame id="windowActions"
-               screen="editWindowActions"/>
+               screen="editWindowActions"
+               visible="false"/>
+        <buttonsPanel>
+            <button id="buttonOk"
+                    action="onOkBtnClick"
+                    caption="Ok"
+                    description="OK"/>
+            <button id="buttonCancel"
+                    action="windowClose"
+                    caption="Cancel"
+                    description="Cancel"/>
+        </buttonsPanel>
     </layout>
 </window>

@@ -21,8 +21,9 @@ public class DocTypeEdit extends AbstractEditor<DocType> {
         CheckListItems item = new CheckListItems();
         item.setItem("<>");
         item.setDocType(this.getItem());
+        DataManager manager = AppBeans.get(DataManager.class);
+        manager.commit(item);
 
         this.getDsContext().refresh();
-        checkListItemsGrid.getDatasource().addItem(item);
     }
 }
