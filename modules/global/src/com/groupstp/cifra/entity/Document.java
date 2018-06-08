@@ -37,6 +37,7 @@ public class Document extends StandardEntity {
     @Column(name = "DOC_STATUS", nullable = false)
     protected Integer docStatus;
 
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WAREHOUSE_ID")
     protected Warehouse warehouse;
@@ -48,15 +49,18 @@ public class Document extends StandardEntity {
     @JoinColumn(name = "CONTRAGENT_ID")
     protected Contragent contragent;
 
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "clear"})
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "COMPANY_ID")
     protected Company company;
 
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DIVISION_ID")
     protected Division division;
 
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
     @JoinColumn(name = "DOC_TYPE_ID")
