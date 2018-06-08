@@ -20,6 +20,14 @@
                 <![CDATA[select e from cifra$Company e]]>
             </query>
         </collectionDatasource>
+        <collectionDatasource id="docTypesDs"
+                              allowCommit="false"
+                              class="com.groupstp.cifra.entity.DocType"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$DocType e]]>
+            </query>
+        </collectionDatasource>
     </dsContext>
     <actions>
         <action id="checkcheck"
@@ -40,25 +48,26 @@
         <buttonsPanel>
             <button id="archive"
                     action="archive"
-                    caption="msg://Помещение в архив"/>
+                    caption="msg://Поместить в архив"/>
         </buttonsPanel>
         <fieldGroup id="fieldGroup"
                     datasource="documentDs">
-            <column width="200px">
-                <field property="docType"/>
+            <column width="300px">
+                <field optionsDatasource="docTypesDs"
+                       property="docType"/>
                 <field property="description"/>
                 <field property="number"/>
                 <field property="date"/>
                 <field editable="false"
                        property="docStatus"/>
             </column>
-            <column>
+            <column width="300px">
                 <field optionsDatasource="companiesDs"
                        property="company"/>
                 <field property="division"/>
                 <field property="contragent"/>
             </column>
-            <column>
+            <column width="300px">
                 <field property="file"/>
                 <field editable="false"
                        property="dateLoad"/>
@@ -73,8 +82,7 @@
         <dataGrid id="checklist"
                   datasource="checklistDs"
                   editorEnabled="true"
-                  height="100px"
-                  width="540px">
+                  width="100%">
             <columns>
                 <column editable="false"
                         property="item"/>
