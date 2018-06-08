@@ -8,9 +8,8 @@
                          class="com.groupstp.cifra.entity.Document"
                          view="document-view">
             <query>
-                <![CDATA[select e from cifra$Document e 
-where
-e.docStatus=10]]>
+                <![CDATA[select e from cifra$Document e
+where e.docStatus=10]]>
             </query>
         </groupDatasource>
         <groupDatasource id="documentsOkDs"
@@ -29,6 +28,17 @@ e.docStatus=20]]>
                 <![CDATA[select e from cifra$Document e 
 where
 e.docStatus=30]]>
+            </query>
+        </groupDatasource>
+        <groupDatasource id="documentsIssueDs"
+                         class="com.groupstp.cifra.entity.Document"
+                         datasourceClass="com.groupstp.cifra.web.document.IssueDocumentDs"
+                         loadDynamicAttributes="true"
+                         view="document-view">
+            <query>
+                <![CDATA[select e from cifra$Document e
+where
+e.docStatus=40]]>
             </query>
         </groupDatasource>
     </dsContext>
@@ -106,6 +116,11 @@ e.docStatus=30]]>
                         <action id="remove"/>
                         <action id="refresh"
                                 invoke="onRefresh"/>
+
+
+
+                        <action id="issue"
+                                invoke="onIssue"/>
                     </actions>
                     <columns>
                         <column id="description"/>
@@ -132,6 +147,9 @@ e.docStatus=30]]>
                         <button id="refreshBtnOk"
                                 action="ok.refresh"
                                 invoke="onRefreshBtnOkClick"/>
+                        <button id="issueBtnOk"
+                                action="ok.issue"
+                                caption="Выдать документ"/>
                     </buttonsPanel>
                 </groupTable>
             </tab>
@@ -154,6 +172,7 @@ e.docStatus=30]]>
                         <action id="remove"/>
                         <action id="refresh"/>
                         <action id="issue"
+                                caption="Issue document"
                                 invoke="onIssue"/>
                     </actions>
                     <columns>
@@ -185,7 +204,46 @@ e.docStatus=30]]>
                  caption="msg://Issued"
                  description="msg://Issued"
                  margin="true,false,false,false"
-                 spacing="true"/>
+                 spacing="true">
+                <filter id="filter_3"
+                        applyTo="ok"
+                        datasource="documentsIssueDs">
+                    <properties include=".*"/>
+                </filter>
+                <groupTable id="issue"
+                            height="100%"
+                            multiselect="true"
+                            width="100%">
+                    <actions>
+                        <action id="refresh"/>
+                        <action id="returnDocument"
+                                caption="Return document"
+                                invoke="onReturn"/>
+                    </actions>
+                    <columns>
+                        <column id="destination"
+                                caption="msg://Destination"/>
+                        <column id="cell"/>
+                        <column id="gotOriginal"/>
+                        <column id="description"/>
+                        <column id="number"/>
+                        <column id="date"/>
+                        <column id="dateLoad"/>
+                        <column id="problems"/>
+                        <column id="fixDue"/>
+                    </columns>
+                    <rows datasource="documentsIssueDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonspanelIssue"
+                                  alwaysVisible="true">
+                        <button id="refreshBtnIssue"
+                                action="issue.refresh"/>
+                        <button id="returnBtnIssue"
+                                action="issue.returnDocument"
+                                caption="msg://Return document"/>
+                    </buttonsPanel>
+                </groupTable>
+            </tab>
         </tabSheet>
     </layout>
 </window>

@@ -13,5 +13,6 @@
         <class>com.groupstp.cifra.entity.CheckList</class>
         <class>com.groupstp.cifra.entity.Journal</class>
         <class>com.groupstp.cifra.entity.Warehouse</class>
+
     </persistence-unit>
 </persistence>

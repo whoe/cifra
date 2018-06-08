@@ -50,4 +50,10 @@
         <property name="item"
                   view="_minimal"/>
     </view>
+    <view class="com.groupstp.cifra.entity.Document"
+          extends="_local"
+          name="document-view_1">
+        <property name="warehouse"
+                  view="_minimal"/>
+    </view>
 </views>

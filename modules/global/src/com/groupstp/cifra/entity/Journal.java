@@ -2,6 +2,7 @@ package com.groupstp.cifra.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -27,6 +28,9 @@ public class Journal extends StandardEntity {
     @ManyToMany
     protected List<Document> doc;
 
+    @Column(name = "PREVIOUS_STATUS")
+    protected Integer previousStatus;
+
     @NotNull
     @Column(name = "EVENT_TYPE", nullable = false)
     protected Integer eventType;
@@ -46,6 +50,20 @@ public class Journal extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "HOLDER_ID")
     protected Employee holder;
+
+    public void addDocument(Document document){
+        if(this.doc==null) this.doc=new ArrayList<Document>();
+        this.doc.add(document);
+    }
+
+    public void setPreviousStatus(DocStatus previousStatus) {
+        this.previousStatus = previousStatus == null ? null : previousStatus.getId();
+    }
+
+    public DocStatus getPreviousStatus() {
+        return previousStatus == null ? null : DocStatus.fromId(previousStatus);
+    }
+
 
     public void setCell(String cell) {
         this.cell = cell;

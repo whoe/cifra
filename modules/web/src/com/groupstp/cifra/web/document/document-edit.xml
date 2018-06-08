@@ -48,7 +48,7 @@
         <buttonsPanel>
             <button id="archive"
                     action="archive"
-                    caption="msg://Поместить в архив"/>
+                    caption="msg://Помещение в архив"/>
         </buttonsPanel>
         <fieldGroup id="fieldGroup"
                     datasource="documentDs">

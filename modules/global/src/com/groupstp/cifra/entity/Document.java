@@ -1,30 +1,22 @@
 package com.groupstp.cifra.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import com.haulmont.cuba.core.entity.FileDescriptor;
-import javax.persistence.Lob;
+
 import java.util.List;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
-import javax.persistence.OneToMany;
 import com.haulmont.cuba.core.entity.annotation.Listeners;
-import javax.persistence.ManyToOne;
 
 @Listeners("cifra_DocumentListener")
 @NamePattern("%s %s %s|number,date,description")
@@ -112,6 +104,11 @@ public class Document extends StandardEntity {
         inverseJoinColumns = @JoinColumn(name = "JOURNAL_ID"))
     @ManyToMany
     protected List<Journal> events;
+
+    @MetaProperty(related = "destination")
+    @Transient
+    protected
+    String destination;
 
     public void setCell(String cell) {
         this.cell = cell;
@@ -269,5 +266,12 @@ public class Document extends StandardEntity {
         return dateLoad;
     }
 
+    //@MetaProperty(related = "destination")
+    public String getDestination() {
+        return destination;
+    }
 
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
 }
