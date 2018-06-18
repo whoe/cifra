@@ -8,4 +8,9 @@
         <item screen="cifra$Division.browse"/>
         <item screen="cifra$Warehouse.browse"/>
     </menu>
+    <menu id="Tools"
+          description="mainMsg://Tools"
+          insertBefore="administration">
+        <item screen="synchronization"/>
+    </menu>
 </menu-config>

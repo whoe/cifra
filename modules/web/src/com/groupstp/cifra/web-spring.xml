@@ -18,6 +18,8 @@
                        value="com.groupstp.cifra.entity.JournalService"/>
                 <entry key="cifra_EmployeeService"
                        value="com.groupstp.cifra.entity.EmployeeService"/>
+                <entry key="cifra_Sync1CService"
+                       value="com.groupstp.cifra.entity.Sync1CService"/>
             </map>
         </property>
     </bean>

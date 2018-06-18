@@ -25,4 +25,6 @@
             template="com/groupstp/cifra/web/warehouse/warehouse-edit.xml"/>
     <screen id="frame"
             template="com/groupstp/cifra/web/screens/frame.xml"/>
+    <screen id="synchronization"
+            template="com/groupstp/cifra/web/screens/synchronization.xml"/>
 </screen-config>

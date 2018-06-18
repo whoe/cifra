@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        class="com.groupstp.cifra.web.screens.Synchronization"
+        messagesPack="com.groupstp.cifra.web.screens">
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="log"
+            margin="true"
+            spacing="true">
+        <button id="testSync"
+                caption="msg://test"
+                invoke="onTestSyncClick"/>
+        <textArea id="log"
+                  width="100%"/>
+    </layout>
+</window>
