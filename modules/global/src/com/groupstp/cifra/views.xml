@@ -56,4 +56,7 @@
         <property name="warehouse"
                   view="_minimal"/>
     </view>
+    <view class="com.groupstp.cifra.entity.Contragent"
+          extends="_local"
+          name="contragent-view"/>
 </views>

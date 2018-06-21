@@ -20,6 +20,8 @@
                        value="com.groupstp.cifra.entity.EmployeeService"/>
                 <entry key="cifra_Sync1CService"
                        value="com.groupstp.cifra.entity.Sync1CService"/>
+                <entry key="cifra_ImportDocs1CService"
+                       value="com.groupstp.cifra.entity.ImportDocs1CService"/>
             </map>
         </property>
     </bean>

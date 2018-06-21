@@ -7,10 +7,11 @@
         <item screen="cifra$Company.browse"/>
         <item screen="cifra$Division.browse"/>
         <item screen="cifra$Warehouse.browse"/>
+        <item screen="cifra$Contragent.browse"/>
     </menu>
     <menu id="Tools"
           description="mainMsg://Tools"
           insertBefore="administration">
-        <item screen="synchronization"/>
+        <item screen="cifra$synchronization"/>
     </menu>
 </menu-config>

@@ -73,8 +73,7 @@ public class Document extends StandardEntity {
     @Column(name = "DESCRIPTION")
     protected String description;
 
-    @NotNull
-    @Column(name = "NUMBER_", nullable = false, length = 15)
+    @Column(name = "NUMBER_", length = 15)
     protected String number;
 
     @Temporal(TemporalType.DATE)
@@ -109,6 +108,30 @@ public class Document extends StandardEntity {
     @Transient
     protected
     String destination;
+
+    @Column(name = "EXTERNAL_LINK")
+    protected String externalLink;
+
+    @Column(name = "EXTERNAL_ID")
+    protected String externalId;
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+
+    public void setExternalLink(String externalLink) {
+        this.externalLink = externalLink;
+    }
+
+    public String getExternalLink() {
+        return externalLink;
+    }
+
 
     public void setCell(String cell) {
         this.cell = cell;

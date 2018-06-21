@@ -52,12 +52,14 @@ create table CIFRA_DOCUMENT (
     FILE_ID uuid,
     GOT_ORIGINAL boolean,
     DESCRIPTION varchar(255),
-    NUMBER_ varchar(15) not null,
+    NUMBER_ varchar(15),
     DATE_ date not null,
     DATE_LOAD date,
     DOC_CAUSE_ID uuid,
     PROBLEMS text,
     FIX_DUE date,
+    EXTERNAL_LINK varchar(255),
+    EXTERNAL_ID varchar(255),
     --
     primary key (ID)
 )^
@@ -90,9 +92,10 @@ create table CIFRA_COMPANY (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NAME varchar(10) not null,
+    NAME varchar(150) not null,
     INN varchar(13),
     FULL_NAME varchar(255),
+    EXTERNAL_ID varchar(255),
     --
     primary key (ID)
 )^

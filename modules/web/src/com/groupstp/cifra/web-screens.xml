@@ -25,6 +25,9 @@
             template="com/groupstp/cifra/web/warehouse/warehouse-edit.xml"/>
     <screen id="frame"
             template="com/groupstp/cifra/web/screens/frame.xml"/>
-    <screen id="synchronization"
+    <screen id="cifra$synchronization"
+            multipleOpen="true"
             template="com/groupstp/cifra/web/screens/synchronization.xml"/>
+    <screen id="cifra$Contragent.browse"
+            template="com/groupstp/cifra/web/contragent/contragent-browse.xml"/>
 </screen-config>

@@ -45,9 +45,11 @@ e.docStatus=40]]>
     <dialogMode height="600"
                 width="800"/>
     <layout spacing="true">
-        <tabSheet>
+        <tabSheet id="tabs"
+                  height="100%">
             <tab id="tabIncome"
                  caption="msg://Income"
+                 expand="income"
                  margin="true,false,false,false"
                  spacing="true">
                 <filter id="filter"
@@ -56,7 +58,6 @@ e.docStatus=40]]>
                     <properties include=".*"/>
                 </filter>
                 <groupTable id="income"
-                            height="100%"
                             multiselect="true"
                             width="100%">
                     <actions>
@@ -68,19 +69,23 @@ e.docStatus=40]]>
                         <action id="refresh"/>
                     </actions>
                     <columns>
-                        <column id="company"/>
-                        <column id="division"/>
-                        <column id="docType"/>
+                        <group>
+                            <column id="company"/>
+                            <column id="division"/>
+                            <column id="docType"/>
+                            <column id="date"/>
+                            <column id="contragent"/>
+                        </group>
                         <column id="description"/>
                         <column id="number"/>
-                        <column id="date"/>
                         <column id="dateLoad"/>
                         <column id="problems"
                                 maxTextLength="5"/>
                         <column id="fixDue"/>
-                        <column id="contragent"/>
                         <column id="warehouse"/>
                         <column id="cell"/>
+                        <column id="externalLink"/>
+                        <column id="externalId"/>
                     </columns>
                     <rows datasource="documentsIncomeDs"/>
                     <rowsCount/>
@@ -99,6 +104,7 @@ e.docStatus=40]]>
             </tab>
             <tab id="tabOk"
                  caption="msg://ok"
+                 expand="ok"
                  margin="true,false,false,false"
                  spacing="true">
                 <filter id="filter_1"
@@ -107,34 +113,33 @@ e.docStatus=40]]>
                     <properties include=".*"/>
                 </filter>
                 <groupTable id="ok"
-                            height="100%"
                             multiselect="true"
                             width="100%">
                     <actions>
                         <action id="edit"
                                 openType="DIALOG"/>
                         <action id="remove"/>
-                        <action id="refresh"
-                                invoke="onRefresh"/>
-
-
-
+                        <action id="refresh"/>
                         <action id="issue"
                                 invoke="onIssue"/>
                     </actions>
                     <columns>
+                        <group>
+                            <column id="docType"/>
+                            <column id="company"/>
+                            <column id="division"/>
+                            <column id="contragent"/>
+                        </group>
                         <column id="description"/>
                         <column id="number"/>
                         <column id="date"/>
                         <column id="dateLoad"/>
                         <column id="problems"/>
                         <column id="fixDue"/>
-                        <column id="docType"/>
-                        <column id="company"/>
-                        <column id="division"/>
-                        <column id="contragent"/>
                         <column id="warehouse"/>
                         <column id="cell"/>
+                        <column id="externalLink"/>
+                        <column id="externalId"/>
                     </columns>
                     <rows datasource="documentsOkDs"/>
                     <rowsCount/>
@@ -145,8 +150,7 @@ e.docStatus=40]]>
                         <button id="removeBtnOk"
                                 action="ok.remove"/>
                         <button id="refreshBtnOk"
-                                action="ok.refresh"
-                                invoke="onRefreshBtnOkClick"/>
+                                action="ok.refresh"/>
                         <button id="issueBtnOk"
                                 action="ok.issue"
                                 caption="Выдать документ"/>
@@ -155,6 +159,7 @@ e.docStatus=40]]>
             </tab>
             <tab id="tabProblems"
                  caption="msg://Problems"
+                 expand="problems"
                  margin="true,false,false,false"
                  spacing="true">
                 <filter id="filter_2"
@@ -163,7 +168,6 @@ e.docStatus=40]]>
                     <properties include=".*"/>
                 </filter>
                 <groupTable id="problems"
-                            height="100%"
                             multiselect="true"
                             width="100%">
                     <actions>
@@ -176,7 +180,6 @@ e.docStatus=40]]>
                                 invoke="onIssue"/>
                     </actions>
                     <columns>
-                        <column id="docStatus"/>
                         <column id="gotOriginal"/>
                         <column id="description"/>
                         <column id="number"/>
@@ -186,6 +189,8 @@ e.docStatus=40]]>
                         <column id="fixDue"/>
                         <column id="warehouse"/>
                         <column id="cell"/>
+                        <column id="externalLink"/>
+                        <column id="externalId"/>
                     </columns>
                     <rows datasource="documentsProblemsDs"/>
                     <rowsCount/>
@@ -203,6 +208,8 @@ e.docStatus=40]]>
             <tab id="tabIssued"
                  caption="msg://Issued"
                  description="msg://Issued"
+                 expand="issue"
+                 lazy="true"
                  margin="true,false,false,false"
                  spacing="true">
                 <filter id="filter_3"
@@ -211,7 +218,6 @@ e.docStatus=40]]>
                     <properties include=".*"/>
                 </filter>
                 <groupTable id="issue"
-                            height="100%"
                             multiselect="true"
                             width="100%">
                     <actions>
@@ -231,6 +237,8 @@ e.docStatus=40]]>
                         <column id="dateLoad"/>
                         <column id="problems"/>
                         <column id="fixDue"/>
+                        <column id="externalLink"/>
+                        <column id="externalId"/>
                     </columns>
                     <rows datasource="documentsIssueDs"/>
                     <rowsCount/>

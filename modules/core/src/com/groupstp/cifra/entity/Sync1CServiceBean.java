@@ -16,16 +16,14 @@ import java.util.Map;
 @Service(Sync1CService.NAME)
 public class Sync1CServiceBean implements Sync1CService {
 
-    final String url = "http://stpserver.groupstp.ru:1805/";
-
     @Override
-    public JsonElement getData1C(String base, String report, String userpass) throws IOException, NoSuchAlgorithmException {
-        return this.getData1C(base, report,userpass, new HashMap<>());
+    public JsonElement getData1C(String url, String userpass) throws IOException, NoSuchAlgorithmException {
+        return this.getData1C(url, userpass, new HashMap<>());
     }
 
     @Override
-    public JsonElement getData1C(String base, String report, String userpass, HashMap<String, String> params) throws IOException, NoSuchAlgorithmException {
-        URL u = new URL(url+base+"/"+report);
+    public JsonElement getData1C(String url, String userpass, HashMap<String, String> params) throws IOException, NoSuchAlgorithmException {
+        URL u = new URL(url);
         HttpURLConnection con = (HttpURLConnection) u.openConnection();
         con.setRequestMethod("GET");
         params.put("hash", passHash(userpass)); //abeac07d3c28c1bef9e730002c753ed4

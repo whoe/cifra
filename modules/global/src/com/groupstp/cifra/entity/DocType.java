@@ -3,7 +3,9 @@ package com.groupstp.cifra.entity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
-import com.haulmont.cuba.core.global.DeletePolicy;
+import com.haulmont.cuba.core.global.*;
+
+import java.security.Provider;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
@@ -27,6 +29,19 @@ public class DocType extends StandardEntity {
     @OneToMany(mappedBy = "docType")
     protected List<CheckListItems> checkListItems;
 
+    public static DocType findType(String name) throws Exception {
+        LoadContext<DocType> ctx = LoadContext.create(DocType.class).setQuery(
+                LoadContext.createQuery("select d from cifra$DocType d where d.name=:name")
+                        .setParameter("name", name));
+        DocType dt = AppBeans.get(DataManager.class).load(ctx);
+        if(dt==null) {
+            dt = new DocType();
+            dt.setName(name);
+            AppBeans.get(DataManager.class).commit(dt);
+        }
+        return dt;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -42,6 +57,5 @@ public class DocType extends StandardEntity {
     public List<CheckListItems> getCheckListItems() {
         return checkListItems;
     }
-
 
 }
