@@ -16,13 +16,15 @@ import com.haulmont.cuba.core.Persistence;
 import javax.inject.Inject;
 import javax.xml.crypto.Data;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
 import java.util.Set;
 
 @Service(DocumentService.NAME)
 public class DocumentServiceBean implements DocumentService {
+
+    private final int NUMBER_OF_TOP_TAGS = 3;
+
     @Inject
     private EmployeeService employeeService;
 
@@ -48,8 +50,8 @@ public class DocumentServiceBean implements DocumentService {
     }
 
     @Override
-    public void issueDocument(Document doc) {
-        journalService.makeMovement(doc, EventType.ISSUE, null,null,employeeService.getCurrentUserEmployee());
+    public void issueDocument(Document doc, Employee emp) {
+        journalService.makeMovement(doc, EventType.ISSUE, null,null, emp);
         doc.setDocStatus(DocStatus.ISSUED);
         dataManager.commit(doc);
     }
@@ -140,5 +142,15 @@ public class DocumentServiceBean implements DocumentService {
 
     public void checkISSUED(Document doc) {
 
+    }
+
+    @Override
+    public List<Tag> requestTopTags(){
+        Transaction tx = persistence.createTransaction();
+        EntityManager em = persistence.getEntityManager();
+        Query query = em.createQuery(
+                "select o from cifra$Tag o join o.documents doc group by o.id order by count(o.id) desc");
+        List<Tag> result = query.setMaxResults(NUMBER_OF_TOP_TAGS).getResultList();
+        return result;
     }
 }

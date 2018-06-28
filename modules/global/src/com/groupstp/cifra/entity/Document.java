@@ -17,6 +17,8 @@ import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
 import com.haulmont.cuba.core.entity.annotation.Listeners;
+import java.util.Collection;
+import java.util.Set;
 
 @Listeners("cifra_DocumentListener")
 @NamePattern("%s %s %s|number,date,description")
@@ -28,6 +30,12 @@ public class Document extends StandardEntity {
     @NotNull
     @Column(name = "DOC_STATUS", nullable = false)
     protected Integer docStatus;
+
+    @JoinTable(name = "CIFRA_DOCUMENT_TAG_LINK",
+        joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
+        inverseJoinColumns = @JoinColumn(name = "TAG_ID"))
+    @ManyToMany
+    protected Set<Tag> tag;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
@@ -114,6 +122,21 @@ public class Document extends StandardEntity {
 
     @Column(name = "EXTERNAL_ID")
     protected String externalId;
+
+
+
+
+
+
+
+    public void setTag(Set<Tag> tag) {
+        this.tag = tag;
+    }
+
+    public Set<Tag> getTag() {
+        return tag;
+    }
+
 
     public void setExternalId(String externalId) {
         this.externalId = externalId;

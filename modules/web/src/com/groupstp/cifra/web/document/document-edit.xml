@@ -9,10 +9,20 @@
         <datasource id="documentDs"
                     class="com.groupstp.cifra.entity.Document"
                     loadDynamicAttributes="true"
-                    view="document-view">
+                    view="document-view_1">
             <collectionDatasource id="checklistDs"
                                   property="checklist"/>
+            <collectionDatasource id="tagDs"
+                                  property="tag"/>
         </datasource>
+        <collectionDatasource id="docTypesDs"
+                              allowCommit="false"
+                              class="com.groupstp.cifra.entity.DocType"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$DocType e]]>
+            </query>
+        </collectionDatasource>
         <collectionDatasource id="companiesDs"
                               class="com.groupstp.cifra.entity.Company"
                               view="_minimal">
@@ -20,12 +30,11 @@
                 <![CDATA[select e from cifra$Company e]]>
             </query>
         </collectionDatasource>
-        <collectionDatasource id="docTypesDs"
-                              allowCommit="false"
-                              class="com.groupstp.cifra.entity.DocType"
-                              view="_minimal">
+        <collectionDatasource id="allTagsDs"
+                              class="com.groupstp.cifra.entity.Tag"
+                              view="tag-view">
             <query>
-                <![CDATA[select e from cifra$DocType e]]>
+                <![CDATA[select e from cifra$Tag e]]>
             </query>
         </collectionDatasource>
     </dsContext>
@@ -57,6 +66,16 @@
                        property="docStatus"/>
                 <field editable="false"
                        property="externalId"/>
+                <field id="tag"
+                       property="tag"
+                       caption="Тэги">
+                    <tokenList datasource="tagDs"
+                               inline="true">
+                        <lookup lookup="true"
+                                multiselect="true"
+                                optionsDatasource="allTagsDs"/>
+                    </tokenList>
+                </field>
             </column>
             <column width="300px">
                 <field optionsDatasource="companiesDs"

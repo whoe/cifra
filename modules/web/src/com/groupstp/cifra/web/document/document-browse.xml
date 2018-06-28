@@ -41,23 +41,30 @@ where
 e.docStatus=40]]>
             </query>
         </groupDatasource>
+        <collectionDatasource id="tagsDs"
+                              allowCommit="false"
+                              class="com.groupstp.cifra.entity.Tag"/>
+        <collectionDatasource id="filteredTagsDs"
+                              class="com.groupstp.cifra.entity.Tag"
+                              datasourceClass="com.groupstp.cifra.web.data.FilterTagsCollectionDatasource"/>
     </dsContext>
     <dialogMode height="600"
                 width="800"/>
     <layout spacing="true">
         <tabSheet id="tabs"
                   height="100%">
-            <tab id="tabIncome"
+            <tab id="II"
                  caption="msg://Income"
                  expand="income"
                  margin="true,false,false,false"
                  spacing="true">
-                <filter id="filter"
-                        applyTo="income"
-                        datasource="documentsIncomeDs">
-                    <properties include=".*"/>
-                </filter>
+                <filter applyTo="income"/>
+                <hbox id="incomeHBox"
+                      spacing="true"
+                      width="70%">
+                </hbox>
                 <groupTable id="income"
+                            height="367px"
                             multiselect="true"
                             width="100%">
                     <actions>
@@ -112,6 +119,10 @@ e.docStatus=40]]>
                         datasource="documentsOkDs">
                     <properties include=".*"/>
                 </filter>
+                <hbox id="okHBox"
+                      spacing="true"
+                      width="70%">
+                </hbox>
                 <groupTable id="ok"
                             multiselect="true"
                             width="100%">
@@ -167,6 +178,10 @@ e.docStatus=40]]>
                         datasource="documentsOkDs">
                     <properties include=".*"/>
                 </filter>
+                <hbox id="problemsHBox"
+                      spacing="true"
+                      width="70%">
+                </hbox>
                 <groupTable id="problems"
                             multiselect="true"
                             width="100%">
@@ -217,6 +232,10 @@ e.docStatus=40]]>
                         datasource="documentsIssueDs">
                     <properties include=".*"/>
                 </filter>
+                <hbox id="issuedHBox"
+                      spacing="true"
+                      width="70%">
+                </hbox>
                 <groupTable id="issue"
                             multiselect="true"
                             width="100%">

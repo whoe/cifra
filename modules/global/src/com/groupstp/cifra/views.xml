@@ -27,8 +27,20 @@
                   view="_minimal"/>
         <property name="contragent"
                   view="_minimal"/>
+        <property name="tag"
+                  view="_minimal"/>
+        <property name="description"/>
+        <property name="number"/>
+        <property name="date"/>
+        <property name="docStatus"/>
         <property name="warehouse"
                   view="_minimal"/>
+        <property name="dateLoad"/>
+        <property name="problems"/>
+        <property name="fixDue"/>
+        <property name="externalId"/>
+        <property name="cell"/>
+        <property name="externalLink"/>
     </view>
     <view class="com.groupstp.cifra.entity.CheckListItems"
           extends="_local"
@@ -55,8 +67,45 @@
           name="document-view_1">
         <property name="warehouse"
                   view="_minimal"/>
+        <property name="tag"
+                  view="_minimal"/>
+        <property name="checklist"
+                  view="_minimal"/>
+        <property name="docType"
+                  view="_minimal"/>
+        <property name="contragent"
+                  view="_minimal"/>
+        <property name="company"
+                  view="_minimal"/>
+        <property name="division"
+                  view="_minimal"/>
+        <property name="file"
+                  view="_minimal"/>
+        <property name="problems"/>
+        <property name="fixDue"/>
+        <property name="externalId"/>
+        <property name="cell"/>
+        <property name="date"/>
+        <property name="externalLink"/>
+        <property name="description"/>
+        <property name="number"/>
+        <property name="docStatus"/>
+        <property name="dateLoad"/>
+        <property name="gotOriginal"/>
     </view>
     <view class="com.groupstp.cifra.entity.Contragent"
           extends="_local"
           name="contragent-view"/>
+    <view class="com.groupstp.cifra.entity.Tag"
+          extends="_minimal"
+          name="tag-view">
+        <property name="documents"
+                  view="_minimal"/>
+    </view>
+    <view class="com.groupstp.cifra.entity.Employee"
+          extends="_local"
+          name="employee-view">
+        <property name="user"
+                  view="_minimal"/>
+    </view>
 </views>

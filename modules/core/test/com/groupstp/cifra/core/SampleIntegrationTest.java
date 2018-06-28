@@ -40,6 +40,7 @@ public class SampleIntegrationTest {
 
     @Test
     public void testLoadUser() {
+
         try (Transaction tx = persistence.createTransaction()) {
             EntityManager em = persistence.getEntityManager();
             TypedQuery<User> query = em.createQuery(

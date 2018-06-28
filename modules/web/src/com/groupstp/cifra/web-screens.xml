@@ -30,4 +30,12 @@
             template="com/groupstp/cifra/web/screens/synchronization.xml"/>
     <screen id="cifra$Contragent.browse"
             template="com/groupstp/cifra/web/contragent/contragent-browse.xml"/>
+    <screen id="chooseEmployee"
+            template="com/groupstp/cifra/web/document/chooseEmployee.xml"/>
+    <screen id="cifra$Employee.browse"
+            template="com/groupstp/cifra/web/employee/employee-browse.xml"/>
+    <screen id="cifra$Tag.browse"
+            template="com/groupstp/cifra/web/tag/tag-browse.xml"/>
+    <screen id="cifra$Tag.edit"
+            template="com/groupstp/cifra/web/tag/tag-edit.xml"/>
 </screen-config>

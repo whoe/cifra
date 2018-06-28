@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://Employess selection"
+        class="com.groupstp.cifra.web.document.ChooseEmployee"
+        messagesPack="com.groupstp.cifra.web.document">
+    <dsContext>
+        <collectionDatasource id="employeesDs"
+                              allowCommit="false"
+                              class="com.groupstp.cifra.entity.Employee"
+                              view="_local">
+            <query>
+                <![CDATA[select e from cifra$Employee e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="btnspanel">
+        <label value="mainMsg://Employee"/>
+        <lookupPickerField id="employee"
+                           optionsDatasource="employeesDs"
+                           width="400px"/>
+        <buttonsPanel id="btnspanel">
+            <button id="btnOk"
+                    caption="mainMsg://OK"
+                    icon="DIALOG_OK"/>
+            <button id="btnCancel"
+                    caption="mainMsg://Cancel"
+                    icon="DIALOG_CANCEL"/>
+        </buttonsPanel>
+    </layout>
+</window>

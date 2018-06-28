@@ -38,6 +38,9 @@ public class DocumentEdit extends AbstractEditor<Document> {
     @Named("fieldGroup.company")
     private LookupPickerField company;
 
+    @Named("fieldGroup.tag")
+    private TokenList tags;
+
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Override

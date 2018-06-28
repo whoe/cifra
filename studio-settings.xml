@@ -8,4 +8,10 @@
         <functionality id="newFkConstraintNaming"
                        state="ENABLE"/>
     </functionalitySettings>
+    <dbScripts>
+        <excludes>
+            <postgres>
+            </postgres>
+        </excludes>
+    </dbScripts>
 </studio>

@@ -199,3 +199,33 @@ create table CIFRA_WAREHOUSE (
     primary key (ID)
 )^
 -- end CIFRA_WAREHOUSE
+-- begin CIFRA_TAG
+create table CIFRA_TAG (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME varchar(100) not null,
+    --
+    primary key (ID)
+)^
+-- end CIFRA_TAG
+-- begin CIFRA_DOCUMENT_TAG_LINK
+create table CIFRA_DOCUMENT_TAG_LINK (
+    TAG_ID uuid,
+    DOCUMENT_ID uuid,
+    primary key (TAG_ID, DOCUMENT_ID)
+)^
+-- end CIFRA_DOCUMENT_TAG_LINK
+-- begin CIFRA_JOURNAL_DOCUMENT_LINK
+create table CIFRA_JOURNAL_DOCUMENT_LINK (
+    JOURNAL_ID uuid,
+    DOCUMENT_ID uuid,
+    primary key (JOURNAL_ID, DOCUMENT_ID)
+)^
+-- end CIFRA_JOURNAL_DOCUMENT_LINK

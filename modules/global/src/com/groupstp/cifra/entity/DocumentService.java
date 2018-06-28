@@ -11,9 +11,11 @@ public interface DocumentService {
 
     public void ArchiveDocument(Document doc);
 
-    public void issueDocument(Document doc);
+    public void issueDocument(Document doc, Employee emp);
 
     public void returnDocument(Document doc);
+
+    public List<Tag> requestTopTags();
 
     Collection<Document> getIssuedDocuments();
 }
