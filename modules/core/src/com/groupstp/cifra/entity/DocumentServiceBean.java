@@ -66,7 +66,7 @@ public class DocumentServiceBean implements DocumentService {
 
     @Override
     public Set<Document> getIssuedDocuments() {
-        Set result= new HashSet<>();
+        Set<Document> result= new HashSet<>();
         try  {
             Transaction tx = persistence.createTransaction();
             // get EntityManager for the current transaction
@@ -74,11 +74,10 @@ public class DocumentServiceBean implements DocumentService {
             // create and execute Query
             Query query = em.createQuery(
                     "select  j.responsible.name,d from cifra$Journal j  join j.doc d where d.docStatus=:status order by j.updateTs desc ");
-            query.setParameter("status", 40);
+            query.setParameter("status", DocStatus.ISSUED);
 
 
             List qresult =  query.getResultList();//.getFirstResult();
-            int i=0;i++;
             qresult.forEach(( item)->{
                 String name =(String)((Object[])item)[0];
                 Document doc=(Document)((Object[])item)[1];
@@ -149,8 +148,7 @@ public class DocumentServiceBean implements DocumentService {
         Transaction tx = persistence.createTransaction();
         EntityManager em = persistence.getEntityManager();
         Query query = em.createQuery(
-                "select o from cifra$Tag o join o.documents doc group by o.id order by count(o.id) desc");
-        List<Tag> result = query.setMaxResults(NUMBER_OF_TOP_TAGS).getResultList();
-        return result;
+                "s-elect o from cifra$Tag o join o.documents doc group by o.id order by count(o.id) desc");
+        return query.setMaxResults(NUMBER_OF_TOP_TAGS).getResultList();
     }
 }

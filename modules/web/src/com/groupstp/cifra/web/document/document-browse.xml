@@ -58,13 +58,12 @@ e.docStatus=40]]>
                  expand="income"
                  margin="true,false,false,false"
                  spacing="true">
-                <filter applyTo="income"/>
+                <filter applyTo="income"
+                        datasource="documentsIncomeDs"/>
                 <hbox id="incomeHBox"
                       spacing="true"
-                      width="70%">
-                </hbox>
+                      width="70%"/>
                 <groupTable id="income"
-                            height="367px"
                             multiselect="true"
                             width="100%">
                     <actions>
@@ -121,8 +120,7 @@ e.docStatus=40]]>
                 </filter>
                 <hbox id="okHBox"
                       spacing="true"
-                      width="70%">
-                </hbox>
+                      width="70%"/>
                 <groupTable id="ok"
                             multiselect="true"
                             width="100%">
@@ -180,8 +178,7 @@ e.docStatus=40]]>
                 </filter>
                 <hbox id="problemsHBox"
                       spacing="true"
-                      width="70%">
-                </hbox>
+                      width="70%"/>
                 <groupTable id="problems"
                             multiselect="true"
                             width="100%">
@@ -234,8 +231,7 @@ e.docStatus=40]]>
                 </filter>
                 <hbox id="issuedHBox"
                       spacing="true"
-                      width="70%">
-                </hbox>
+                      width="70%"/>
                 <groupTable id="issue"
                             multiselect="true"
                             width="100%">
