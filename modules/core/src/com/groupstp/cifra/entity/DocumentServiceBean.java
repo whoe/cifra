@@ -148,7 +148,7 @@ public class DocumentServiceBean implements DocumentService {
         Transaction tx = persistence.createTransaction();
         EntityManager em = persistence.getEntityManager();
         Query query = em.createQuery(
-                "s-elect o from cifra$Tag o join o.documents doc group by o.id order by count(o.id) desc");
+                "select o from cifra$Tag o join o.documents doc group by o.id order by count(o.id) desc");
         return query.setMaxResults(NUMBER_OF_TOP_TAGS).getResultList();
     }
 }
