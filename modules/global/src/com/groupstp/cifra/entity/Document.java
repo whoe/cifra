@@ -66,6 +66,10 @@ public class Document extends StandardEntity {
     @JoinColumn(name = "DOC_TYPE_ID")
     protected DocType docType;
 
+    @NotNull
+    @Column(name = "DIRECTION", nullable = false)
+    protected String direction;
+
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "document")
@@ -96,7 +100,7 @@ public class Document extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @Lookup(type = LookupType.SCREEN, actions = {"lookup", "open", "clear"})
     @JoinColumn(name = "DOC_CAUSE_ID")
-    protected Document docCause;
+    private Document docCause;
 
     @Lob
     @Column(name = "PROBLEMS")
@@ -110,7 +114,7 @@ public class Document extends StandardEntity {
         joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
         inverseJoinColumns = @JoinColumn(name = "JOURNAL_ID"))
     @ManyToMany
-    protected List<Journal> events;
+    private List<Journal> events;
 
     @MetaProperty(related = "destination")
     @Transient
@@ -129,6 +133,15 @@ public class Document extends StandardEntity {
 
 
 
+    public void setDirection(Direction direction) {
+        this.direction = direction == null ? null : direction.getId();
+    }
+
+    public Direction getDirection() {
+        return direction == null ? null : Direction.fromId(direction);
+    }
+
+
     public void setTag(Set<Tag> tag) {
         this.tag = tag;
     }
@@ -138,7 +151,7 @@ public class Document extends StandardEntity {
     }
 
 
-    public void setExternalId(String externalId) {
+    void setExternalId(String externalId) {
         this.externalId = externalId;
     }
 
@@ -147,7 +160,7 @@ public class Document extends StandardEntity {
     }
 
 
-    public void setExternalLink(String externalLink) {
+    void setExternalLink(String externalLink) {
         this.externalLink = externalLink;
     }
 
@@ -174,7 +187,7 @@ public class Document extends StandardEntity {
     }
 
 
-    public void setDateLoad(Date dateLoad) {
+    void setDateLoad(Date dateLoad) {
         this.dateLoad = dateLoad;
     }
 
@@ -250,7 +263,7 @@ public class Document extends StandardEntity {
         return file;
     }
 
-    public void setGotOriginal(Boolean gotOriginal) {
+    void setGotOriginal(Boolean gotOriginal) {
         this.gotOriginal = gotOriginal;
     }
 
@@ -317,7 +330,7 @@ public class Document extends StandardEntity {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    void setDestination(String destination) {
         this.destination = destination;
     }
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.groupstp.cifra.web.tag.TagEdit"
+        datasource="tagDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.groupstp.cifra.web.tag">
+    <dsContext>
+        <datasource id="tagDs"
+                    class="com.groupstp.cifra.entity.Tag"
+                    view="tag-view">
+            <collectionDatasource id="documentsDs"
+                                  property="documents"/>
+        </datasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="documentBox"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="tagDs">
+            <column width="250px">
+                <field property="name"/>
+            </column>
+        </fieldGroup>
+        <groupBox id="documentBox"
+                  caption="mainMsg://Documents">
+            <table id="documentTable"
+                   height="100%"
+                   width="100%">
+                <actions>
+                    <action id="add"/>
+                    <action id="remove"/>
+                </actions>
+                <columns>
+                    <column id="docStatus"/>
+                    <column id="cell"/>
+                    <column id="gotOriginal"/>
+                    <column id="description"/>
+                    <column id="number"/>
+                    <column id="date"/>
+                    <column id="dateLoad"/>
+                    <column id="problems"/>
+                    <column id="fixDue"/>
+                    <column id="destination"/>
+                    <column id="externalLink"/>
+                    <column id="externalId"/>
+                    <column id="direction"/>
+                </columns>
+                <rows datasource="documentsDs"/>
+                <buttonsPanel>
+                    <button action="documentTable.add"/>
+                    <button action="documentTable.remove"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

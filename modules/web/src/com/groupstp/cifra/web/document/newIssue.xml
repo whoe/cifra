@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="com.groupstp.cifra.web.document.Newissue"
+        messagesPack="com.groupstp.cifra.web.document">
+    <dsContext>
+        <datasource id="employeeDs"
+                    class="com.groupstp.cifra.entity.Employee"/>
+        <datasource id="docTypeDs"
+                    class="com.groupstp.cifra.entity.DocType"/>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="btnspanel">
+        <label value="Employee selection"/>
+        <lookupField id="employee"
+                     datasource="employeeDs"
+                     required="true"
+                     width="243px"/>
+        <label value="Change status"/>
+        <lookupField id="status"
+                     datasource="docTypeDs"
+                     required="true"
+                     width="242px"/>
+        <buttonsPanel id="btnspanel">
+            <button id="btnOk"
+                    caption="msg://OK"/>
+            <button id="btnCancel"
+                    caption="msg://Cancel"/>
+        </buttonsPanel>
+    </layout>
+</window>

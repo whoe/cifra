@@ -92,6 +92,7 @@ e.docStatus=40]]>
                         <column id="cell"/>
                         <column id="externalLink"/>
                         <column id="externalId"/>
+                        <column id="direction"/>
                     </columns>
                     <rows datasource="documentsIncomeDs"/>
                     <rowsCount/>
@@ -149,6 +150,7 @@ e.docStatus=40]]>
                         <column id="cell"/>
                         <column id="externalLink"/>
                         <column id="externalId"/>
+                        <column id="direction"/>
                     </columns>
                     <rows datasource="documentsOkDs"/>
                     <rowsCount/>
@@ -203,6 +205,7 @@ e.docStatus=40]]>
                         <column id="cell"/>
                         <column id="externalLink"/>
                         <column id="externalId"/>
+                        <column id="direction"/>
                     </columns>
                     <rows datasource="documentsProblemsDs"/>
                     <rowsCount/>
@@ -254,6 +257,7 @@ e.docStatus=40]]>
                         <column id="fixDue"/>
                         <column id="externalLink"/>
                         <column id="externalId"/>
+                        <column id="direction"/>
                     </columns>
                     <rows datasource="documentsIssueDs"/>
                     <rowsCount/>

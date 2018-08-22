@@ -67,8 +67,8 @@
                 <field editable="false"
                        property="externalId"/>
                 <field id="tag"
-                       property="tag"
-                       caption="Тэги">
+                       caption="Тэги"
+                       property="tag">
                     <tokenList datasource="tagDs"
                                inline="true">
                         <lookup lookup="true"
@@ -76,6 +76,7 @@
                                 optionsDatasource="allTagsDs"/>
                     </tokenList>
                 </field>
+                <field property="direction"/>
             </column>
             <column width="300px">
                 <field optionsDatasource="companiesDs"
