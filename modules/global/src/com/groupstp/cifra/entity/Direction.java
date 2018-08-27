@@ -28,5 +28,5 @@ public enum Direction implements EnumClass<String> {
             }
         }
         return null;
-    }
+   }
 }

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.groupstp.cifra.web.document.workflow.QueryWorkflowEdit"
+        datasource="documentDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.groupstp.cifra.web.document">
+    <dsContext>
+        <datasource id="documentDs"
+                    class="com.groupstp.cifra.entity.Document"
+                    loadDynamicAttributes="true"
+                    view="document-wf_view">
+            <collectionDatasource id="checklistDs"
+                                  property="checklist"/>
+            <collectionDatasource id="tagDs"
+                                  property="tag"/>
+        </datasource>
+        <collectionDatasource id="docTypesDs"
+                              allowCommit="false"
+                              class="com.groupstp.cifra.entity.DocType"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$DocType e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companiesDs"
+                              class="com.groupstp.cifra.entity.Company"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$Company e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="allTagsDs"
+                              class="com.groupstp.cifra.entity.Tag"
+                              view="tag-view">
+            <query>
+                <![CDATA[select e from cifra$Tag e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <actions>
+        <action id="checkcheck"
+                invoke="onCheckcheck"/>
+    </actions>
+    <dialogMode height="800"
+                maximized="true"
+                resizable="true"
+                width="1000"/>
+    <layout expand="checklist"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="documentDs">
+            <column width="300px">
+                <field optionsDatasource="docTypesDs"
+                       property="docType"/>
+                <field property="description"/>
+                <field property="number"/>
+                <field property="date"/>
+                <field editable="false"
+                       property="docStatus"/>
+                <field editable="false"
+                       property="externalId"/>
+                <field id="tag"
+                       caption="Тэги"
+                       property="tag">
+                    <tokenList datasource="tagDs"
+                               inline="true">
+                        <lookup lookup="true"
+                                multiselect="true"
+                                optionsDatasource="allTagsDs"/>
+                    </tokenList>
+                </field>
+                <field property="direction"/>
+            </column>
+            <column width="300px">
+                <field optionsDatasource="companiesDs"
+                       property="company"/>
+                <field property="division"/>
+                <field property="contragent"/>
+            </column>
+            <column width="300px">
+                <field property="file"/>
+                <field editable="false"
+                       property="dateLoad"/>
+                <field property="gotOriginal"/>
+                <field property="fixDue"/>
+                <field property="warehouse"/>
+                <field property="cell"/>
+            </column>
+        </fieldGroup>
+        <button action="checkcheck"
+                caption="msg://Refresh checklist"/>
+        <dataGrid id="checklist"
+                  datasource="checklistDs"
+                  editorEnabled="true"
+                  width="100%">
+            <columns>
+                <column editable="false"
+                        property="item"/>
+                <column property="checked"
+                        resizable="false"
+                        width="100"/>
+                <column property="comment"/>
+            </columns>
+        </dataGrid>
+        <frame id="windowActions"
+               screen="editWindowActions"
+               visible="false"/>
+        <hbox id="bottomPanel"
+              spacing="true"
+              stylename="c-edit-window-actions">
+            <button id="windowCommit"
+                    action="windowCommit"
+                    icon="EDITOR_OK"/>
+            <button id="windowClose"
+                    action="windowClose"
+                    icon="EDITOR_CANCEL"/>
+        </hbox>
+    </layout>
+</window>

@@ -1,30 +1,30 @@
 package com.groupstp.cifra.entity;
 
-import javax.persistence.*;
-import java.util.Date;
-import javax.validation.constraints.NotNull;
-
+import com.groupstp.workflowstp.entity.WorkflowEntity;
+import com.groupstp.workflowstp.entity.WorkflowEntityStatus;
+import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.MetaProperty;
-import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.chile.core.annotations.NamePattern;
+import com.haulmont.cuba.core.entity.FileDescriptor;
+import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.Listeners;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
-import com.haulmont.cuba.core.entity.FileDescriptor;
-
-import java.util.List;
-
-import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
-import com.haulmont.cuba.core.entity.annotation.Listeners;
-import java.util.Collection;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Listeners("cifra_DocumentListener")
 @NamePattern("%s %s %s|number,date,description")
 @Table(name = "CIFRA_DOCUMENT")
 @Entity(name = "cifra$Document")
-public class Document extends StandardEntity {
+public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     private static final long serialVersionUID = -5504376796832237678L;
 
     @NotNull
@@ -332,5 +332,44 @@ public class Document extends StandardEntity {
 
     void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    //workflowmodule module
+    @Column(name = "WF_STATUS")
+    private Integer status;
+
+    @Column(name = "WF_STEP_NAME")
+    private String stepName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WF_INITIATOR_ID", nullable = true)
+    private Employee initiator;
+
+    @Override
+    public String getStepName() {
+        return stepName;
+    }
+
+    @Override
+    public void setStepName(String stepName) {
+        this.stepName = stepName;
+    }
+
+    @Override
+    public WorkflowEntityStatus getStatus() {
+        return WorkflowEntityStatus.fromId(status);
+    }
+
+    @Override
+    public void setStatus(WorkflowEntityStatus status) {
+        this.status = status == null ? null : status.getId();
+    }
+
+    public Employee getInitiator() {
+        return initiator;
+    }
+
+    public void setInitiator(Employee initiator) {
+        this.initiator = initiator;
     }
 }

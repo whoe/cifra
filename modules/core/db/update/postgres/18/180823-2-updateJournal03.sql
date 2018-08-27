@@ -1,0 +1,2 @@
+alter table CIFRA_JOURNAL add constraint FK_CIFRA_JOURNAL_ON_HOLDER foreign key (HOLDER_ID) references CIFRA_EMPLOYEE(ID);
+create index IDX_CIFRA_JOURNAL_ON_HOLDER on CIFRA_JOURNAL (HOLDER_ID);
