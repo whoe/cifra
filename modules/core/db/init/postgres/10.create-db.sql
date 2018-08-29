@@ -49,6 +49,7 @@ create table CIFRA_DOCUMENT (
     COMPANY_ID uuid not null,
     DIVISION_ID uuid,
     DOC_TYPE_ID uuid not null,
+    DIRECTION varchar(50) not null,
     FILE_ID uuid,
     GOT_ORIGINAL boolean,
     DESCRIPTION varchar(255),
