@@ -16,4 +16,12 @@
           insertBefore="administration">
         <item screen="cifra$synchronization"/>
     </menu>
+    <menu id="tasks"
+          insertBefore="administration">
+        <item screen="tasks$Task.list"/>
+        <separator/>
+        <item screen="tasks$TaskTypical.browse"/>
+        <item screen="tasks$TaskTemplate.browse"/>
+        <item screen="tasks$Task.browse"/>
+    </menu>
 </menu-config>

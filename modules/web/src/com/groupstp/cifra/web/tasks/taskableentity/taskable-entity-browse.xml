@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.groupstp.cifra.web.tasks.taskableentity.TaskableEntityBrowse"
+        focusComponent="entityTable"
+        lookupComponent="entityTable"
+        messagesPack="com.groupstp.cifra.web.tasks.taskableentity">
+    <dsContext>
+        <groupDatasource id="entityDs"
+                         class="com.groupstp.cifra.entity.Document"
+                         view="_local">
+            <query>
+                <![CDATA[select e from cifra$Document e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="entityTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="entityTable"
+                datasource="entityDs">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="entityTable"
+                    width="100%">
+            <actions>
+                <action id="create"/>
+                <action id="edit"/>
+                <action id="remove"/>
+            </actions>
+            <columns>
+                <group>
+                    <column id="company"/>
+                    <column id="division"/>
+                    <column id="docType"/>
+                    <column id="date"/>
+                    <column id="contragent"/>
+                </group>
+                <column id="description"/>
+                <column id="number"/>
+                <column id="dateLoad"/>
+                <column id="problems"
+                        maxTextLength="5"/>
+                <column id="fixDue"/>
+                <column id="warehouse"/>
+                <column id="cell"/>
+                <column id="externalLink"/>
+                <column id="externalId"/>
+                <column id="direction"/>
+            </columns>
+            <rows datasource="entityDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn"
+                        action="entityTable.create"/>
+                <button id="editBtn"
+                        action="entityTable.edit"/>
+                <button id="removeBtn"
+                        action="entityTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://tasklist"
+        class="com.groupstp.cifra.web.tasks.task.TaskListFrame"
+        focusComponent="tasksTable"
+        lookupComponent="tasksTable"
+        messagesPack="com.groupstp.cifra.web.tasks.task">
+    <dsContext>
+        <groupDatasource id="tasksDs"
+                         class="com.groupstp.cifra.entity.tasks.Task"
+                         view="tasks-full">
+            <query>
+                <![CDATA[select e from tasks$Task e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="tasksTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="tasksTable"
+                datasource="tasksDs">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="tasksTable"
+                    width="100%">
+            <actions>
+                <action id="edit"/>
+                <action id="remove"/>
+            </actions>
+            <columns>
+                <group>
+                    <column id="taskableEntityName"/>
+                </group>
+                <column id="taskTypical.name"/>
+                <column id="taskTypical.description"/>
+                <column id="startDate"/>
+                <column id="endDate"/>
+                <column id="status"/>
+                <column id="controlNeeded"/>
+                <column id="author"/>
+                <column id="performer"/>
+                <column id="comment"/>
+            </columns>
+            <rows datasource="tasksDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="editBtn"
+                        action="tasksTable.edit"/>
+                <button id="removeBtn"
+                        action="tasksTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

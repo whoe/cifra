@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (c) 2017 Haulmont Technology Ltd. All Rights Reserved.
+  ~ Haulmont Technology proprietary and confidential.
+  ~ Use is subject to license terms.
+  -->
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="com.groupstp.cifra.web.tasks.tasktemplate.TaskTemplateBrowse"
+        focusComponent="tableOfTemplates"
+        lookupComponent="tableOfTemplates"
+        messagesPack="com.groupstp.cifra.web.tasks.tasktemplate">
+    <dsContext>
+        <collectionDatasource id="taskTemplateDs"
+                              class="com.groupstp.cifra.entity.tasks.TaskTemplate"
+                              view="taskTemplate-full"/>
+        <collectionDatasource id="taskTypicalsDs"
+                              class="com.groupstp.cifra.entity.tasks.TaskTypical"
+                              view="taskTypical-full">
+            <query>
+                <![CDATA[select e from tasks$TaskTypical e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <actions>
+        <action id="save"
+                caption="mainMsg://actions.Ok"
+                icon="icons/ok.png"
+                invoke="save"
+                shortcut="CTRL-ENTER"/>
+        <action id="cancel"
+                caption="mainMsg://actions.Cancel"
+                description="Esc"
+                icon="icons/cancel.png"
+                invoke="cancel"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout>
+        <split id="split"
+               height="100%"
+               orientation="horizontal"
+               reversePosition="true"
+               width="100%">
+            <vbox id="lookupBox"
+                  expand="tableOfTemplates"
+                  height="100%"
+                  margin="false,true,false,false"
+                  spacing="true">
+                <filter id="filter"
+                        applyTo="tableOfTemplates"
+                        datasource="taskTypicalsDs">
+                    <properties include=".*"/>
+                </filter>
+                <table id="tableOfTemplates"
+                       width="100%">
+                    <actions>
+                        <action id="create"/>
+                        <action id="edit"/>
+                        <action id="remove"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                        <column id="description"/>
+                    </columns>
+                    <rows datasource="taskTemplateDs"/>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanel"
+                                  alwaysVisible="true">
+                        <button id="createBtn"
+                                action="tableOfTemplates.create"/>
+                        <button id="editBtn"
+                                action="tableOfTemplates.edit"/>
+                        <button id="removeBtn"
+                                action="tableOfTemplates.remove"/>
+                    </buttonsPanel>
+                </table>
+            </vbox>
+            <vbox id="editBox"
+                  height="100%"
+                  margin="false,false,false,true"
+                  spacing="true">
+                <split height="694px"
+                       orientation="vertical"
+                       width="595px">
+                    <table id="taskTypicalTable"
+                           height="433px"
+                           width="589px">
+                        <actions>
+                            <action id="addButton"
+                                    invoke="onAddButton"/>
+                            <action id="saveTemplate"
+                                    invoke="saveTemplate"/>
+                            <action id="cancelTemplate"
+                                    invoke="cancelTemplate"/>
+                            <action id="deleteButton"
+                                    invoke="onDeleteButton"/>
+                            <action id="clearButton"
+                                    invoke="onClearButton"/>
+                        </actions>
+                        <columns>
+                            <column id="name"/>
+                            <column id="description"/>
+                            <column id="interval"/>
+                            <column id="intervalType"/>
+                        </columns>
+                        <rows datasource="taskTypicalsDs"/>
+                        <buttonsPanel id="templatePanel">
+                            <button id="templateAddButton"
+                                    action="taskTypicalTable.addButton"
+                                    caption="msg://Add"/>
+                            <button id="templateDeleteButton"
+                                    action="taskTypicalTable.deleteButton"
+                                    caption="msg://Delete"/>
+                            <button id="templateClearButton"
+                                    action="taskTypicalTable.clearButton"
+                                    caption="msg://Clear"/>
+                        </buttonsPanel>
+                    </table>
+                    <buttonsPanel height="41px">
+                        <button id="save"
+                                action="taskTypicalTable.saveTemplate"
+                                caption="mainMsg://save"/>
+                        <button id="cancel"
+                                action="taskTypicalTable.cancelTemplate"
+                                caption="mainMsg://cancel"/>
+                    </buttonsPanel>
+                </split>
+            </vbox>
+        </split>
+    </layout>
+</window>

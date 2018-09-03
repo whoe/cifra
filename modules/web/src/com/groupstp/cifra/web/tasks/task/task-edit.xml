@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.groupstp.cifra.web.tasks.task.TaskEdit"
+        datasource="taskDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.groupstp.cifra.web.tasks.task">
+    <dsContext>
+        <datasource id="taskDs"
+                    class="com.groupstp.cifra.entity.tasks.Task"
+                    view="tasks-full"/>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="windowActions"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="taskDs">
+            <column width="250px">
+                <field editable="false"
+                       property="taskTypical"/>
+                <field id="taskTypicalDescription"
+                       editable="false"
+                       property="taskTypical.description"/>
+                <field property="startDate"/>
+                <field property="endDate"/>
+                <field editable="false"
+                       property="status"/>
+                <field property="controlNeeded"/>
+                <field property="author"/>
+                <field property="performer"/>
+                <field editable="false"
+                       property="taskableEntityName"/>
+                <field property="comment"
+                       rows="5"/>
+                <field property="taskableEntityId"
+                       visible="false"/>
+            </column>
+        </fieldGroup>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

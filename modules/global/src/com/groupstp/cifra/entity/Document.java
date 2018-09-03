@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 
+import com.groupstp.cifra.entity.tasks.TaskableEntity;
 import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.chile.core.annotations.NamePattern;
@@ -17,14 +18,14 @@ import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
 import com.haulmont.cuba.core.entity.annotation.Listeners;
-import java.util.Collection;
+
 import java.util.Set;
 
 @Listeners("cifra_DocumentListener")
 @NamePattern("%s %s %s|number,date,description")
 @Table(name = "CIFRA_DOCUMENT")
 @Entity(name = "cifra$Document")
-public class Document extends StandardEntity {
+public class Document extends StandardEntity implements TaskableEntity {
     private static final long serialVersionUID = -5504376796832237678L;
 
     @NotNull
@@ -126,12 +127,6 @@ public class Document extends StandardEntity {
 
     @Column(name = "EXTERNAL_ID")
     protected String externalId;
-
-
-
-
-
-
 
     public void setDirection(Direction direction) {
         this.direction = direction == null ? null : direction.getId();
@@ -333,4 +328,21 @@ public class Document extends StandardEntity {
     void setDestination(String destination) {
         this.destination = destination;
     }
+
+    @Override
+    public String getTaskableEntityName() {
+        return number;
+    }
+
+    @Override
+    public void setTaskableEntityName(String number) {
+        this.number = number;
+
+    }
+
+    @Override
+    public String getTaskableEntityEntityID() {
+        return number;
+    }
+
 }

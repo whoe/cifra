@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (c) 2017 Haulmont Technology Ltd. All Rights Reserved.
+  ~ Haulmont Technology proprietary and confidential.
+  ~ Use is subject to license terms.
+  -->
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://tasklist"
+        class="com.groupstp.cifra.web.tasks.task.TaskList"
+        focusComponent="tabSheet"
+        messagesPack="com.groupstp.cifra.web.tasks.task">
+    <dialogMode height="600"
+                width="800"/>
+    <layout>
+        <tabSheet id="tabSheet"/>
+    </layout>
+</window>

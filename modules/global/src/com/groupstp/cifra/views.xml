@@ -108,4 +108,36 @@
         <property name="user"
                   view="_minimal"/>
     </view>
+    <view class="com.groupstp.cifra.entity.tasks.Task"
+          extends="_local"
+          name="tasks-full">
+        <property name="author"
+                  view="_minimal"/>
+        <property name="performer"
+                  view="_minimal"/>
+        <property name="taskTypical"
+                  view="_minimal">
+            <property name="description"/>
+            <property name="interval"/>
+        </property>
+    </view>
+    <view class="com.groupstp.cifra.entity.tasks.TaskTypical"
+          extends="_local"
+          name="taskTypical-full">
+        <property name="taskTemplates"
+                  view="_minimal">
+            <property name="name"/>
+            <property name="description"/>
+        </property>
+    </view>
+    <view class="com.groupstp.cifra.entity.tasks.TaskTemplate"
+          extends="_local"
+          name="taskTemplate-full">
+        <property name="tasks"
+                  view="_minimal">
+            <property name="description"/>
+            <property name="interval"/>
+            <property name="intervalType"/>
+        </property>
+    </view>
 </views>
