@@ -1,11 +1,15 @@
 package com.groupstp.cifra.web.tasks.task;
 
+import com.groupstp.cifra.entity.Employee;
 import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskStatus;
 import com.groupstp.cifra.entity.tasks.TaskTypical;
 import com.groupstp.cifra.entity.tasks.TaskableEntity;
+import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.security.entity.User;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -20,6 +24,9 @@ public class TaskEdit extends AbstractEditor<Task> {
 
     @Inject
     UserSessionSource userSessionSource;
+
+    @Inject
+    DataManager dataManager;
 
     private TaskTypical taskTypical;
     private TaskableEntity taskableEntity;
@@ -52,7 +59,14 @@ public class TaskEdit extends AbstractEditor<Task> {
             ((TextField) fieldGroup.getComponent("taskableEntityName")).setValue(taskableEntity.getTaskableEntityName());
             ((TextField) fieldGroup.getComponent("taskableEntityId")).setValue(taskableEntity.getTaskableEntityEntityID());
             ((LookupField) fieldGroup.getComponent("status")).setValue(TaskStatus.Assigned);
-//            ((PickerField) fieldGroup.getComponent("author")).setValue(userSessionSource.getUserSession().getCurrentOrSubstitutedUser());
+
+            User currentUser = userSessionSource.getUserSession().getCurrentOrSubstitutedUser();
+            Employee currentEmployee = dataManager.load(LoadContext.create(Employee.class).setQuery(LoadContext.createQuery(
+                    "select e from cifra$Employee e where e.user.id=:id"
+            ).setParameter("id", currentUser.getId())));
+
+            ((PickerField) fieldGroup.getComponent("author")).setValue(currentEmployee);
+
         }
     }
 }

@@ -64,11 +64,12 @@ public class TaskListFrame extends AbstractFrame {
      * Make jpql for frame
      */
     private void initJpqlQuery() {
-        tasksDs.setQuery("select t from tasks$Task t ");
-//                + "where t." + frameName
-//                + ".id='"
-//                + userSessionSource.getUserSession().getCurrentOrSubstitutedUser().getId().toString()
-//                + "'");
+
+        tasksDs.setQuery("select t from tasks$Task t "
+                + "where t." + frameName
+                + ".user.id='"
+                + userSessionSource.getUserSession().getCurrentOrSubstitutedUser().getId()
+                + "'");
         tasksDs.refresh();
     }
 
