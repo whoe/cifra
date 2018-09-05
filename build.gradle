@@ -51,7 +51,7 @@ cuba {
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
     appComponent("de.diedavids.cuba.runtimediagnose:runtime-diagnose-global:1.0.0")
-    appComponent("com.groupstp.workflowstp:wfstp-global:0.1-SNAPSHOT")
+    appComponent("com.groupstp.workflowstp:wfstp-global:0.1")
 
 }
 
