@@ -224,11 +224,11 @@ public class QueryWorkflowEdit extends AbstractEditor<Document> {
         return null;
     }
 
-    @Override
-    public boolean preCommit() {
-        if (super.preCommit()) {
-            return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean preCommit() {
+//        if (super.preCommit()) {
+//            return true;
+//        }
+//        return false;
+//    }
 }

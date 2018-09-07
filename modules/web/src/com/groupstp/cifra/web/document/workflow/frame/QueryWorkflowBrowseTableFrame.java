@@ -5,21 +5,20 @@ import com.groupstp.cifra.web.document.workflow.QueryWorkflowEdit;
 import com.groupstp.workflowstp.entity.Stage;
 import com.groupstp.workflowstp.entity.StageType;
 import com.groupstp.workflowstp.entity.Workflow;
-import com.groupstp.workflowstp.exception.WorkflowException;
-import com.groupstp.workflowstp.service.WorkflowService;
 import com.haulmont.chile.core.model.MetaPropertyPath;
-import com.haulmont.cuba.core.global.DevelopmentException;
 import com.haulmont.cuba.core.global.Scripting;
-import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.WindowParam;
-import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.gui.components.actions.*;
+import com.haulmont.cuba.gui.components.AbstractFrame;
+import com.haulmont.cuba.gui.components.Button;
+import com.haulmont.cuba.gui.components.ButtonsPanel;
+import com.haulmont.cuba.gui.components.Table;
+import com.haulmont.cuba.gui.components.actions.CreateAction;
+import com.haulmont.cuba.gui.components.actions.EditAction;
+import com.haulmont.cuba.gui.components.actions.RefreshAction;
+import com.haulmont.cuba.gui.components.actions.RemoveAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
-import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
-import com.haulmont.cuba.security.entity.User;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +42,8 @@ public class QueryWorkflowBrowseTableFrame extends AbstractFrame {
     public static final String WORKFLOW = "workflow";
 
     @Inject
-    protected WorkflowService service;
-    @Inject
     protected ComponentsFactory componentsFactory;
-    @Inject
-    protected UserSessionSource userSessionSource;
+
     @Inject
     protected Scripting scripting;
 
@@ -175,65 +171,6 @@ public class QueryWorkflowBrowseTableFrame extends AbstractFrame {
         Button removeButton = componentsFactory.createComponent(Button.class);
         removeButton.setAction(removeAction);
 
-        BaseAction runAction = null;
-        Button runButton = null;
-        if (workflow != null) {
-            runAction = new BaseAction("run") {
-                @Override
-                public String getCaption() {
-                    return getMessage("queryWorkflowBrowseTableFrame.startWorkflow");
-                }
-
-                @Override
-                public String getIcon() {
-                    return CubaIcon.OK.source();
-                }
-
-                @Override
-                public void actionPerform(Component component) {
-                    final Document query = queriesTable.getSingleSelected();
-                    if (query != null) {
-                        Action doAction = new DialogAction(DialogAction.Type.YES, Status.PRIMARY).withHandler(event -> {
-                            try {
-                                service.startWorkflow(query, workflow);
-                                showNotification(getMessage("queryWorkflowBrowseTableFrame.workflowStarted"), NotificationType.HUMANIZED);
-                            } catch (WorkflowException e) {
-                                log.error(String.format("Failed to launch workflow %s for document %s", workflow, query), e);
-
-                                showNotification(String.format(getMessage("queryWorkflowBrowseTableFrame.workflowFailed"),
-                                        e.getMessage() == null ? getMessage("queryWorkflowBrowseTableFrame.notAvailable") : e.getMessage()),
-                                        NotificationType.ERROR);
-                            } finally {
-                                documentDs.refresh();
-                            }
-                        });
-                        showOptionDialog(
-                                messages.getMainMessage("dialogs.Confirmation"),
-                                getMessage("queryWorkflowBrowseTableFrame.startWorkflowConfirmation"),
-                                MessageType.CONFIRMATION,
-                                new Action[]{
-                                        doAction,
-                                        new DialogAction(DialogAction.Type.NO)
-                                }
-                        );
-                    }
-                }
-
-                @Override
-                public boolean isPermitted() {
-                    if (super.isPermitted()) {
-                        Set<Document> queries = queriesTable.getSelected();
-                        if (!CollectionUtils.isEmpty(queries) && queries.size() == 1) {
-                            return canRun(IterableUtils.get(queries, 0));
-                        }
-                    }
-                    return false;
-                }
-            };
-            runButton = componentsFactory.createComponent(Button.class);
-            runButton.setAction(runAction);
-        }
-
         RefreshAction refreshAction = new RefreshAction(queriesTable);
         Button refreshButton = componentsFactory.createComponent(Button.class);
         refreshButton.setAction(refreshAction);
@@ -242,16 +179,10 @@ public class QueryWorkflowBrowseTableFrame extends AbstractFrame {
         queriesTable.addAction(createAction);
         queriesTable.addAction(editAction);
         queriesTable.addAction(removeAction);
-        if (runAction != null) {
-            queriesTable.addAction(runAction);
-        }
         queriesTable.addAction(refreshAction);
         buttonsPanel.add(createButton);
         buttonsPanel.add(editButton);
         buttonsPanel.add(removeButton);
-        if (runButton != null) {
-            buttonsPanel.add(runButton);
-        }
         buttonsPanel.add(refreshButton);
     }
 
@@ -321,14 +252,6 @@ public class QueryWorkflowBrowseTableFrame extends AbstractFrame {
         }
     }
 
-    protected User getUser() {
-        User user = userSessionSource.getUserSession().getCurrentOrSubstitutedUser();
-        if (user == null) {
-            throw new DevelopmentException(getMessage("queryWorkflowBrowseTableFrame.userNotFound"));
-        }
-        return user;
-    }
-
     //check what we can provide to user to delete workflow
     protected boolean canDelete(Document query) {
         return query != null && query.getStatus() == null;
@@ -339,8 +262,4 @@ public class QueryWorkflowBrowseTableFrame extends AbstractFrame {
         return query != null && query.getStatus() == null;
     }
 
-    //check what we can provide to user to run workflow
-    protected boolean canRun(Document query) {
-        return query != null && query.getStatus() == null;
-    }
 }
