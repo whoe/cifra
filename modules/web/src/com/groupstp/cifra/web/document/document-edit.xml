@@ -94,7 +94,7 @@
                 <field property="cell"/>
             </column>
         </fieldGroup>
-        <buttonsPanel>
+        <buttonsPanel id="buttonsPanel">
             <button id="archive"
                     action="archive"
                     caption="msg://Помещение в архив"/>

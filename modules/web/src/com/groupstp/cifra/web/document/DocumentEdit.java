@@ -1,6 +1,7 @@
 package com.groupstp.cifra.web.document;
 
 import com.groupstp.cifra.entity.*;
+import com.groupstp.workflowstp.entity.StepDirection;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.service.WorkflowService;
@@ -9,9 +10,12 @@ import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.data.DsContext;
+import com.haulmont.cuba.gui.icons.CubaIcon;
+import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +64,12 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     @Inject
     private WorkflowService workflowService;
+
+    @Inject
+    ComponentsFactory componentsFactory;
+
+    @Inject
+    ButtonsPanel buttonsPanel;
 
     private boolean fileAttached;
 
@@ -121,6 +131,8 @@ public class DocumentEdit extends AbstractEditor<Document> {
         super.ready();
         fileAttached = documentDs.getItem().getFile() != null;
         checkListStateForWorkflow = getCheckListStatus();
+        makeButtonWorkflow("Выдано", CubaIcon.FORWARD, getMessage("workflow.issue"), "doc_issued");
+        makeButtonWorkflow("Уничтожен", CubaIcon.REMOVE, getMessage("workflow.eliminate"), "doc_eliminated");
     }
 
     /**
@@ -226,6 +238,71 @@ public class DocumentEdit extends AbstractEditor<Document> {
             return list.get(0);
         }
         return null;
+    }
+
+    /**
+     * Make button(action, caption, icon) and place it to buttonsPanel
+     * @param nameOfStage name of Stage how it was define in DB
+     * @param cubaIcon CubaIcon object, icon in button
+     * @param captionForButton caption for button
+     * @param conditionWorkflow key in map will be placed with value "true". Will be processed in Workflow module as condition to next step.
+     */
+    public void makeButtonWorkflow(String nameOfStage, CubaIcon cubaIcon, String captionForButton, String conditionWorkflow) {
+
+       Action action = new BaseAction(nameOfStage) {
+            @Override
+            public String getCaption() {
+                return captionForButton;
+            }
+
+            @Override
+            public String getIcon() {
+                return cubaIcon.source();
+            }
+
+            @Override
+            public void actionPerform(Component component) {
+                Document document = documentDs.getItem();
+                try {
+                    List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow(Document.class));
+                    WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
+                    HashMap<String, String> map = buildParametersMapWorkflow();
+                    map.put(conditionWorkflow, "true");
+                    workflowService.finishTask(task, map);
+                } catch (Exception e) {
+                    throw new RuntimeException("Ошибка обработки заявки", e);
+                } finally {
+                    close(WINDOW_COMMIT_AND_CLOSE);
+                }
+            }
+        };
+        if (isHasNextStep(nameOfStage)) {
+            Button button = componentsFactory.createComponent(Button.class);
+            button.setAction(action);
+            buttonsPanel.add(button);
+            this.addAction(action);
+        }
+    }
+
+    /**
+     * Check document's current workflow task has next step with defined name
+     * @param nextStep name of next step
+     * @return
+     */
+    private boolean isHasNextStep(String nextStep) {
+
+        Document document = documentDs.getItem();
+        if (document == null) return false;
+
+        List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow(Document.class));
+        for (WorkflowInstanceTask task : tasks) {
+            if (task.getEndDate() == null) {
+                task = dataManager.reload(task, "workflowInstanceTask-process");
+                List<StepDirection> directions = task.getStep().getDirections();
+                return directions.stream().anyMatch(sd -> sd.getTo().getStage().getName().equals(nextStep));
+            }
+        }
+        return false;
     }
 
     public void onCheckcheck(Component ignore) {
