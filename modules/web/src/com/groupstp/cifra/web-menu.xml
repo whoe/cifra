@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
-    <item insertBefore="administration"
-          screen="query-workflow"/>
     <menu id="application-cifra"
           insertBefore="administration">
         <item screen="cifra$Document.browse"/>
@@ -12,6 +10,8 @@
         <item screen="cifra$Contragent.browse"/>
         <item screen="cifra$Employee.browse"/>
         <item screen="cifra$Tag.browse"/>
+        <separator/>
+        <item screen="document-workflow"/>
     </menu>
     <menu id="Tools"
           description="mainMsg://Tools"

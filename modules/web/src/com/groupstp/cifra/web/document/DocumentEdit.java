@@ -26,8 +26,13 @@ import java.util.*;
 
 public class DocumentEdit extends AbstractEditor<Document> {
 
-    private final String DOC_LOADED_FLAG = "doc_loaded";
-    private final String CHECKLIST_STATUS_FLAG = "checklist_status";
+    private String DOC_LOADED_FLAG = "doc_loaded";
+    private String CHECKLIST_STATUS_FLAG = "checklist_status";
+    private String STEP_INCOMING_NAME = "Входящие";
+    private String STEP_PROBLEM_NAME = "Проблема";
+    private String STEP_PROCESSING_NAME = "Обработано";
+    private String STEP_ISSUE_NAME = "Выдано";
+    private String STEP_ELIMINATE_NAME = "Уничтожен";
 
     @Inject
     private Datasource<Document> documentDs;
@@ -131,13 +136,101 @@ public class DocumentEdit extends AbstractEditor<Document> {
         super.ready();
         fileAttached = documentDs.getItem().getFile() != null;
         checkListStateForWorkflow = getCheckListStatus();
-        makeButtonWorkflow("Выдано", CubaIcon.FORWARD, getMessage("workflow.issue"), "doc_issued");
-        makeButtonWorkflow("Уничтожен", CubaIcon.REMOVE, getMessage("workflow.eliminate"), "doc_eliminated");
+
+        makeButtonWorkflow(new BaseAction(STEP_ISSUE_NAME) {
+            @Override
+            public String getCaption() {
+                return getMessage("workflow.issue");
+            }
+
+            @Override
+            public String getIcon() {
+                return CubaIcon.FORWARD.source();
+            }
+
+            @Override
+            public void actionPerform(Component component) {
+                Document document = documentDs.getItem();
+                try {
+                    List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow(Document.class));
+                    WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
+                    HashMap<String, String> map = buildParametersMapWorkflow();
+                    map.put("doc_issued", "true");
+                    workflowService.finishTask(task, map);
+                } catch (Exception e) {
+                    throw new RuntimeException("Ошибка обработки заявки", e);
+                } finally {
+                    close(WINDOW_COMMIT_AND_CLOSE);
+                }
+            }
+        });
+
+        makeButtonWorkflow(new BaseAction(STEP_ELIMINATE_NAME) {
+            @Override
+            public String getCaption() {
+                return getMessage("workflow.eliminate");
+            }
+
+            @Override
+            public String getIcon() {
+                return CubaIcon.REMOVE.source();
+            }
+
+            @Override
+            public void actionPerform(Component component) {
+                Document document = documentDs.getItem();
+                try {
+                    List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow(Document.class));
+                    WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
+                    HashMap<String, String> map = buildParametersMapWorkflow();
+                    map.put("doc_eliminated", "true");
+                    workflowService.finishTask(task, map);
+                } catch (Exception e) {
+                    throw new RuntimeException("Ошибка обработки заявки", e);
+                } finally {
+                    close(WINDOW_COMMIT_AND_CLOSE);
+                }
+            }
+        });
+
+        makeButtonWorkflow(new BaseAction("Входящий") {
+            @Override
+            public String getCaption() {
+                return getMessage("workflow.back");
+            }
+
+            @Override
+            public String getIcon() {
+                return CubaIcon.BACKWARD.source();
+            }
+
+            @Override
+            public void actionPerform(Component component) {
+                Document document = documentDs.getItem();
+                try {
+                    List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow(Document.class));
+                    WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
+                    HashMap<String, String> map = buildParametersMapWorkflow();
+                    map.put("doc_flow_incoming", "true");
+                    map.put("doc_issued", "false");
+                    workflowService.finishTask(task, map);
+                    tasks = loadTasks(document, getActiveWorkflow(Document.class));
+                    task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
+                    map = buildParametersMapWorkflow();
+                    map.put("doc_flow_incoming", "false");
+                    workflowService.finishTask(task, map);
+                } catch (Exception e) {
+                    throw new RuntimeException("Ошибка обработки заявки", e);
+                } finally {
+                    close(WINDOW_COMMIT_AND_CLOSE);
+                }
+            }
+        });
     }
 
     /**
      * Processing workflow for document
-     *
+     * CONTAIN WORKFLOW'S BUSINESS LOGIC
      * @param workflow
      * @param document
      * @throws Exception handled up
@@ -145,6 +238,8 @@ public class DocumentEdit extends AbstractEditor<Document> {
     private void workflowRunProcessing(Workflow workflow, Document document) throws Exception {
 
         List<WorkflowInstanceTask> tasks = loadTasks(document, workflow);
+
+        if(tasks==null) return;
 
         if (tasks.size() == 0) {
             //no workflow task for current document, start new
@@ -160,19 +255,26 @@ public class DocumentEdit extends AbstractEditor<Document> {
             return;
         }
 
+        WorkflowInstanceTask lastTask = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
+
         //tasks exist, but not exist open task = workflow finished
-        if (tasks.stream().noneMatch(t -> t.getEndDate() == null)) return;
+        if (lastTask == null) return;
 
         //document has no file, no next step
         if (document.getFile() == null) return;
 
-        // was change, we must run workflow
-        if ((!fileAttached && document.getFile() != null) ||
-                (checkListStateForWorkflow != getCheckListStatus())) {
-            HashMap<String, String> map = buildParametersMapWorkflow();
-            WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
-            workflowService.finishTask(task, map);
+        // step equal Обработано or Проблемы and was have change(file attached or checklist changed), we must run workflow
+        if (lastTask.getStep().getStage().getName().equals(STEP_PROCESSING_NAME) || lastTask.getStep().getStage().getName().equals(STEP_PROBLEM_NAME)) {
+            if (fileAttachedOrCheckListChanged(document)) {
+                HashMap<String, String> map = buildParametersMapWorkflow();
+                WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
+                workflowService.finishTask(task, map);
+            }
         }
+    }
+
+    private boolean fileAttachedOrCheckListChanged(Document document) {
+        return !fileAttached && document.getFile() != null || checkListStateForWorkflow != getCheckListStatus();
     }
 
     private HashMap<String, String> buildParametersMapWorkflow() {
@@ -242,41 +344,11 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     /**
      * Make button(action, caption, icon) and place it to buttonsPanel
-     * @param nameOfStage name of Stage how it was define in DB
-     * @param cubaIcon CubaIcon object, icon in button
-     * @param captionForButton caption for button
-     * @param conditionWorkflow key in map will be placed with value "true". Will be processed in Workflow module as condition to next step.
+     * @param action Strategy pattern
      */
-    public void makeButtonWorkflow(String nameOfStage, CubaIcon cubaIcon, String captionForButton, String conditionWorkflow) {
+    public void makeButtonWorkflow(Action action) {
 
-       Action action = new BaseAction(nameOfStage) {
-            @Override
-            public String getCaption() {
-                return captionForButton;
-            }
-
-            @Override
-            public String getIcon() {
-                return cubaIcon.source();
-            }
-
-            @Override
-            public void actionPerform(Component component) {
-                Document document = documentDs.getItem();
-                try {
-                    List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow(Document.class));
-                    WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
-                    HashMap<String, String> map = buildParametersMapWorkflow();
-                    map.put(conditionWorkflow, "true");
-                    workflowService.finishTask(task, map);
-                } catch (Exception e) {
-                    throw new RuntimeException("Ошибка обработки заявки", e);
-                } finally {
-                    close(WINDOW_COMMIT_AND_CLOSE);
-                }
-            }
-        };
-        if (isHasNextStep(nameOfStage)) {
+        if (isHasNextStep(action.getId())) {
             Button button = componentsFactory.createComponent(Button.class);
             button.setAction(action);
             buttonsPanel.add(button);

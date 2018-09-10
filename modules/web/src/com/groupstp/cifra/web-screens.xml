@@ -38,10 +38,6 @@
             template="com/groupstp/cifra/web/tag/tag-browse.xml"/>
     <screen id="cifra$Tag.edit"
             template="com/groupstp/cifra/web/tag/tag-edit.xml"/>
-    <screen id="query-workflow"
-            template="/com/groupstp/cifra/web/document/workflow/query-workflow-browse.xml"/>
-    <screen id="query-workflow-edit"
-            template="/com/groupstp/cifra/web/document/workflow/query-workflow-edit.xml"/>
-    <screen id="query-workflow-table"
-            template="/com/groupstp/cifra/web/document/workflow/frame/query-workflow-browse-table-frame.xml"/>
+    <screen id="document-workflow"
+            template="/com/groupstp/cifra/web/document/workflow/document-workflow-browse.xml"/>
 </screen-config>
