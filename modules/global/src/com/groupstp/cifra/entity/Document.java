@@ -128,11 +128,6 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     protected String externalId;
 
 
-
-
-
-
-
     public void setDirection(Direction direction) {
         this.direction = direction == null ? null : direction.getId();
     }
@@ -151,7 +146,7 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     }
 
 
-    void setExternalId(String externalId) {
+    public void setExternalId(String externalId) {
         this.externalId = externalId;
     }
 
@@ -160,7 +155,7 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     }
 
 
-    void setExternalLink(String externalLink) {
+    public void setExternalLink(String externalLink) {
         this.externalLink = externalLink;
     }
 
@@ -187,7 +182,7 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     }
 
 
-    void setDateLoad(Date dateLoad) {
+    public void setDateLoad(Date dateLoad) {
         this.dateLoad = dateLoad;
     }
 
@@ -263,7 +258,7 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
         return file;
     }
 
-    void setGotOriginal(Boolean gotOriginal) {
+    public void setGotOriginal(Boolean gotOriginal) {
         this.gotOriginal = gotOriginal;
     }
 
@@ -330,7 +325,7 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
         return destination;
     }
 
-    void setDestination(String destination) {
+    public void setDestination(String destination) {
         this.destination = destination;
     }
 
