@@ -32,6 +32,7 @@
                       datasource="checkListItemsDs"
                       editorEnabled="true"
                       height="200px"
+                      selectionMode="MULTI"
                       width="100%">
                 <actions>
                     <action id="create"

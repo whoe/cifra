@@ -39,8 +39,6 @@
         </collectionDatasource>
     </dsContext>
     <actions>
-        <action id="checkcheck"
-                invoke="onCheckcheck"/>
         <action id="archive"
                 invoke="onArchive"/>
         <action id="onOkBtnClick"
@@ -52,7 +50,7 @@
                 maximized="true"
                 resizable="true"
                 width="1000"/>
-    <layout expand="checklist"
+    <layout expand="checkListDataGrid"
             spacing="true">
         <fieldGroup id="fieldGroup"
                     datasource="documentDs">
@@ -99,9 +97,11 @@
                     action="archive"
                     caption="msg://Помещение в архив"/>
         </buttonsPanel>
-        <button action="checkcheck"
-                caption="msg://Refresh checklist"/>
-        <dataGrid id="checklist"
+        <buttonsPanel id="workflowButtonsPanel">
+            <label id="labelCurrentWorkflowStage"
+                   stylename="bold"/>
+        </buttonsPanel>
+        <dataGrid id="checkListDataGrid"
                   datasource="checklistDs"
                   editorEnabled="true"
                   width="100%">

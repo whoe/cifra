@@ -53,3 +53,11 @@ create index IDX_CIFRA_JOURNAL_ON_HOLDER on CIFRA_JOURNAL (HOLDER_ID)^
 -- begin CIFRA_TAG
 create unique index IDX_CIFRA_TAG_UK_NAME on CIFRA_TAG (NAME) where DELETE_TS is null ^
 -- end CIFRA_TAG
+-- begin CIFRA_DOCUMENT_TAG_LINK
+alter table CIFRA_DOCUMENT_TAG_LINK add constraint FK_DOCTAG_ON_TAG foreign key (TAG_ID) references CIFRA_TAG(ID)^
+alter table CIFRA_DOCUMENT_TAG_LINK add constraint FK_DOCTAG_ON_DOCUMENT foreign key (DOCUMENT_ID) references CIFRA_DOCUMENT(ID)^
+-- end CIFRA_DOCUMENT_TAG_LINK
+-- begin CIFRA_JOURNAL_DOCUMENT_LINK
+alter table CIFRA_JOURNAL_DOCUMENT_LINK add constraint FK_JOUDOC_ON_JOURNAL foreign key (JOURNAL_ID) references CIFRA_JOURNAL(ID)^
+alter table CIFRA_JOURNAL_DOCUMENT_LINK add constraint FK_JOUDOC_ON_DOCUMENT foreign key (DOCUMENT_ID) references CIFRA_DOCUMENT(ID)^
+-- end CIFRA_JOURNAL_DOCUMENT_LINK

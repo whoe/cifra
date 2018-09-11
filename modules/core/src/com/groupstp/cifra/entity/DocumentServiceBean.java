@@ -1,22 +1,18 @@
 package com.groupstp.cifra.entity;
 
 
-
 import com.haulmont.cuba.core.EntityManager;
+import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.Query;
 import com.haulmont.cuba.core.Transaction;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.haulmont.cuba.core.Persistence;
 import javax.inject.Inject;
-import javax.xml.crypto.Data;
-import java.awt.*;
-import java.util.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

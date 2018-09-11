@@ -1,36 +1,19 @@
 package com.groupstp.cifra.web.document;
 
-import com.groupstp.cifra.entity.CheckList;
-import com.groupstp.cifra.entity.Document;
-import com.groupstp.cifra.entity.DocumentService;
-import com.groupstp.cifra.entity.Employee;
-import com.groupstp.cifra.entity.Tag;
+import com.groupstp.cifra.entity.*;
 import com.groupstp.cifra.web.data.FilterTagsCollectionDatasource;
-import com.haulmont.chile.core.model.MetaClass;
-import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.core.global.View;
-import com.haulmont.cuba.core.global.filter.Clause;
-import com.haulmont.cuba.core.global.filter.QueryFilter;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.EditAction;
-import com.haulmont.cuba.gui.components.filter.FilterDelegate;
-import com.haulmont.cuba.gui.data.*;
+import com.haulmont.cuba.gui.data.CollectionDatasource;
+import com.haulmont.cuba.gui.data.GroupDatasource;
 import com.haulmont.cuba.gui.data.impl.CustomGroupDatasource;
-import com.haulmont.cuba.gui.xml.DeclarativeAction;
-import com.haulmont.cuba.web.gui.components.WebComponentsHelper;
-import com.haulmont.cuba.web.gui.components.WebGroupTable;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import com.vaadin.ui.Layout;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
-
 import java.util.*;
 
 public class DocumentBrowse extends AbstractLookup {
