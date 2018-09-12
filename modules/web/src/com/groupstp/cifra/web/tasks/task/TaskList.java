@@ -16,7 +16,7 @@ import java.util.Map;
 public class TaskList extends AbstractLookup {
 
     private static final String TASKABLE_ENTITY_FRAME = "tasks$TaskableEntity.browse.frame";
-    public static final String TASKABLE_ENTITY_NAME = "taskableEntity";
+    private static final String TASKABLE_ENTITY_NAME = "taskableEntity";
 
     private static final String TASK_LIST_FRAME = "tasks$Task.browse.frame";
     public static final String MYTASK = "performer";
@@ -34,17 +34,29 @@ public class TaskList extends AbstractLookup {
 
     }
 
+    /**
+     * initialize tabs in table
+     */
     private void initTabSheets() {
         createTaskableEntityTab();
         createTasksTab(MYTASK);
         createTasksTab(CONTROLTASK);
     }
 
+    /**
+     * create tab "My Task"
+     * condition: right to taskable-entity-frame
+     */
     private void createTaskableEntityTab() {
         TabSheet.Tab tab = tabSheet.addTab(TASKABLE_ENTITY_NAME, openFrame(null, TASKABLE_ENTITY_FRAME, ParamsMap.of(FRAME_PARAMETER, TASKABLE_ENTITY_NAME)));
         tab.setCaption(getMessage(TASKABLE_ENTITY_NAME));
     }
 
+    /**
+     * create tab
+     *
+     * @param name - name of frame
+     */
     private void createTasksTab(String name) {
         TabSheet.Tab tab = tabSheet.addTab(name, openFrame(null, TASK_LIST_FRAME, ParamsMap.of(FRAME_PARAMETER, name)));
         tab.setCaption(getMessage("taskList." + name));
@@ -57,6 +69,10 @@ public class TaskList extends AbstractLookup {
         initTabSelection();
     }
 
+    /**
+     * restore active tab if it was saved
+     * add handler will save active tab
+     */
     private void initTabSelection() {
         Element element = getSettings().get(tabSheet.getId());
         String tabName = element.attributeValue("q_tab");

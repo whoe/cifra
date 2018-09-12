@@ -23,10 +23,10 @@
                        editable="false"
                        property="taskTypical.description"/>
                 <field property="startDate"/>
-                <field property="endDate"/>
+                <field id="endDate" property="endDate"/>
                 <field editable="false"
                        property="status"/>
-                <field property="controlNeeded"/>
+                <field id="controlNeeded" property="controlNeeded"/>
                 <field property="author"/>
                 <field property="performer"/>
                 <field editable="false"
