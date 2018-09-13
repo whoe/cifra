@@ -49,6 +49,7 @@ create table CIFRA_DOCUMENT (
     COMPANY_ID uuid not null,
     DIVISION_ID uuid,
     DOC_TYPE_ID uuid not null,
+    DIRECTION varchar(50) not null,
     FILE_ID uuid,
     GOT_ORIGINAL boolean,
     DESCRIPTION varchar(255),
@@ -60,6 +61,9 @@ create table CIFRA_DOCUMENT (
     FIX_DUE date,
     EXTERNAL_LINK varchar(255),
     EXTERNAL_ID varchar(255),
+    WF_STATUS integer,
+    WF_STEP_NAME varchar(255),
+    WF_INITIATOR_ID uuid,
     --
     primary key (ID)
 )^
@@ -147,10 +151,10 @@ create table CIFRA_CHECK_LIST (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
+    DOCUMENT_ID uuid not null,
     ITEM_ID uuid not null,
     CHECKED boolean,
     COMMENT_ varchar(255),
-    DOCUMENT_ID uuid not null,
     --
     primary key (ID)
 )^
@@ -176,13 +180,6 @@ create table CIFRA_JOURNAL (
     primary key (ID)
 )^
 -- end CIFRA_JOURNAL
--- begin CIFRA_JOURNAL_DOCUMENT_LINK
-create table CIFRA_JOURNAL_DOCUMENT_LINK (
-    JOURNAL_ID uuid,
-    DOCUMENT_ID uuid,
-    primary key (JOURNAL_ID, DOCUMENT_ID)
-)^
--- end CIFRA_JOURNAL_DOCUMENT_LINK
 -- begin CIFRA_WAREHOUSE
 create table CIFRA_WAREHOUSE (
     ID uuid,

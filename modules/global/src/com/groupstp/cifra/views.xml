@@ -108,6 +108,12 @@
         <property name="user"
                   view="_minimal"/>
     </view>
+    <view class="com.groupstp.cifra.entity.Document"
+          extends="document-view"
+          name="document-wf_view">
+        <property name="initiator"
+                  view="_minimal"/>
+    </view>
     <view class="com.groupstp.cifra.entity.tasks.Task"
           extends="_local"
           name="tasks-full">

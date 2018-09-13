@@ -9,7 +9,7 @@
         <datasource id="documentDs"
                     class="com.groupstp.cifra.entity.Document"
                     loadDynamicAttributes="true"
-                    view="document-view_1">
+                    view="document-view">
             <collectionDatasource id="checklistDs"
                                   property="checklist"/>
             <collectionDatasource id="tagDs"
@@ -39,8 +39,6 @@
         </collectionDatasource>
     </dsContext>
     <actions>
-        <action id="checkcheck"
-                invoke="onCheckcheck"/>
         <action id="archive"
                 invoke="onArchive"/>
         <action id="onOkBtnClick"
@@ -52,7 +50,7 @@
                 maximized="true"
                 resizable="true"
                 width="1000"/>
-    <layout expand="checklist"
+    <layout expand="checkListDataGrid"
             spacing="true">
         <fieldGroup id="fieldGroup"
                     datasource="documentDs">
@@ -94,14 +92,16 @@
                 <field property="cell"/>
             </column>
         </fieldGroup>
-        <buttonsPanel>
+        <buttonsPanel id="buttonsPanel">
             <button id="archive"
                     action="archive"
                     caption="msg://Помещение в архив"/>
         </buttonsPanel>
-        <button action="checkcheck"
-                caption="msg://Refresh checklist"/>
-        <dataGrid id="checklist"
+        <buttonsPanel id="workflowButtonsPanel">
+            <label id="labelCurrentWorkflowStage"
+                   stylename="bold"/>
+        </buttonsPanel>
+        <dataGrid id="checkListDataGrid"
                   datasource="checklistDs"
                   editorEnabled="true"
                   width="100%">

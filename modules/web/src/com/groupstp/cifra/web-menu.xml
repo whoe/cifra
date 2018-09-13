@@ -10,6 +10,8 @@
         <item screen="cifra$Contragent.browse"/>
         <item screen="cifra$Employee.browse"/>
         <item screen="cifra$Tag.browse"/>
+        <separator/>
+        <item screen="document-workflow"/>
     </menu>
     <menu id="Tools"
           description="mainMsg://Tools"

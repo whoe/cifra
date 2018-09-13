@@ -60,4 +60,6 @@
             template="/com/groupstp/cifra/web/tasks/taskableentity/taskable-entity-edit.xml"/>
     <screen id="tasks$TaskableEntity.browse.frame"
             template="/com/groupstp/cifra/web/tasks/taskableentity/taskable-entity-frame.xml"/>
+    <screen id="document-workflow"
+            template="/com/groupstp/cifra/web/document/workflow/document-workflow-browse.xml"/>
 </screen-config>

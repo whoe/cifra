@@ -1,9 +1,14 @@
 package com.groupstp.cifra.bean;
 
+import com.groupstp.workflowstp.entity.Stage;
+import com.groupstp.workflowstp.entity.Step;
+import com.groupstp.workflowstp.entity.StepDirection;
+import com.groupstp.workflowstp.entity.Workflow;
 import com.haulmont.cuba.core.app.ConfigStorageAPI;
 import com.haulmont.cuba.core.app.importexport.CollectionImportPolicy;
 import com.haulmont.cuba.core.app.importexport.EntityImportExportAPI;
 import com.haulmont.cuba.core.app.importexport.EntityImportView;
+import com.haulmont.cuba.core.app.importexport.ReferenceImportBehaviour;
 import com.haulmont.cuba.core.global.Resources;
 import com.haulmont.cuba.core.sys.encryption.Sha1EncryptionModule;
 import com.haulmont.cuba.security.app.Authenticated;
@@ -38,12 +43,18 @@ public class StartupEntitiesInitializationBean {
     @Authenticated
     public void init() {
         initRoles();
+        initWorkflow();
     }
 
     private void initRoles() {
         importEntitiesFromJson("com/groupstp/cifra/init/Roles.json", createRolesImportView());
     }
 
+    }
+
+    private void initWorkflow() {
+        importEntitiesFromJson("com/groupstp/cifra/init/Workflows.json", createWorkflowImportView());
+    }
 
     /**
      * Checkup and import entities
@@ -89,4 +100,24 @@ public class StartupEntitiesInitializationBean {
                         CollectionImportPolicy.REMOVE_ABSENT_ITEMS);
     }
 
+    private EntityImportView createWorkflowImportView() {
+        return new EntityImportView(Workflow.class)
+                .addLocalProperties()
+                .addOneToManyProperty("steps",
+                        new EntityImportView(Step.class)
+                                .addLocalProperties()
+                                .addManyToOneProperty("stage",
+                                        new EntityImportView(Stage.class)
+                                                .addLocalProperties()
+                                                .addManyToManyProperty("actors", ReferenceImportBehaviour.ERROR_ON_MISSING, CollectionImportPolicy.REMOVE_ABSENT_ITEMS)
+                                                .addManyToOneProperty("actorsRoles", ReferenceImportBehaviour.ERROR_ON_MISSING))
+                                .addOneToManyProperty("directions",
+                                        new EntityImportView(StepDirection.class)
+                                                .addLocalProperties()
+                                                .addManyToOneProperty("from", ReferenceImportBehaviour.ERROR_ON_MISSING)
+                                                .addManyToOneProperty("to", ReferenceImportBehaviour.ERROR_ON_MISSING), CollectionImportPolicy.REMOVE_ABSENT_ITEMS)
+                                .addManyToOneProperty("workflow", ReferenceImportBehaviour.ERROR_ON_MISSING),
+                        CollectionImportPolicy.REMOVE_ABSENT_ITEMS);
+
+    }
 }

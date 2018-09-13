@@ -20,12 +20,13 @@ import com.haulmont.cuba.core.global.DeletePolicy;
 import com.haulmont.cuba.core.entity.annotation.Listeners;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Listeners("cifra_DocumentListener")
 @NamePattern("%s %s %s|number,date,description")
 @Table(name = "CIFRA_DOCUMENT")
 @Entity(name = "cifra$Document")
-public class Document extends StandardEntity implements TaskableEntity {
+public class Document extends StandardEntity implements WorkflowEntity<UUID>, TaskableEntity {
     private static final long serialVersionUID = -5504376796832237678L;
 
     @NotNull
@@ -146,7 +147,7 @@ public class Document extends StandardEntity implements TaskableEntity {
     }
 
 
-    void setExternalId(String externalId) {
+    public void setExternalId(String externalId) {
         this.externalId = externalId;
     }
 
@@ -155,7 +156,7 @@ public class Document extends StandardEntity implements TaskableEntity {
     }
 
 
-    void setExternalLink(String externalLink) {
+    public void setExternalLink(String externalLink) {
         this.externalLink = externalLink;
     }
 
@@ -182,7 +183,7 @@ public class Document extends StandardEntity implements TaskableEntity {
     }
 
 
-    void setDateLoad(Date dateLoad) {
+    public void setDateLoad(Date dateLoad) {
         this.dateLoad = dateLoad;
     }
 
@@ -258,7 +259,7 @@ public class Document extends StandardEntity implements TaskableEntity {
         return file;
     }
 
-    void setGotOriginal(Boolean gotOriginal) {
+    public void setGotOriginal(Boolean gotOriginal) {
         this.gotOriginal = gotOriginal;
     }
 
@@ -325,7 +326,7 @@ public class Document extends StandardEntity implements TaskableEntity {
         return destination;
     }
 
-    void setDestination(String destination) {
+    public void setDestination(String destination) {
         this.destination = destination;
     }
 
@@ -345,4 +346,43 @@ public class Document extends StandardEntity implements TaskableEntity {
         return number;
     }
 
+
+    //workflowmodule module
+    @Column(name = "WF_STATUS")
+    private Integer status;
+
+    @Column(name = "WF_STEP_NAME")
+    private String stepName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WF_INITIATOR_ID", nullable = true)
+    private Employee initiator;
+
+    @Override
+    public String getStepName() {
+        return stepName;
+    }
+
+    @Override
+    public void setStepName(String stepName) {
+        this.stepName = stepName;
+    }
+
+    @Override
+    public WorkflowEntityStatus getStatus() {
+        return WorkflowEntityStatus.fromId(status);
+    }
+
+    @Override
+    public void setStatus(WorkflowEntityStatus status) {
+        this.status = status == null ? null : status.getId();
+    }
+
+    public Employee getInitiator() {
+        return initiator;
+    }
+
+    public void setInitiator(Employee initiator) {
+        this.initiator = initiator;
+    }
 }
