@@ -1,24 +1,23 @@
 package com.groupstp.cifra.entity;
 
-import javax.persistence.*;
-import java.util.Date;
-import javax.validation.constraints.NotNull;
-
 import com.groupstp.cifra.entity.tasks.TaskableEntity;
+import com.groupstp.workflowstp.entity.WorkflowEntity;
+import com.groupstp.workflowstp.entity.WorkflowEntityStatus;
+import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.MetaProperty;
-import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.chile.core.annotations.NamePattern;
+import com.haulmont.cuba.core.entity.FileDescriptor;
+import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.Listeners;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
-import com.haulmont.cuba.core.entity.FileDescriptor;
-
-import java.util.List;
-
-import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.global.DeletePolicy;
-import com.haulmont.cuba.core.entity.annotation.Listeners;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 

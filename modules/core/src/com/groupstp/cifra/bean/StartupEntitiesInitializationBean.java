@@ -50,8 +50,6 @@ public class StartupEntitiesInitializationBean {
         importEntitiesFromJson("com/groupstp/cifra/init/Roles.json", createRolesImportView());
     }
 
-    }
-
     private void initWorkflow() {
         importEntitiesFromJson("com/groupstp/cifra/init/Workflows.json", createWorkflowImportView());
     }
