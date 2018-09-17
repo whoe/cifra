@@ -38,4 +38,6 @@
             template="com/groupstp/cifra/web/tag/tag-browse.xml"/>
     <screen id="cifra$Tag.edit"
             template="com/groupstp/cifra/web/tag/tag-edit.xml"/>
+    <screen id="loginWindow"
+            template="com/groupstp/cifra/web/login/ext-loginWindow.xml"/>
 </screen-config>
