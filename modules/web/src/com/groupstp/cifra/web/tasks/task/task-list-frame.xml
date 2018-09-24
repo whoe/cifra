@@ -31,7 +31,7 @@
             </actions>
             <columns>
                 <group>
-                    <column id="taskableEntityName"/>
+                    <column id="taskableEntity"/>
                 </group>
                 <column id="taskTypical.name"/>
                 <column id="taskTypical.description"/>

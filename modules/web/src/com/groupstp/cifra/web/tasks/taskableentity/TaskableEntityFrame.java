@@ -1,6 +1,6 @@
 package com.groupstp.cifra.web.tasks.taskableentity;
 
-import com.groupstp.cifra.entity.*;
+import com.groupstp.cifra.entity.Document;
 import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskTemplate;
 import com.groupstp.cifra.entity.tasks.TaskTypical;
@@ -24,13 +24,13 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.util.*;
 
-import static com.groupstp.cifra.web.tasks.task.Utils.countEndDateFromStartDate;
+import static com.groupstp.cifra.web.tasks.Utils.countEndDateFromStartDate;
 
 /**
  * Controller for component's main screen (example)
  */
 @Listeners("myListener")
-public class TaskableEntityFrame extends AbstractLookup {
+public class TaskableEntityFrame extends AbstractFrame {
 
     private static final Logger log = LoggerFactory.getLogger(TaskListFrame.class);
 
@@ -153,8 +153,7 @@ public class TaskableEntityFrame extends AbstractLookup {
             newTask.setControlNeeded(sampleTask.getControlNeeded());
             newTask.setAuthor(sampleTask.getAuthor());
             newTask.setPerformer(sampleTask.getPerformer());
-            newTask.setTaskableEntityId(sampleTask.getTaskableEntityId());
-            newTask.setTaskableEntityName(sampleTask.getTaskableEntityName());
+            newTask.setTaskableEntity(sampleTask.getTaskableEntity());
             newTask.setComment(sampleTask.getComment());
             dataManager.commit(newTask);
         }

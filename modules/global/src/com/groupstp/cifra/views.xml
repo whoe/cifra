@@ -132,6 +132,8 @@
             <property name="description"/>
             <property name="interval"/>
         </property>
+        <property name="taskableEntity"
+                  view="_minimal"/>
     </view>
     <view class="com.groupstp.cifra.entity.tasks.TaskTypical"
           extends="_local"

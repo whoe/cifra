@@ -1,4 +1,4 @@
-package com.groupstp.cifra.web.tasks.task;
+package com.groupstp.cifra.web.tasks;
 
 import com.groupstp.cifra.entity.tasks.IntervalType;
 import org.apache.commons.lang.time.DateUtils;

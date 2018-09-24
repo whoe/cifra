@@ -1,12 +1,15 @@
 package com.groupstp.cifra.entity.tasks;
 
+import com.groupstp.cifra.entity.Document;
 import com.groupstp.cifra.entity.Employee;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.Listeners;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Listeners("cifra_TaskEntityListener")
 @Table(name = "TASKS_TASK")
 @Entity(name = "tasks$Task")
 public class Task extends StandardEntity {
@@ -44,16 +47,22 @@ public class Task extends StandardEntity {
     @JoinColumn(name = "PERFORMER_ID")
     protected Employee performer;
 
-    @Column(name = "TASKABLE_ENTITY_ID", nullable = false)
-    protected String taskableEntityId;
-
-
-    @Column(name = "TASKABLE_ENTITY_NAME", nullable = false)
-    protected String taskableEntityName;
-
     @Lob
     @Column(name = "COMMENT_")
     protected String comment;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "DOCUMENT_ID")
+    protected Document taskableEntity;
+
+    public void setTaskableEntity(Document document) {
+        this.taskableEntity = document;
+    }
+
+    public Document getTaskableEntity() {
+        return taskableEntity;
+    }
 
     public Employee getPerformer() {
         return performer;
@@ -124,20 +133,5 @@ public class Task extends StandardEntity {
         return endDate;
     }
 
-    public String getTaskableEntityId() {
-        return taskableEntityId;
-    }
-
-    public void setTaskableEntityId(String taskableEntityId) {
-        this.taskableEntityId = taskableEntityId;
-    }
-
-    public String getTaskableEntityName() {
-        return taskableEntityName;
-    }
-
-    public void setTaskableEntityName(String taskableEntityName) {
-        this.taskableEntityName = taskableEntityName;
-    }
 
 }

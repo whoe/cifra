@@ -30,11 +30,9 @@
                 <field property="author"/>
                 <field property="performer"/>
                 <field editable="false"
-                       property="taskableEntityName"/>
+                       property="taskableEntity"/>
                 <field property="comment"
                        rows="5"/>
-                <field property="taskableEntityId"
-                       visible="false"/>
             </column>
         </fieldGroup>
         <frame id="windowActions"

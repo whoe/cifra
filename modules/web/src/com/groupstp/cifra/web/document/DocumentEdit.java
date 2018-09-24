@@ -1,14 +1,13 @@
 package com.groupstp.cifra.web.document;
 
+import com.groupstp.cifra.Utils;
+import com.groupstp.cifra.WorkflowProcessService;
 import com.groupstp.cifra.entity.*;
 import com.groupstp.workflowstp.entity.StepDirection;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
-import com.groupstp.workflowstp.service.WorkflowService;
 import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.LoadContext;
-import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
@@ -17,7 +16,7 @@ import com.haulmont.cuba.gui.data.DsContext;
 import com.haulmont.cuba.gui.data.impl.CollectionPropertyDatasourceImpl;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
-import org.apache.commons.collections4.CollectionUtils;
+import com.haulmont.cuba.web.gui.components.WebLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,13 +26,7 @@ import java.util.*;
 
 public class DocumentEdit extends AbstractEditor<Document> {
 
-    private String DOC_LOADED_FLAG = "doc_loaded";
-    private String CHECKLIST_STATUS_FLAG = "checklist_status";
-    private String STEP_INCOMING_NAME = "Входящий";
-    private String STEP_PROBLEM_NAME = "Проблема";
-    private String STEP_PROCESSING_NAME = "Обработано";
-    private String STEP_ISSUE_NAME = "Выдано";
-    private String STEP_ELIMINATE_NAME = "Уничтожен";
+    private static final Logger log = LoggerFactory.getLogger(DocumentEdit.class);
 
     @Inject
     private Datasource<Document> documentDs;
@@ -63,33 +56,17 @@ public class DocumentEdit extends AbstractEditor<Document> {
     private DsContext dsContext;
 
     @Inject
-    private Metadata metadata;
-
-    @Inject
     private DataManager dataManager;
 
     @Inject
-    private WorkflowService workflowService;
+    private WorkflowProcessService workflowService;
 
     @Inject
     private ComponentsFactory componentsFactory;
 
-    @Inject
-    private ButtonsPanel workflowButtonsPanel;
-
-    @Inject
-    private DataGrid<CheckList> checkListDataGrid;
-
-    @Inject
-    private Label labelCurrentWorkflowStage;
-
     private boolean fileAttachedWhenFrameWasOpened;
 
     private boolean checkListStateWhenFrameWasOpened;
-
-    private Logger log = LoggerFactory.getLogger(getClass());
-
-    private Workflow activeWorkflow;
 
     @Override
     protected void initNewItem(Document item) {
@@ -111,7 +88,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
             }
         });
 
-        checkListDataGrid.addItemClickListener(event -> {
+        ((DataGrid<CheckList>) getComponent("checkListDataGrid")).addItemClickListener(event -> {
             if ("checked".equals(event.getColumnId())) {
                 CheckList item = event.getItem();
                 item.setChecked(!item.getChecked());
@@ -134,7 +111,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
         dsContext.addAfterCommitListener((context, result) -> {
 
-            Workflow workflow = getActiveWorkflow();
+            Workflow workflow = workflowService.getActiveWorkflow();
             if (workflow == null) {
                 return;
             }
@@ -157,7 +134,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
         refreshLabelCurrentWorkflowStage();
 
-        makeButtonWorkflow(new BaseAction(STEP_ISSUE_NAME) {
+        makeButtonWorkflow(new BaseAction(Utils.STEP_ISSUE_NAME) {
             @Override
             public String getCaption() {
                 return getMessage("workflow.issue");
@@ -173,7 +150,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 commitIfNeeded();
                 Document document = getItem();
                 try {
-                    List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow());
+                    List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
                     WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
                     HashMap<String, String> map = buildParametersMapWorkflow();
                     map.put("doc_issued", "true");
@@ -186,7 +163,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
             }
         });
 
-        makeButtonWorkflow(new BaseAction(STEP_ELIMINATE_NAME) {
+        makeButtonWorkflow(new BaseAction(Utils.STEP_ELIMINATE_NAME) {
             @Override
             public String getCaption() {
                 return getMessage("workflow.eliminate");
@@ -202,7 +179,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 commitIfNeeded();
                 Document document = getItem();
                 try {
-                    List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow());
+                    List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
                     WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
                     HashMap<String, String> map = buildParametersMapWorkflow();
                     map.put("doc_eliminated", "true");
@@ -231,13 +208,13 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 commitIfNeeded();
                 Document document = getItem();
                 try {
-                    List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow());
+                    List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
                     WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
                     HashMap<String, String> map = buildParametersMapWorkflow();
                     map.put("doc_flow_incoming", "true");
                     map.put("doc_issued", "false");
                     workflowService.finishTask(task, map);
-                    tasks = loadTasks(document, getActiveWorkflow());
+                    tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
                     task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
                     map = buildParametersMapWorkflow();
                     map.put("doc_flow_incoming", "false");
@@ -255,10 +232,10 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * set label with current workflow's step name
      */
     private void refreshLabelCurrentWorkflowStage() {
-        List<WorkflowInstanceTask> tasks = loadTasks(getItem(), getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(getItem(), workflowService.getActiveWorkflow());
         WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
         if (task != null) {
-            labelCurrentWorkflowStage.setValue(getMessage("workflow.currentStep") + ": " + task.getStep().getStage().getName());
+            ((WebLabel) getComponent("labelCurrentWorkflowStage")).setValue(getMessage("workflow.currentStep") + ": " + task.getStep().getStage().getName());
         }
     }
 
@@ -281,7 +258,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
      */
     private void workflowRunProcessing(Workflow workflow, Document document) throws Exception {
 
-        List<WorkflowInstanceTask> tasks = loadTasks(document, workflow);
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflow);
 
         if(tasks==null) return;
 
@@ -290,7 +267,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
             workflowService.startWorkflow(document, workflow);
 
             if (document.getFile() != null) {
-                tasks = loadTasks(document, workflow);
+                tasks = workflowService.loadTasks(document, workflow);
                 continueWorkflow(tasks);
             }
             return;
@@ -305,12 +282,12 @@ public class DocumentEdit extends AbstractEditor<Document> {
         if (document.getFile() == null) return;
 
         String lastTaskName = lastTask.getStep().getStage().getName();
-        if (STEP_INCOMING_NAME.equals(lastTaskName) && (isFileAttachedWhenFrameWasOpened())) {
+        if (Utils.STEP_INCOMING_NAME.equals(lastTaskName) && (isFileAttachedWhenFrameWasOpened())) {
             continueWorkflow(tasks);
         }
 
         // step equal Обработано or Проблемы and was have change(file attached or checkListDataGrid changed), we must run workflow
-        if (STEP_PROCESSING_NAME.equals(lastTaskName) || STEP_PROBLEM_NAME.equals(lastTaskName)) {
+        if (Utils.STEP_PROCESSING_NAME.equals(lastTaskName) || Utils.STEP_PROBLEM_NAME.equals(lastTaskName)) {
             if (isFileAttachedWhenFrameWasOpened() || isCheckListChanged()) {
                 continueWorkflow(tasks);
             }
@@ -351,8 +328,8 @@ public class DocumentEdit extends AbstractEditor<Document> {
      */
     private HashMap<String, String> buildParametersMapWorkflow() {
         HashMap<String, String> map = new HashMap<>();
-        map.put(DOC_LOADED_FLAG, "true");
-        map.put(CHECKLIST_STATUS_FLAG, getCheckListStatus() ? "true" : "false");
+        map.put(Utils.DOC_LOADED_FLAG, "true");
+        map.put(Utils.CHECKLIST_STATUS_FLAG, getCheckListStatus() ? "true" : "false");
         return map;
     }
 
@@ -373,47 +350,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
         return true;
     }
 
-    /**
-     * Load all tasks for document for workflow
-     *
-     * @param document
-     * @param workflow
-     * @return list of tasks, if no founded return empty list
-     */
-    private List<WorkflowInstanceTask> loadTasks(final Document document, final Workflow workflow) {
-        return dataManager.loadList(LoadContext.create(WorkflowInstanceTask.class)
-                .setQuery(new LoadContext.Query("select e from wfstp$" + "WorkflowInstanceTask e " +
-                        "join e.instance i " +
-                        "where i.workflow.id = :workflowId and i.entityId = :entityId " +
-                        " order by e.createTs desc")
-                        .setParameter("workflowId", workflow.getId())
-                        .setParameter("entityId", document.getId().toString())
-                        .setMaxResults(1))
-                .setView("workflowInstanceTask-browse"));
-    }
 
-    /**
-     * Return one active workflow for Class or return null
-     *
-     * @return active workflow for Class
-     */
-    private Workflow getActiveWorkflow() {
-        if (activeWorkflow != null) return activeWorkflow;
-        String entityName = metadata.getClassNN(Document.class).getName();
-        List<Workflow> list = dataManager.loadList(LoadContext.create(Workflow.class)
-                .setQuery(new LoadContext.Query("select e from wfstp$Workflow e where " +
-                        "e.active = true and e.entityName = :entityName order by e.createTs asc")
-                        .setParameter("entityName", entityName))
-                .setView("query-workflow-browse"));
-        if (!CollectionUtils.isEmpty(list)) {
-            if (list.size() > 1) {
-                log.warn(String.format("In system existing two active workflow for entity '%s'. The first will be used", entityName));
-            }
-            activeWorkflow = list.get(0);
-            return activeWorkflow;
-        }
-        return null;
-    }
 
     /**
      * Make button(action, caption, icon) and place it to buttonsPanel
@@ -424,7 +361,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
         if (isHasNextStep(action.getId())) {
             Button button = componentsFactory.createComponent(Button.class);
             button.setAction(action);
-            workflowButtonsPanel.add(button);
+            ((ButtonsPanel) getComponent("workflowButtonsPanel")).add(button);
             this.addAction(action);
         }
     }
@@ -439,7 +376,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
         Document document = getItem();
         if (document == null) return false;
 
-        List<WorkflowInstanceTask> tasks = loadTasks(document, getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
         for (WorkflowInstanceTask task : tasks) {
             if (task.getEndDate() == null) {
                 task = dataManager.reload(task, "workflowInstanceTask-process");

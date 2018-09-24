@@ -22,6 +22,8 @@
                        value="com.groupstp.cifra.entity.Sync1CService"/>
                 <entry key="cifra_ImportDocs1CService"
                        value="com.groupstp.cifra.entity.ImportDocs1CService"/>
+                <entry key="cifra_WorkflowProcessService"
+                       value="com.groupstp.cifra.WorkflowProcessService"/>
             </map>
         </property>
     </bean>

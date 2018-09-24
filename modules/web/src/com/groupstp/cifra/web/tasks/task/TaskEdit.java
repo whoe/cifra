@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import java.util.Date;
 import java.util.Map;
 
-import static com.groupstp.cifra.web.tasks.task.Utils.countEndDateFromStartDate;
+import static com.groupstp.cifra.web.tasks.Utils.countEndDateFromStartDate;
 
 public class TaskEdit extends AbstractEditor<Task> {
 
@@ -56,8 +56,7 @@ public class TaskEdit extends AbstractEditor<Task> {
         if (taskTypical != null) {
             ((PickerField) fieldGroup.getComponent("taskTypical")).setValue(taskTypical);
             ((TextField) fieldGroup.getComponent("taskTypicalDescription")).setValue(taskTypical.getDescription());
-            ((TextField) fieldGroup.getComponent("taskableEntityName")).setValue(taskableEntity.getTaskableEntityName());
-            ((TextField) fieldGroup.getComponent("taskableEntityId")).setValue(taskableEntity.getTaskableEntityEntityID());
+            ((PickerField) fieldGroup.getComponent("taskableEntity")).setValue(taskableEntity.getTaskableEntity());
             ((LookupField) fieldGroup.getComponent("status")).setValue(TaskStatus.Assigned);
 
             User currentUser = userSessionSource.getUserSession().getCurrentOrSubstitutedUser();

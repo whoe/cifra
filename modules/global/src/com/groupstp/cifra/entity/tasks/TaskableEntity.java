@@ -1,14 +1,14 @@
 package com.groupstp.cifra.entity.tasks;
 
+import java.util.UUID;
+
 /**
  * Entities used this interface can work with Tasks module
  */
 public interface TaskableEntity {
 
-    String getTaskableEntityName();
+    TaskableEntity getTaskableEntity();
 
-    void setTaskableEntityName(String tasks);
+    UUID getId();
 
-    //must return standart getId().toString()
-    String getTaskableEntityEntityID();
 }

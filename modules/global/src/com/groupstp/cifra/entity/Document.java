@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import com.groupstp.cifra.entity.tasks.Task;
 
 @Listeners("cifra_DocumentListener")
 @NamePattern("%s %s %s|number,date,description")
@@ -127,6 +128,20 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
 
     @Column(name = "EXTERNAL_ID")
     protected String externalId;
+
+    @Column(name = "WF_STATUS")
+    private Integer status;
+
+    @Column(name = "WF_STEP_NAME")
+    private String stepName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WF_INITIATOR_ID")
+    private Employee initiator;
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "taskableEntity")
+    protected List<Task> tasks;
 
     public void setDirection(Direction direction) {
         this.direction = direction == null ? null : direction.getId();
@@ -320,7 +335,6 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
         return dateLoad;
     }
 
-    //@MetaProperty(related = "destination")
     public String getDestination() {
         return destination;
     }
@@ -329,33 +343,16 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
         this.destination = destination;
     }
 
-    @Override
-    public String getTaskableEntityName() {
-        return number;
-    }
-
-    @Override
-    public void setTaskableEntityName(String number) {
-        this.number = number;
-
-    }
-
-    @Override
-    public String getTaskableEntityEntityID() {
-        return number;
-    }
-
-
     //workflowmodule module
-    @Column(name = "WF_STATUS")
-    private Integer status;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 
-    @Column(name = "WF_STEP_NAME")
-    private String stepName;
+    public List<Task> getTasks() {
+        return tasks;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "WF_INITIATOR_ID", nullable = true)
-    private Employee initiator;
+
 
     @Override
     public String getStepName() {
@@ -384,4 +381,10 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
     public void setInitiator(Employee initiator) {
         this.initiator = initiator;
     }
+
+    @Override
+    public TaskableEntity getTaskableEntity() {
+        return this;
+    }
+
 }
