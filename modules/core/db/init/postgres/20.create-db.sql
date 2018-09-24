@@ -65,3 +65,8 @@ alter table CIFRA_CHECK_LIST add constraint FK_CIFRA_CHECK_LIST_DOCUMENT foreign
 create index IDX_CIFRA_CHECK_LIST_ITEM on CIFRA_CHECK_LIST (ITEM_ID)^
 create index IDX_CIFRA_CHECK_LIST_DOCUMENT on CIFRA_CHECK_LIST (DOCUMENT_ID)^
 -- end CIFRA_CHECK_LIST
+-- begin SEC_USER
+alter table SEC_USER add column GOOGLE_ID varchar(50)^
+alter table SEC_USER add column DTYPE varchar(100)^
+create unique index IDX_SEC_USER_GOOGLE_ID on SEC_USER (GOOGLE_ID) where DELETE_TS is null ;
+-- end SEC_USER
