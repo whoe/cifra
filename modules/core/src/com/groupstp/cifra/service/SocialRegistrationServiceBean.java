@@ -33,13 +33,19 @@ public class SocialRegistrationServiceBean implements SocialRegistrationService 
         EntityManager em = persistence.getEntityManager();
 
         // Find existing user
-        TypedQuery<SocialUser> query = em.createQuery("select u from sec$User u where u.googleId = :googleId",
+        TypedQuery<SocialUser> query = em.createQuery(
+                "select u from sec$User u where u.googleId = :googleId or u.email like :email",
                 SocialUser.class);
         query.setParameter("googleId", googleId);
+        query.setParameter("email", email);
         query.setViewName(View.LOCAL);
 
         SocialUser existingUser = query.getFirstResult();
         if (existingUser != null) {
+            if (existingUser.getGoogleId() == null) {
+                existingUser.setGoogleId(googleId);
+                em.persist(existingUser);
+            }
             return existingUser;
         }
 
