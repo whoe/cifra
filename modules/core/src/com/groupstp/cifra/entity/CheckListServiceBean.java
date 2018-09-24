@@ -1,5 +1,6 @@
 package com.groupstp.cifra.entity;
 
+import com.haulmont.bali.util.Preconditions;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.Metadata;
@@ -24,6 +25,8 @@ public class CheckListServiceBean implements CheckListService {
 
     public List<CheckList> fillCheckList(Document doc)
     {
+        Preconditions.checkNotNullArgument(doc);
+
         DocType dt = doc.getDocType();
         LoadContext<CheckListItems> checkListItemsLoadContext = new LoadContext<>(CheckListItems.class);
         checkListItemsLoadContext.setQueryString("select i from cifra$CheckListItems i where i.docType.id=:dt")
