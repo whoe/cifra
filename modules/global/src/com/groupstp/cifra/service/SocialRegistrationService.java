@@ -2,8 +2,11 @@ package com.groupstp.cifra.service;
 
 import com.haulmont.cuba.security.entity.User;
 
+import javax.annotation.Nullable;
+
 public interface SocialRegistrationService {
     String NAME = "cifra_SocialRegistrationService";
 
-    User findOrRegisterUser(String facebookId, String email, String name);
+    @Nullable
+    User findUser(String googleId, String email, String name);
 }

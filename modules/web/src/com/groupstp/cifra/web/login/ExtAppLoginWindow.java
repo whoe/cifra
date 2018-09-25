@@ -1,6 +1,5 @@
 package com.groupstp.cifra.web.login;
 
-
 import com.groupstp.cifra.service.GoogleService;
 import com.groupstp.cifra.service.SocialRegistrationService;
 import com.haulmont.cuba.core.global.GlobalConfig;
@@ -69,13 +68,20 @@ public class ExtAppLoginWindow extends AppLoginWindow {
 
                     GoogleService.GoogleUserData userData = googleService.getUserData(globalConfig.getWebAppUrl(), code);
 
-                    User user = socialRegistrationService.findOrRegisterUser(
+                    User user = socialRegistrationService.findUser(
                             userData.getId(), userData.getEmail(), userData.getName());
+                    if (user == null) {
+                        throw new UserNotFoundException("User not found with email: " + userData.getEmail());
+                    }
 
                     Connection connection = app.getConnection();
 
-                    Locale defaultLocale = messages.getTools().getDefaultLocale();
-                    connection.login(new ExternalUserCredentials(user.getLogin(), defaultLocale));
+                    Locale locale = new Locale(user.getLanguage());
+                    connection.login(new ExternalUserCredentials(user.getLogin(), locale));
+                }
+                catch (UserNotFoundException e) {
+                    showNotification("Unable to sign in", e.getMessage(), NotificationType.WARNING);
+                    log.warn("Unable to sign in", e);
                 } catch (Exception e) {
                     log.error("Unable to login using Google+", e);
                 } finally {
@@ -90,5 +96,11 @@ public class ExtAppLoginWindow extends AppLoginWindow {
         }
 
         return false;
+    }
+
+    private class UserNotFoundException extends Throwable {
+        UserNotFoundException(String s) {
+            super(s);
+        }
     }
 }
