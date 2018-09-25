@@ -97,7 +97,7 @@ configure(coreModule) {
         jdbc(postgres)
         testRuntime(postgres)
         implementation 'com.google.api-client:google-api-client:1.23.0'
-        implementation 'com.google.apis:google-api-services-plus:v1-rev557-1.23.0'
+        compile 'com.google.apis:google-api-services-plus:v1-rev557-1.23.0'
     }
 
     task cleanConf(description: 'Cleans up conf directory') {
