@@ -44,4 +44,6 @@
             template="/com/groupstp/cifra/web/document/workflow/query-workflow-edit.xml"/>
     <screen id="query-workflow-table"
             template="/com/groupstp/cifra/web/document/workflow/frame/query-workflow-browse-table-frame.xml"/>
+    <screen id="loginWindow"
+            template="com/groupstp/cifra/web/login/ext-loginWindow.xml"/>
 </screen-config>

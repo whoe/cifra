@@ -226,10 +226,8 @@ create table CIFRA_DOCUMENT_TAG_LINK (
     primary key (TAG_ID, DOCUMENT_ID)
 )^
 -- end CIFRA_DOCUMENT_TAG_LINK
--- begin CIFRA_JOURNAL_DOCUMENT_LINK
-create table CIFRA_JOURNAL_DOCUMENT_LINK (
-    JOURNAL_ID uuid,
-    DOCUMENT_ID uuid,
-    primary key (JOURNAL_ID, DOCUMENT_ID)
-)^
--- end CIFRA_JOURNAL_DOCUMENT_LINK
+-- begin SEC_USER
+alter table SEC_USER add column GOOGLE_ID varchar(255) ^
+alter table SEC_USER add column DTYPE varchar(100) ^
+update SEC_USER set DTYPE = 'cifra$SocialUser' where DTYPE is null ^
+-- end SEC_USER

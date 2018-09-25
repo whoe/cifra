@@ -1,0 +1,6 @@
+.gradle
+.idea
+deploy
+modules/core/test-home
+modules/core/google-oauth.store
+modules/*/build

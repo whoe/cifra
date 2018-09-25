@@ -9,7 +9,7 @@
         <datasource id="documentDs"
                     class="com.groupstp.cifra.entity.Document"
                     loadDynamicAttributes="true"
-                    view="document-view_1">
+                    view="document-view">
             <collectionDatasource id="checklistDs"
                                   property="checklist"/>
             <collectionDatasource id="tagDs"
