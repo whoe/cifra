@@ -62,6 +62,8 @@ where e.docStatus=10]]>
                         <column id="externalLink"/>
                         <column id="externalId"/>
                         <column id="direction"/>
+                        <column id="status"/>
+                        <column id="stepName"/>
                     </columns>
                     <rows datasource="documentsDs"/>
                     <rowsCount/>

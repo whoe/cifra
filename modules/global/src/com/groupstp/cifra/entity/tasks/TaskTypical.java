@@ -26,7 +26,8 @@ public class TaskTypical extends StandardEntity {
     @Column(name = "INTERVAL_")
     protected Integer interval;
 
-    @Column(name = "INTERVAL_TYPE")
+    @NotNull
+    @Column(name = "INTERVAL_TYPE", nullable = false)
     protected Integer intervalType;
 
     @ManyToMany(mappedBy = "tasks")

@@ -122,11 +122,9 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
             Document savedDocument = (Document) result.stream().filter(entity -> entity.getClass() == Document.class).findFirst().get();
 
-            try {
-                workflowRunProcessing(workflow, savedDocument);
-            } catch (Exception e) {
-                throw new RuntimeException(getMessage("workflow.Error"), e);
-            }
+
+            workflowRunProcessing(workflow, savedDocument);
+
         });
     }
 
@@ -135,6 +133,9 @@ public class DocumentEdit extends AbstractEditor<Document> {
         super.ready();
         fileAttachedWhenFrameWasOpened = getItem().getFile() != null;
         checkListStateWhenFrameWasOpened = getCheckListStatus();
+
+        initializeCheckListIfNeeded();
+        initializeWorkflowIfNeeded();
 
         refreshLabelCurrentWorkflowStage();
 
@@ -233,6 +234,28 @@ public class DocumentEdit extends AbstractEditor<Document> {
     }
 
     /**
+     * fill empty checklist after document was open first time
+     */
+    private void initializeCheckListIfNeeded() {
+        if (checklistDs.getItems().size() == 0) {
+            List<CheckList> items = checkListService.fillCheckList(getItem());
+            items.forEach(checklistDs::addItem);
+        }
+    }
+
+    /**
+     * start workflow after document was open first time
+     */
+
+    private void initializeWorkflowIfNeeded() {
+        Workflow activeWorkflow = workflowService.getActiveWorkflow();
+        if (workflowService.loadTasks(getItem(), activeWorkflow).size() == 0) {
+            workflowRunProcessing(activeWorkflow, getItem());
+            documentDs.refresh();
+        }
+    }
+
+    /**
      * set label with current workflow's step name
      */
     private void refreshLabelCurrentWorkflowStage() {
@@ -260,41 +283,45 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * @param document
      * @throws Exception handled up
      */
-    private void workflowRunProcessing(Workflow workflow, Document document) throws Exception {
+    private void workflowRunProcessing(Workflow workflow, Document document) {
 
         List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflow);
 
         if(tasks==null) return;
 
-        if (tasks.size() == 0) {
-            //no workflow task for current document, start new
-            workflowService.startWorkflow(document, workflow);
+        try {
+            if (tasks.size() == 0) {
+                //no workflow task for current document, start new
+                workflowService.startWorkflow(document, workflow);
 
-            if (document.getFile() != null) {
-                tasks = workflowService.loadTasks(document, workflow);
+                if (document.getFile() != null) {
+                    tasks = workflowService.loadTasks(document, workflow);
+                    continueWorkflow(tasks);
+                }
+                return;
+            }
+
+            WorkflowInstanceTask lastTask = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
+
+            //tasks exist, but not exist open task = workflow finished
+            if (lastTask == null) return;
+
+            //document has no file, no next step
+            if (document.getFile() == null) return;
+
+            String lastTaskName = lastTask.getStep().getStage().getName();
+            if (Utils.STEP_INCOMING_NAME.equals(lastTaskName) && (isFileAttachedWhenFrameWasOpened())) {
                 continueWorkflow(tasks);
             }
-            return;
-        }
 
-        WorkflowInstanceTask lastTask = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
-
-        //tasks exist, but not exist open task = workflow finished
-        if (lastTask == null) return;
-
-        //document has no file, no next step
-        if (document.getFile() == null) return;
-
-        String lastTaskName = lastTask.getStep().getStage().getName();
-        if (Utils.STEP_INCOMING_NAME.equals(lastTaskName) && (isFileAttachedWhenFrameWasOpened())) {
-            continueWorkflow(tasks);
-        }
-
-        // step equal Обработано or Проблемы and was have change(file attached or checkListDataGrid changed), we must run workflow
-        if (Utils.STEP_PROCESSING_NAME.equals(lastTaskName) || Utils.STEP_PROBLEM_NAME.equals(lastTaskName)) {
-            if (isFileAttachedWhenFrameWasOpened() || isCheckListChanged()) {
-                continueWorkflow(tasks);
+            // step equal Обработано or Проблемы and was have change(file attached or checkListDataGrid changed), we must run workflow
+            if (Utils.STEP_PROCESSING_NAME.equals(lastTaskName) || Utils.STEP_PROBLEM_NAME.equals(lastTaskName)) {
+                if (isFileAttachedWhenFrameWasOpened() || isCheckListChanged()) {
+                    continueWorkflow(tasks);
+                }
             }
+        } catch (WorkflowException ex) {
+            throw new RuntimeException(getMessage("workflow.Error"), ex);
         }
     }
 

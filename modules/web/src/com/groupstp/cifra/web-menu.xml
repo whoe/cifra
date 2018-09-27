@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
-    <menu id="application-cifra"
+    <menu id="cifra$documentsMenu"
           insertBefore="administration">
         <item screen="cifra$Document.browse"/>
+        <separator/>
         <item screen="cifra$DocType.browse"/>
-        <item screen="cifra$Company.browse"/>
-        <item screen="cifra$Division.browse"/>
-        <item screen="cifra$Warehouse.browse"/>
-        <item screen="cifra$Contragent.browse"/>
-        <item screen="cifra$Employee.browse"/>
         <item screen="cifra$Tag.browse"/>
     </menu>
-    <menu id="tasks"
+    <menu id="cifra$tasks"
           insertBefore="administration">
         <item screen="tasks$Task.list"/>
         <separator/>
         <item screen="tasks$TaskTypical.browse"/>
         <item screen="tasks$TaskTemplate.browse"/>
         <item screen="tasks$Task.browse"/>
+    </menu>
+    <menu id="cifra$references"
+          insertBefore="administration">
+        <item screen="cifra$Company.browse"/>
+        <item screen="cifra$Division.browse"/>
+        <item screen="cifra$Warehouse.browse"/>
+        <item screen="cifra$Contragent.browse"/>
+        <item screen="cifra$Employee.browse"/>
     </menu>
     <menu id="Tools"
           description="mainMsg://Tools"

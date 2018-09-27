@@ -5,7 +5,6 @@ import com.haulmont.cuba.core.app.UniqueNumbersAPI;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
-import com.haulmont.cuba.core.global.TimeSource;
 
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
@@ -51,6 +50,7 @@ public class ImportDocuments extends Import{
         doc.setGotOriginal(o.get("Отсканирован").getAsString().equals("Да"));
         doc.setExternalLink(o.get("ВнешняяСсылка").getAsString());
         doc.setCompany(Company.find(o.get("Компания").getAsString()));
+        doc.setDirection(Direction.Income); //todo
         AppBeans.get(DataManager.class).commit(doc);
     }
 }
