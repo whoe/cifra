@@ -53,7 +53,7 @@ dependencies {
     appComponent("de.diedavids.cuba.runtimediagnose:runtime-diagnose-global:1.0.0")
     appComponent("com.company.googledrive:googledrive-global:0.1-SNAPSHOT")
     appComponent("com.groupstp.workflowstp:wfstp-global:0.2")
-
+    appComponent("com.groupstp.googleoauth:oauth-global:0.1-SNAPSHOT")
 }
 
 def postgres = 'org.postgresql:postgresql:9.4.1212'
@@ -96,8 +96,7 @@ configure(coreModule) {
         provided(servletApi)
         jdbc(postgres)
         testRuntime(postgres)
-        implementation 'com.google.api-client:google-api-client:1.23.0'
-        compile 'com.google.apis:google-api-services-plus:v1-rev557-1.23.0'
+
     }
 
     task cleanConf(description: 'Cleans up conf directory') {

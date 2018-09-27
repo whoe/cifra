@@ -22,10 +22,6 @@
                        value="com.groupstp.cifra.entity.Sync1CService"/>
                 <entry key="cifra_ImportDocs1CService"
                        value="com.groupstp.cifra.entity.ImportDocs1CService"/>
-                <entry key="cifra_GoogleService"
-                       value="com.groupstp.cifra.service.GoogleService"/>
-                <entry key="cifra_SocialRegistrationService"
-                       value="com.groupstp.cifra.service.SocialRegistrationService"/>
             </map>
         </property>
     </bean>
