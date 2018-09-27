@@ -28,6 +28,10 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     private static final Logger log = LoggerFactory.getLogger(DocumentEdit.class);
 
+    public static final String EDITABLE = "editable";
+    public static final String STAGE = "stage";
+    public static final String WORKFLOW = "workflow";
+
     @Inject
     private Datasource<Document> documentDs;
 

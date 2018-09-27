@@ -10,13 +10,6 @@
         <item screen="cifra$Contragent.browse"/>
         <item screen="cifra$Employee.browse"/>
         <item screen="cifra$Tag.browse"/>
-        <separator/>
-        <item screen="document-workflow"/>
-    </menu>
-    <menu id="Tools"
-          description="mainMsg://Tools"
-          insertBefore="administration">
-        <item screen="cifra$synchronization"/>
     </menu>
     <menu id="tasks"
           insertBefore="administration">
@@ -25,5 +18,10 @@
         <item screen="tasks$TaskTypical.browse"/>
         <item screen="tasks$TaskTemplate.browse"/>
         <item screen="tasks$Task.browse"/>
+    </menu>
+    <menu id="Tools"
+          description="mainMsg://Tools"
+          insertBefore="administration">
+        <item screen="cifra$synchronization"/>
     </menu>
 </menu-config>

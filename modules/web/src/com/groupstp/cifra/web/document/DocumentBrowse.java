@@ -1,36 +1,41 @@
 package com.groupstp.cifra.web.document;
 
-import com.groupstp.cifra.entity.*;
-import com.groupstp.cifra.web.data.FilterTagsCollectionDatasource;
-import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.gui.WindowManager;
+import com.groupstp.cifra.entity.Document;
+import com.groupstp.cifra.entity.Tag;
+import com.groupstp.cifra.web.document.workflow.DocumentWorkflowFrame;
+import com.groupstp.workflowstp.entity.Stage;
+import com.groupstp.workflowstp.entity.StageType;
+import com.groupstp.workflowstp.entity.Step;
+import com.groupstp.workflowstp.entity.Workflow;
+import com.haulmont.bali.util.ParamsMap;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.EditAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
-import com.haulmont.cuba.gui.data.GroupDatasource;
-import com.haulmont.cuba.gui.data.impl.CustomGroupDatasource;
-import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
-import com.vaadin.ui.Layout;
+import com.haulmont.cuba.security.entity.RoleType;
+import com.haulmont.cuba.security.entity.User;
+import com.haulmont.cuba.security.entity.UserRole;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class DocumentBrowse extends AbstractLookup {
 
-    private final String incomeStatus = "10";
-
-    private final String okStatus = "20";
-
-    private final String problemStatus = "30";
-
-    private final String issueStatus = "40";
+    private static final Logger log = LoggerFactory.getLogger(DocumentBrowse.class);
 
     @Inject
-    protected Table<Document> problems;
-
+    private DataManager dataManager;
     @Inject
-    protected ComponentsFactory componentsFactory;
+    private Metadata metadata;
 
     @Named("tagsDs")
     private CollectionDatasource<Tag, UUID> optionsTagsDs;
@@ -38,309 +43,131 @@ public class DocumentBrowse extends AbstractLookup {
     @Named("tabs")
     private TabSheet tabSheet;
 
-
     @Named("income.edit")
     private EditAction incomeEditAction;
 
-    @Named("ok.edit")
-    private EditAction okEditAction;
-
-    @Named("problems.edit")
-    private EditAction problemsEditAction;
-
     @Named("filter")
     private Filter filter;
-
-    @Named("tabIncome.tokenList")
-    private TokenList tokenList;
 
     @Named("topTagsContainer")
     private BoxLayout tagsContainer;
 
     @Inject
-    private Table<Document> issue;
+    CollectionDatasource<Document, UUID> documentsDs;
 
     @Inject
-    private Table<Document> ok;
+    private UserSessionSource userSessionSource;
 
-    @Inject
-    CollectionDatasource<Document, UUID> documentDs;
+    private Workflow activeWorkflow;
+    private User user;
 
-    @Inject
-    GroupDatasource<Document, UUID> documentsIncomeDs;
-
-    @Inject
-    GroupDatasource<Document, UUID> documentsOkDs;
-
-    @Inject
-    GroupDatasource<Document, UUID> documentsProblemsDs;
-
-    @Inject
-    CustomGroupDatasource<Document, UUID> documentsIssueDs;
-
-    @Inject
-    private DocumentService documentService;
-
-    @Inject private Layout tabularBox;
-
-    @Inject
-    protected Messages messages;
-
-    private List<String> initializedTabs;
 
     @Override
     public void init(Map<String, Object> params) {
-        initializedTabs = new ArrayList<>();
 
-        //Init default tab
-        initializedTabs.add("II");
-        genTagFilterComponent("incomeHBox");
+        super.init(params);
 
-        tabSheet.addSelectedTabChangeListener((event) -> {
-            String tabName = event.getSelectedTab().getName();
-            if(initializedTabs.contains(tabName))
-                return;
+        activeWorkflow = getActiveWorkflow();
+        user = getUser();
 
-            initializedTabs.add(tabName);
+        initTabSheets();
+    }
 
-            switch (tabName) {
-                case "II":
-                    genTagFilterComponent("incomeHBox");
-                    break;
 
-                case "tabOk":
-                    genTagFilterComponent("okHBox");
-                    break;
+    //initialize tabs view which dependents on active workflow
+    private void initTabSheets() {
+        if (activeWorkflow != null && !CollectionUtils.isEmpty(activeWorkflow.getSteps())) {
+            for (Step step : activeWorkflow.getSteps()) {
+                if (isSatisfyByUser(step.getStage())) {
+                    String stageName = step.getStage().getName();
+                    String tabKey = stageName.replaceAll("\\s", StringUtils.EMPTY).toLowerCase();
 
-                case "tabProblems":
-                    genTagFilterComponent("problemsHBox");
-                    break;
-
-                case "tabIssued":
-                    genTagFilterComponent("issuedHBox");
-                    break;
-            }
-        });
-
-        problems.addGeneratedColumn("problems", entity -> {
-
-            List<CheckList> checkList = entity.getChecklist();
-            StringBuilder itog = new StringBuilder();
-            for (CheckList object : checkList) {
-                if (!(object.getChecked() == null ? false : object.getChecked())) {
-                    String comment = object.getComment();
-                    if (comment == null) {
-                        continue;
-                    }
-                    itog.append(comment).append("\n");
+                    TabSheet.Tab tab = tabSheet.addTab(tabKey, createTab(step.getStage()));
+                    tab.setCaption(stageName);
                 }
             }
-
-            if (!"".equals(itog.toString())) {
-                String position = itog.toString();
-                if (position.length() < 15) {
-                    return new Table.PlainTextCell(position);
-                }
-                PopupView popupView = componentsFactory.createComponent(PopupView.class);
-                popupView.setMinimizedValue(position.substring(0, 10));
-                TextArea textArea = componentsFactory.createComponent(TextArea.class);
-                textArea.setEditable(false);
-                textArea.setWidth("200px");
-                textArea.setHeight("150px");
-                textArea.setValue(position);
-                popupView.setPopupContent(textArea);
-                return popupView;
-            }
-            return null;
-        });
-
-        problems.getColumn("problems").setMaxTextLength(5);
-        incomeEditAction.setAfterCommitHandler(entity -> refresh());
-        okEditAction.setAfterCommitHandler(entity -> refresh());
-        problemsEditAction.setAfterCommitHandler(entity -> refresh());
-
-        ((IssueDocumentDs)documentsIssueDs).setDocumentService(documentService);
-
-    }
-
-    private void refresh()
-    {
-        documentsIncomeDs.refresh();
-        documentsOkDs.refresh();
-        documentsProblemsDs.refresh();
-        documentsIssueDs.refresh();
-    }
-
-    //Add top 3 tags to window
-    private void fillTopTags(String mainHBoxId,HBoxLayout tagsContainer,CollectionDatasource<Tag, UUID> filteredTagsDs){
-        List<Tag> tags = documentService.requestTopTags();
-        tags.forEach((tag) -> {
-            LinkButton linkButton = componentsFactory.createComponent(LinkButton.class);
-            linkButton.setCaption(tag.getName());
-            Action action = new AbstractAction("tagClick") {
-                @Override
-                public void actionPerform(Component component) {
-                    filteredTagsDs.addItem(tag);
-                    applyFilter(mainHBoxId,filteredTagsDs);
-                }
-            };
-            linkButton.setAction(action);
-            tagsContainer.add(linkButton);
-        });
-
-
-    }
-
-    private String makeQueryString(Collection<UUID> coll){
-         String defaultQuery = "select d from cifra$Document d";
-         String filterQuery = defaultQuery;
-         Iterator it = coll.iterator();
-         while (it.hasNext()){
-             if(filterQuery.equals(defaultQuery)){
-                 filterQuery += " inner join d.tag tag where (d.docStatus = ':statusCode') and (tag.id = ':uuid')";
-             }
-
-             else {
-                 filterQuery = filterQuery.substring(0,filterQuery.length()-1);
-                 filterQuery += " or tag.id = ':uuid')";
-             }
-
-             filterQuery = filterQuery.replace(":uuid",it.next().toString());
-
-         }
-        if(filterQuery.indexOf("where") < 0)
-            filterQuery += " where d.docStatus = ':statusCode'";
-         return filterQuery;
-    }
-
-    public void onIssue(Component source) {
-        Set<Document> doc = ok.getSelected();
-        if(doc.size()>0){
-            String desc;
-            if(doc.size()>1)
-                desc=messages.getMessage(MessageEnum.DOCUMENT_ROD);
-            else
-                desc=messages.getMessage(MessageEnum.DOCUMENTS_ROD);
-            this.openLookup(Employee.class,
-                    e->{
-                        Employee emp = (Employee) e.toArray()[0];
-                        makeConfirmDialog(messages.getMessage(MessageEnum.DOCUMENT),messages.getMessage(MessageEnum.MAKE_ISSUE)+" "+desc+"?",()->{
-                            doc.forEach((item)->documentService.issueDocument(item, emp));
-                            refresh();
-                        });
-                    }, WindowManager.OpenType.DIALOG);
-
-        }
-        else{
-            showNotification(messages.getMessage(MessageEnum.SELECT_IN_TABLE), NotificationType.TRAY);
         }
     }
 
-    public void applyFilter(String hBoxId,CollectionDatasource<Tag, UUID> filteredTagsDs) {
-        String query = makeQueryString(filteredTagsDs.getItemIds());
-        switch (hBoxId){
-            case "incomeHBox":
-                query = query.replace(":statusCode",incomeStatus);
-                documentsIncomeDs.setQuery(query);
-                documentsIncomeDs.refresh();
-                break;
-
-            case "okHBox":
-                query = query.replace(":statusCode",okStatus);
-                documentsOkDs.setQuery(query);
-                documentsOkDs.refresh();
-                break;
-
-            case "problemsHBox":
-                query = query.replace(":statusCode",problemStatus);
-                documentsProblemsDs.setQuery(query);
-                documentsProblemsDs.refresh();
-                break;
-
-            case "issuedHBox":
-                query = query.replace(":statusCode",issueStatus);
-                documentsIssueDs.setQuery(query);
-                documentsIssueDs.refresh();
-                break;
-
-        }
-    }
-
-    public void onReturn(Component source) {
-
-        Set<Document> doc = issue.getSelected();
-        if(doc.size()>0){
-            String desc;
-            if(doc.size()>1) desc=messages.getMessage(MessageEnum.DOCUMENT_ROD);
-                 else desc=messages.getMessage(MessageEnum.DOCUMENTS_ROD);
-            makeConfirmDialog(messages.getMessage(MessageEnum.DOCUMENT),messages.getMessage(MessageEnum.MAKE_RETURN)+" "+desc+"?",()->{
-                doc.forEach((item)->documentService.returnDocument(item));
-                refresh();
-            });
-        }
-        else{
-            showNotification(messages.getMessage(MessageEnum.SELECT_IN_TABLE), NotificationType.TRAY);
-        }
-
-    }
-
-    private void makeConfirmDialog(String header,String content,SomeAction action){
-        String capitalHeader= header.substring(0, 1).toUpperCase() + header.substring(1);
-        String capitalContent= content.substring(0, 1).toUpperCase() + content.substring(1);
-        showOptionDialog(
-                capitalHeader,
-                capitalContent ,
-                MessageType.CONFIRMATION,
-                new Action[] {
-                        new DialogAction(DialogAction.Type.YES) {
-                            @Override
-                            public void actionPerform(Component component) {
-                              action.call();
+    //check what is current user is actor of this stage
+    private boolean isSatisfyByUser(Stage stage) {
+        if (stage != null) {
+            if (StageType.USERS_INTERACTION.equals(stage.getType())) {
+                if (!CollectionUtils.isEmpty(stage.getActorsRoles())) {
+                    if (!CollectionUtils.isEmpty(user.getUserRoles())) {
+                        for (UserRole ur : user.getUserRoles()) {
+                            if (stage.getActorsRoles().contains(ur.getRole())) {
+                                return true;
                             }
-                        },
-                        new DialogAction(DialogAction.Type.NO)
+                        }
+                    }
+                } else if (!CollectionUtils.isEmpty(stage.getActors())) {
+                    return stage.getActors().contains(user);
                 }
-        );
-    }
-
-    private void genTagFilterComponent(String mainHBoxId){
-        final HBoxLayout mainHBox = (HBoxLayout)getComponentNN(mainHBoxId);
-        CollectionDatasource<Tag, UUID> filteredTagsDs = new FilterTagsCollectionDatasource();
-
-        HBoxLayout tagsContainer = componentsFactory.createComponent(HBoxLayout.class);
-        tagsContainer.setSpacing(true);
-        tagsContainer.setMargin(true);
-
-        Label label = componentsFactory.createComponent(Label.class);
-        label.setValue("Фильтрация по тегам");
-
-        TokenList tokenList  = componentsFactory.createComponent(TokenList.class);
-        tokenList.setClearEnabled(false);
-        tokenList.setDatasource(filteredTagsDs);
-        tokenList.setWidth("100%");
-        tokenList.setOptionsDatasource(optionsTagsDs);
-        tokenList.setLookup(false);
-
-        Button button = componentsFactory.createComponent(Button.class);
-        button.setCaption("Применить");
-        button.setAction(new AbstractAction("approveClick") {
-            @Override
-            public void actionPerform(Component component) {
-                applyFilter(mainHBoxId,filteredTagsDs);
             }
+        }
+        return false;
+    }
+
+    private Component createTab(@Nullable Stage stage) {
+        return openFrame(null, "cifra$DocumentWorkflow.frame",
+                ParamsMap.of(DocumentWorkflowFrame.STAGE, stage,
+                        DocumentWorkflowFrame.WORKFLOW, activeWorkflow));
+    }
+
+    @Override
+    public void ready() {
+        super.ready();
+
+        initTabSelection();
+    }
+
+    private void initTabSelection() {
+        Element element = getSettings().get(tabSheet.getId());
+        String tabName = element.attributeValue("q_tab");
+        if (!StringUtils.isEmpty(tabName)) {
+            TabSheet.Tab tab = tabSheet.getTab(tabName);
+            if (tab != null) {
+                tabSheet.setSelectedTab(tab);
+            }
+        }
+
+        tabSheet.addSelectedTabChangeListener(event -> {
+            String currentTabName = event.getSelectedTab() == null ? null : event.getSelectedTab().getName();
+            element.addAttribute("q_tab", currentTabName);
         });
+    }
 
-        //Add top tags to tag container
-        fillTopTags(mainHBox.getId(),tagsContainer,filteredTagsDs);
+    //retrieve one active workflow for workflow entity
+    @Nullable
+    private Workflow getActiveWorkflow() {
+        String entityName = metadata.getClassNN(Document.class).getName();
+        List<Workflow> list = dataManager.loadList(LoadContext.create(Workflow.class)
+                .setQuery(new LoadContext.Query("select e from wfstp$Workflow e where " +
+                        "e.active = true and e.entityName = :entityName order by e.createTs asc")
+                        .setParameter("entityName", entityName))
+                .setView("workflow-browse"));
+        if (!CollectionUtils.isEmpty(list)) {
+            if (list.size() > 1) {
+                log.warn(String.format("In system existing two active workflow for entity '%s'. The first will be used", entityName));
+            }
+            return list.get(0);
+        }
+        return null;
+    }
 
-        mainHBox.add(label);
-        mainHBox.add(tokenList);
-        mainHBox.add(button);
-        mainHBox.add(tagsContainer);
+    //get current user
+    private User getUser() {
+        User user = userSessionSource.getUserSession().getCurrentOrSubstitutedUser();
+        if (user == null) {
+            throw new DevelopmentException(getMessage("documentsWorkflowBrowse.reloadedUserNotFound"));
+        }
+        user = dataManager.reload(user, "user-with-role");
+        if (user == null) {
+            throw new DevelopmentException(getMessage("documentsWorkflowBrowse.reloadedUserNotFound"));
+        }
+        return user;
     }
 }
 
-interface SomeAction{
-    void call();
-}
 

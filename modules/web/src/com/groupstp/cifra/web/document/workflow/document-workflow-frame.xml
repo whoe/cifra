@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
-        caption="msg://documentsWorkflowBrowse.caption"
-        class="com.groupstp.cifra.web.document.workflow.DocumentWorkflowBrowse"
-        focusComponent="documentsTable"
+        class="com.groupstp.cifra.web.document.workflow.DocumentWorkflowFrame"
         messagesPack="com.groupstp.cifra.web.document.workflow">
     <dsContext>
         <collectionDatasource id="documentDs"
@@ -19,15 +17,10 @@
         <table id="documentsTable"
                multiselect="true"
                width="100%">
-            <actions>
-                <action id="refresh"/>
-            </actions>
             <columns>
                 <column id="company"/>
                 <column id="division"/>
                 <column id="docType"/>
-                <column id="status"/>
-                <column id="stepName"/>
                 <column id="date"/>
                 <column id="contragent"/>
                 <column id="description"/>
@@ -45,10 +38,7 @@
             <rows datasource="documentDs"/>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
-                          alwaysVisible="true">
-                <button id="refreshBtnOk"
-                        action="documentsTable.refresh"/>
-            </buttonsPanel>
+                          alwaysVisible="true"/>
         </table>
     </layout>
 </window>

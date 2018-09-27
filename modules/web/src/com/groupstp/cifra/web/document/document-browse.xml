@@ -4,41 +4,12 @@
         class="com.groupstp.cifra.web.document.DocumentBrowse"
         messagesPack="com.groupstp.cifra.web.document">
     <dsContext>
-        <groupDatasource id="documentsIncomeDs"
+        <groupDatasource id="documentsDs"
                          class="com.groupstp.cifra.entity.Document"
                          view="document-view">
             <query>
                 <![CDATA[select e from cifra$Document e
 where e.docStatus=10]]>
-            </query>
-        </groupDatasource>
-        <groupDatasource id="documentsOkDs"
-                         class="com.groupstp.cifra.entity.Document"
-                         view="document-view">
-            <query>
-                <![CDATA[select e from cifra$Document e 
-where
-e.docStatus=20]]>
-            </query>
-        </groupDatasource>
-        <groupDatasource id="documentsProblemsDs"
-                         class="com.groupstp.cifra.entity.Document"
-                         view="document-view">
-            <query>
-                <![CDATA[select e from cifra$Document e 
-where
-e.docStatus=30]]>
-            </query>
-        </groupDatasource>
-        <groupDatasource id="documentsIssueDs"
-                         class="com.groupstp.cifra.entity.Document"
-                         datasourceClass="com.groupstp.cifra.web.document.IssueDocumentDs"
-                         loadDynamicAttributes="true"
-                         view="document-view">
-            <query>
-                <![CDATA[select e from cifra$Document e
-where
-e.docStatus=40]]>
             </query>
         </groupDatasource>
         <collectionDatasource id="tagsDs"
@@ -54,12 +25,12 @@ e.docStatus=40]]>
         <tabSheet id="tabs"
                   height="100%">
             <tab id="II"
-                 caption="msg://Income"
+                 caption="msg://Documents"
                  expand="income"
                  margin="true,false,false,false"
                  spacing="true">
                 <filter applyTo="income"
-                        datasource="documentsIncomeDs"/>
+                        datasource="documentsDs"/>
                 <hbox id="incomeHBox"
                       spacing="true"
                       width="70%"/>
@@ -85,8 +56,6 @@ e.docStatus=40]]>
                         <column id="description"/>
                         <column id="number"/>
                         <column id="dateLoad"/>
-                        <column id="problems"
-                                maxTextLength="5"/>
                         <column id="fixDue"/>
                         <column id="warehouse"/>
                         <column id="cell"/>
@@ -94,7 +63,7 @@ e.docStatus=40]]>
                         <column id="externalId"/>
                         <column id="direction"/>
                     </columns>
-                    <rows datasource="documentsIncomeDs"/>
+                    <rows datasource="documentsDs"/>
                     <rowsCount/>
                     <buttonsPanel id="buttonsPanel"
                                   alwaysVisible="true">
@@ -106,168 +75,6 @@ e.docStatus=40]]>
                                 action="income.remove"/>
                         <button id="refreshBtn"
                                 action="income.refresh"/>
-                    </buttonsPanel>
-                </groupTable>
-            </tab>
-            <tab id="tabOk"
-                 caption="msg://ok"
-                 expand="ok"
-                 margin="true,false,false,false"
-                 spacing="true">
-                <filter id="filter_1"
-                        applyTo="ok"
-                        datasource="documentsOkDs">
-                    <properties include=".*"/>
-                </filter>
-                <hbox id="okHBox"
-                      spacing="true"
-                      width="70%"/>
-                <groupTable id="ok"
-                            multiselect="true"
-                            width="100%">
-                    <actions>
-                        <action id="edit"
-                                openType="DIALOG"/>
-                        <action id="remove"/>
-                        <action id="refresh"/>
-                        <action id="issue"
-                                invoke="onIssue"/>
-                    </actions>
-                    <columns>
-                        <group>
-                            <column id="docType"/>
-                            <column id="company"/>
-                            <column id="division"/>
-                            <column id="contragent"/>
-                        </group>
-                        <column id="description"/>
-                        <column id="number"/>
-                        <column id="date"/>
-                        <column id="dateLoad"/>
-                        <column id="problems"/>
-                        <column id="fixDue"/>
-                        <column id="warehouse"/>
-                        <column id="cell"/>
-                        <column id="externalLink"/>
-                        <column id="externalId"/>
-                        <column id="direction"/>
-                    </columns>
-                    <rows datasource="documentsOkDs"/>
-                    <rowsCount/>
-                    <buttonsPanel id="buttonspanelOk"
-                                  alwaysVisible="true">
-                        <button id="editBtnOk"
-                                action="ok.edit"/>
-                        <button id="removeBtnOk"
-                                action="ok.remove"/>
-                        <button id="refreshBtnOk"
-                                action="ok.refresh"/>
-                        <button id="issueBtnOk"
-                                action="ok.issue"
-                                caption="Выдать документ"/>
-                    </buttonsPanel>
-                </groupTable>
-            </tab>
-            <tab id="tabProblems"
-                 caption="msg://Problems"
-                 expand="problems"
-                 margin="true,false,false,false"
-                 spacing="true">
-                <filter id="filter_2"
-                        applyTo="ok"
-                        datasource="documentsOkDs">
-                    <properties include=".*"/>
-                </filter>
-                <hbox id="problemsHBox"
-                      spacing="true"
-                      width="70%"/>
-                <groupTable id="problems"
-                            multiselect="true"
-                            width="100%">
-                    <actions>
-                        <action id="edit"
-                                openType="DIALOG"/>
-                        <action id="remove"/>
-                        <action id="refresh"/>
-                        <action id="issue"
-                                caption="Issue document"
-                                invoke="onIssue"/>
-                    </actions>
-                    <columns>
-                        <column id="gotOriginal"/>
-                        <column id="description"/>
-                        <column id="number"/>
-                        <column id="date"/>
-                        <column id="dateLoad"/>
-                        <column id="problems"/>
-                        <column id="fixDue"/>
-                        <column id="warehouse"/>
-                        <column id="cell"/>
-                        <column id="externalLink"/>
-                        <column id="externalId"/>
-                        <column id="direction"/>
-                    </columns>
-                    <rows datasource="documentsProblemsDs"/>
-                    <rowsCount/>
-                    <buttonsPanel id="buttonspanelProblems"
-                                  alwaysVisible="true">
-                        <button id="editBtnProblems"
-                                action="problems.edit"/>
-                        <button id="removeBtnProblems"
-                                action="problems.remove"/>
-                        <button id="refreshBtnProblems"
-                                action="problems.refresh"/>
-                    </buttonsPanel>
-                </groupTable>
-            </tab>
-            <tab id="tabIssued"
-                 caption="msg://Issued"
-                 description="msg://Issued"
-                 expand="issue"
-                 lazy="true"
-                 margin="true,false,false,false"
-                 spacing="true">
-                <filter id="filter_3"
-                        applyTo="ok"
-                        datasource="documentsIssueDs">
-                    <properties include=".*"/>
-                </filter>
-                <hbox id="issuedHBox"
-                      spacing="true"
-                      width="70%"/>
-                <groupTable id="issue"
-                            multiselect="true"
-                            width="100%">
-                    <actions>
-                        <action id="refresh"/>
-                        <action id="returnDocument"
-                                caption="Return document"
-                                invoke="onReturn"/>
-                    </actions>
-                    <columns>
-                        <column id="destination"
-                                caption="msg://Destination"/>
-                        <column id="cell"/>
-                        <column id="gotOriginal"/>
-                        <column id="description"/>
-                        <column id="number"/>
-                        <column id="date"/>
-                        <column id="dateLoad"/>
-                        <column id="problems"/>
-                        <column id="fixDue"/>
-                        <column id="externalLink"/>
-                        <column id="externalId"/>
-                        <column id="direction"/>
-                    </columns>
-                    <rows datasource="documentsIssueDs"/>
-                    <rowsCount/>
-                    <buttonsPanel id="buttonspanelIssue"
-                                  alwaysVisible="true">
-                        <button id="refreshBtnIssue"
-                                action="issue.refresh"/>
-                        <button id="returnBtnIssue"
-                                action="issue.returnDocument"
-                                caption="msg://Return document"/>
                     </buttonsPanel>
                 </groupTable>
             </tab>
