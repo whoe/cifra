@@ -26,14 +26,11 @@
                 <column id="description"/>
                 <column id="number"/>
                 <column id="dateLoad"/>
-                <column id="problems"
-                        maxTextLength="5"/>
                 <column id="fixDue"/>
                 <column id="warehouse"/>
                 <column id="cell"/>
-                <column id="externalLink"/>
-                <column id="externalId"/>
                 <column id="direction"/>
+                <column id="externalLink"/>
             </columns>
             <rows datasource="documentDs"/>
             <rowsCount/>

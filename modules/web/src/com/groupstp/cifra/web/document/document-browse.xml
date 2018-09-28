@@ -59,11 +59,10 @@ where e.docStatus=10]]>
                         <column id="fixDue"/>
                         <column id="warehouse"/>
                         <column id="cell"/>
-                        <column id="externalLink"/>
-                        <column id="externalId"/>
                         <column id="direction"/>
                         <column id="status"/>
                         <column id="stepName"/>
+                        <column id="externalLink"/>
                     </columns>
                     <rows datasource="documentsDs"/>
                     <rowsCount/>

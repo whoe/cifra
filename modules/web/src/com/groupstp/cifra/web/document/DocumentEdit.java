@@ -7,7 +7,9 @@ import com.groupstp.workflowstp.entity.StepDirection;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
+import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.EntityStates;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
@@ -17,6 +19,7 @@ import com.haulmont.cuba.gui.data.impl.CollectionPropertyDatasourceImpl;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import com.haulmont.cuba.web.gui.components.WebLabel;
+import com.sun.org.apache.xerces.internal.impl.validation.EntityState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -134,8 +137,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
         fileAttachedWhenFrameWasOpened = getItem().getFile() != null;
         checkListStateWhenFrameWasOpened = getCheckListStatus();
 
-        initializeCheckListIfNeeded();
-        initializeWorkflowIfNeeded();
+        checkAndInitializeEmptyFields();
 
         refreshLabelCurrentWorkflowStage();
 
@@ -235,24 +237,28 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     /**
      * fill empty checklist after document was open first time
-     */
-    private void initializeCheckListIfNeeded() {
-        if (checklistDs.getItems().size() == 0) {
-            List<CheckList> items = checkListService.fillCheckList(getItem());
-            items.forEach(checklistDs::addItem);
-        }
-    }
-
-    /**
      * start workflow after document was open first time
      */
+    private void checkAndInitializeEmptyFields() {
 
-    private void initializeWorkflowIfNeeded() {
+        Document document = getItem();
+
+        EntityStates entityStates = AppBeans.get(EntityStates.class);
+        if (entityStates.isNew(document)) {
+            return;
+        }
+
         Workflow activeWorkflow = workflowService.getActiveWorkflow();
-        if (workflowService.loadTasks(getItem(), activeWorkflow).size() == 0) {
-            workflowRunProcessing(activeWorkflow, getItem());
+        if (workflowService.loadTasks(document, activeWorkflow).size() == 0) {
+            workflowRunProcessing(activeWorkflow, document);
             documentDs.refresh();
         }
+
+        if (checklistDs.getItems().size() == 0) {
+            List<CheckList> items = checkListService.fillCheckList(document);
+            items.forEach(checklistDs::addItem);
+        }
+
     }
 
     /**
