@@ -4,6 +4,7 @@ import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskStatus;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.WindowParam;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
@@ -16,10 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static com.groupstp.cifra.web.tasks.task.TaskList.CONTROLTASK;
 import static com.groupstp.cifra.web.tasks.task.TaskList.MYTASK;
@@ -196,4 +194,14 @@ public class TaskListFrame extends AbstractFrame {
             }
         });
     }
+
+    /**
+     * open document for current selected task
+     */
+    public void onOpenDocumentClick() {
+        Iterator<Task> currentTaskIterator = tasksTable.getSelected().iterator();
+        if (currentTaskIterator.hasNext()) {
+            openEditor(currentTaskIterator.next().getTaskableEntity(), WindowManager.OpenType.NEW_WINDOW);
+        }
+     }
 }

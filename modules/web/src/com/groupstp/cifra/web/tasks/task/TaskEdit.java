@@ -8,6 +8,7 @@ import com.groupstp.cifra.entity.tasks.TaskableEntity;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.security.entity.User;
 
@@ -67,5 +68,12 @@ public class TaskEdit extends AbstractEditor<Task> {
             ((PickerField) fieldGroup.getComponent("author")).setValue(currentEmployee);
 
         }
+    }
+
+    /**
+     * open document for current task
+     */
+    public void onOpenDocumentClick() {
+        openEditor(((PickerField) fieldGroup.getComponent("taskableEntity")).getValue(), WindowManager.OpenType.NEW_WINDOW);
     }
 }

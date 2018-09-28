@@ -51,6 +51,10 @@
                         action="tasksTable.edit"/>
                 <button id="removeBtn"
                         action="tasksTable.remove"/>
+                <button id="openDocument"
+                        caption="msg://document"
+                        icon="ENVELOPE"
+                        invoke="onOpenDocumentClick"/>
             </buttonsPanel>
         </groupTable>
     </layout>

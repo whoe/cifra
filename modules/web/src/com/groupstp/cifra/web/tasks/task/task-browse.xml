@@ -34,7 +34,7 @@
                 <column id="controlNeeded"/>
                 <column id="author"/>
                 <column id="performer"/>
-                <column id="taskableEntityName"/>
+                <column id="taskableEntity"/>
                 <column id="comment"/>
             </columns>
             <rows datasource="tasksDs"/>
