@@ -44,9 +44,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
     @Inject
     private CheckListService checkListService;
 
-    @Inject
-    private DocumentService documentService;
-
     @Named("fieldGroup.docType")
     private PickerField docType;
 
@@ -78,7 +75,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
     @Override
     protected void initNewItem(Document item) {
         super.initNewItem(item);
-        item.setDocStatus(DocStatus.NEW);
     }
 
     @Override
@@ -422,17 +418,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
             }
         }
         return false;
-    }
-
-    public void onArchive(Component ignore) {
-        ChooseWarehouseCell dialog = (ChooseWarehouseCell) openWindow("chooseWarehouseCell", WindowManager.OpenType.DIALOG);
-        dialog.addCloseWithCommitListener(() -> {
-            Document doc = getItem();
-            doc.setWarehouse(dialog.getWarehouse().getValue());
-            doc.setCell(dialog.getCell().getValue());
-            documentService.ArchiveDocument(doc);
-            documentDs.refresh();
-        });
     }
 
     public void onOkBtnClick(Component ignore) {

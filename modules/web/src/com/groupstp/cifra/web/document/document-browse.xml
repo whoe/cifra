@@ -8,8 +8,7 @@
                          class="com.groupstp.cifra.entity.Document"
                          view="document-view">
             <query>
-                <![CDATA[select e from cifra$Document e
-where e.docStatus=10]]>
+                <![CDATA[select e from cifra$Document e]]>
             </query>
         </groupDatasource>
         <collectionDatasource id="tagsDs"

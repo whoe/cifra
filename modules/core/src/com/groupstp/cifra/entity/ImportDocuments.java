@@ -41,7 +41,6 @@ public class ImportDocuments extends Import{
     @Override
     void insert(String id, JsonObject o) throws Exception {
         Document doc = AppBeans.get(Metadata.class).create(Document.class);
-        doc.setDocStatus(DocStatus.NEW);
         doc.setExternalId(o.get("ВнешнийID").getAsString());
         doc.setDocType(DocType.findType(o.get("ПечатнаяФорма").getAsString()));
         doc.setDate(new Date());

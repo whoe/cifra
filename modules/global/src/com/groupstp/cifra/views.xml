@@ -32,7 +32,6 @@
         <property name="description"/>
         <property name="number"/>
         <property name="date"/>
-        <property name="docStatus"/>
         <property name="warehouse"
                   view="_minimal"/>
         <property name="dateLoad"/>

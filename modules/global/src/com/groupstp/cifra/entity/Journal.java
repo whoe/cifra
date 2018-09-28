@@ -56,15 +56,6 @@ public class Journal extends StandardEntity {
         this.doc.add(document);
     }
 
-    public void setPreviousStatus(DocStatus previousStatus) {
-        this.previousStatus = previousStatus == null ? null : previousStatus.getId();
-    }
-
-    public DocStatus getPreviousStatus() {
-        return previousStatus == null ? null : DocStatus.fromId(previousStatus);
-    }
-
-
     public void setCell(String cell) {
         this.cell = cell;
     }

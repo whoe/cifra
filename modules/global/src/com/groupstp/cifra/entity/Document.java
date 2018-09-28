@@ -1,5 +1,6 @@
 package com.groupstp.cifra.entity;
 
+import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskableEntity;
 import com.groupstp.workflowstp.entity.WorkflowEntity;
 import com.groupstp.workflowstp.entity.WorkflowEntityStatus;
@@ -8,7 +9,6 @@ import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.entity.StandardEntity;
-import com.haulmont.cuba.core.entity.annotation.Listeners;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
@@ -20,18 +20,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import com.groupstp.cifra.entity.tasks.Task;
 
-@Listeners("cifra_DocumentListener")
 @NamePattern("%s %s %s|number,date,description")
 @Table(name = "CIFRA_DOCUMENT")
 @Entity(name = "cifra$Document")
 public class Document extends StandardEntity implements WorkflowEntity<UUID>, TaskableEntity {
     private static final long serialVersionUID = -5504376796832237678L;
-
-    @NotNull
-    @Column(name = "DOC_STATUS", nullable = false)
-    protected Integer docStatus;
 
     @JoinTable(name = "CIFRA_DOCUMENT_TAG_LINK",
         joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
@@ -202,11 +196,6 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
     }
 
 
-    public void setDocStatus(DocStatus docStatus) {
-        this.docStatus = docStatus == null ? null : docStatus.getId();
-    }
-
-
     public void setContragent(Contragent contragent) {
         this.contragent = contragent;
     }
@@ -231,12 +220,6 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
     public Division getDivision() {
         return division;
     }
-
-
-    public DocStatus getDocStatus() {
-        return docStatus == null ? null : DocStatus.fromId(docStatus);
-    }
-
 
     public DocType getDocType() {
         return docType;
@@ -343,7 +326,6 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
         this.destination = destination;
     }
 
-    //workflowmodule module
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
@@ -351,7 +333,6 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
     public List<Task> getTasks() {
         return tasks;
     }
-
 
 
     @Override
