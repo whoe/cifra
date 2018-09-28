@@ -15,9 +15,8 @@ create table TASKS_TASK (
     CONTROL boolean,
     AUTHOR_ID uuid not null,
     PERFORMER_ID uuid not null,
-    TASKABLE_ENTITY_ID varchar(255) not null,
-    TASKABLE_ENTITY_NAME varchar(255) not null,
     COMMENT_ text,
+    DOCUMENT_ID uuid not null,
     --
     primary key (ID)
 );

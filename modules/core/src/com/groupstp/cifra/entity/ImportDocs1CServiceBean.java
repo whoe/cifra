@@ -26,12 +26,11 @@ public class ImportDocs1CServiceBean implements ImportDocs1CService {
     private DataManager dataManager;
 
     @Override
-    public void ImportDocs1C(String url, String pass) throws Exception {
+    public void ImportDocs1C(String url, String pass, Date dateStart, Date dateEnd) throws Exception {
         HashMap<String, String> params = new HashMap<>();
-        Date today = new Date();
-        params.put("dateStart", String.format("%1$tY%1$tm%1$td", today));
-        params.put("dateEnd", String.format("%1$tY%1$tm%1$td", today));
-        JsonArray data = (JsonArray) sync1CService.getData1C(url+"cifra", pass);
+        params.put("dateStart", String.format("%1$tY%1$tm%1$td", dateStart));
+        params.put("dateEnd", String.format("%1$tY%1$tm%1$td", dateEnd));
+        JsonArray data = (JsonArray) sync1CService.getData1C(url+"cifra", pass, params);
         Import imp = new ImportDocuments();
         for (JsonElement e: data) {
             JsonObject o = e.getAsJsonObject();
