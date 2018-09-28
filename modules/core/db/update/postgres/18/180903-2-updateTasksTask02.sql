@@ -1,2 +1,0 @@
-alter table TASKS_TASK add constraint FK_TASKS_TASK_ON_PERFORMER foreign key (PERFORMER_ID) references CIFRA_EMPLOYEE(ID);
-create index IDX_TASKS_TASK_ON_PERFORMER on TASKS_TASK (PERFORMER_ID);

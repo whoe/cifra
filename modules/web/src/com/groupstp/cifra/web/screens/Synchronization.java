@@ -2,14 +2,12 @@ package com.groupstp.cifra.web.screens;
 
 import com.groupstp.cifra.entity.ImportDocs1CService;
 import com.groupstp.cifra.entity.Sync1CService;
-import com.haulmont.cuba.gui.components.AbstractFrame;
-import com.haulmont.cuba.gui.components.ResizableTextArea;
+import com.haulmont.cuba.core.global.TimeSource;
+import com.haulmont.cuba.gui.components.*;
 
 import javax.inject.Inject;
 import javax.xml.bind.Element;
 
-import com.haulmont.cuba.gui.components.AbstractWindow;
-import com.haulmont.cuba.gui.components.TextField;
 import com.haulmont.cuba.gui.settings.Settings;
 
 import java.io.IOException;
@@ -25,9 +23,18 @@ public class Synchronization extends AbstractWindow {
     @Inject
     private TextField txtPass;
 
+    @Inject
+    private TextField txtUrl;
+
+    @Inject
+    private DateField dateEnd;
+    @Inject
+    private DateField dateStart;
+
     public void onTestSyncClick() throws Exception {
-            importDocs1CService.ImportCompanies1C("http://stpserver.groupstp.ru:1805/accnt2016/", txtPass.getRawValue());
-            importDocs1CService.ImportDocs1C("http://stpserver.groupstp.ru:1805/accnt2016/", txtPass.getRawValue());
+            importDocs1CService.ImportCompanies1C(txtUrl.getRawValue(), txtPass.getRawValue());
+            importDocs1CService.ImportDocs1C(txtUrl.getRawValue(), txtPass.getRawValue(), dateStart.getValue(), dateEnd.getValue());
+            // http://stpserver.groupstp.ru:1805/accnt2016/
     }
 
     /**
@@ -37,8 +44,23 @@ public class Synchronization extends AbstractWindow {
     public void saveSettings() {
         org.dom4j.Element x = getSettings().get(this.getId());
         x.addAttribute("value", txtPass.getRawValue());
+        x.addAttribute("url", txtUrl.getRawValue());
         getSettings().setModified(true);
         super.saveSettings();
+    }
+
+    @Inject
+    private TimeSource timeSource;
+
+    /**
+     * Hook to be implemented in subclasses. <br>
+     * Called by the framework after the screen is fully initialized and opened. <br>
+     * Override this method and put custom initialization logic here.
+     */
+    @Override
+    public void ready() {
+        dateStart.setValue(timeSource.currentTimestamp());
+        dateEnd.setValue(timeSource.currentTimestamp());
     }
 
     /**
@@ -60,5 +82,6 @@ public class Synchronization extends AbstractWindow {
     public void applySettings(Settings settings) {
         super.applySettings(settings);
         txtPass.setValue(settings.get(this.getId()).attributeValue("value"));
+        txtUrl.setValue(settings.get(this.getId()).attributeValue("url"));
     }
 }
