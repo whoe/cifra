@@ -62,37 +62,6 @@
         <property name="item"
                   view="_minimal"/>
     </view>
-    <view class="com.groupstp.cifra.entity.Document"
-          extends="_local"
-          name="document-view_1">
-        <property name="warehouse"
-                  view="_minimal"/>
-        <property name="tag"
-                  view="_minimal"/>
-        <property name="checklist"
-                  view="_minimal"/>
-        <property name="docType"
-                  view="_minimal"/>
-        <property name="contragent"
-                  view="_minimal"/>
-        <property name="company"
-                  view="_minimal"/>
-        <property name="division"
-                  view="_minimal"/>
-        <property name="file"
-                  view="_minimal"/>
-        <property name="problems"/>
-        <property name="fixDue"/>
-        <property name="externalId"/>
-        <property name="cell"/>
-        <property name="date"/>
-        <property name="externalLink"/>
-        <property name="description"/>
-        <property name="number"/>
-        <property name="docStatus"/>
-        <property name="dateLoad"/>
-        <property name="gotOriginal"/>
-    </view>
     <view class="com.groupstp.cifra.entity.Contragent"
           extends="_local"
           name="contragent-view"/>
