@@ -28,12 +28,15 @@ public class CheckListServiceBean implements CheckListService {
         Preconditions.checkNotNullArgument(doc);
 
         DocType dt = doc.getDocType();
+        List<CheckList> newItems = new ArrayList<>();
+        if(dt==null)
+            return newItems;
+
         LoadContext<CheckListItems> checkListItemsLoadContext = new LoadContext<>(CheckListItems.class);
         checkListItemsLoadContext.setQueryString("select i from cifra$CheckListItems i where i.docType.id=:dt")
                 .setParameter("dt", dt.getId());
         List<CheckListItems> items = dataManager.loadList(checkListItemsLoadContext);
 
-        List<CheckList> newItems = new ArrayList<>();
         for (CheckListItems item : items) {
             CheckList newitem = metadata.create(CheckList.class);
             newitem.setDocument(doc);
