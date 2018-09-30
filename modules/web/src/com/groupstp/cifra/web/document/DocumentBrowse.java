@@ -52,9 +52,6 @@ public class DocumentBrowse extends AbstractLookup {
     private BoxLayout tagsContainer;
 
     @Inject
-    CollectionDatasource<Document, UUID> documentsDs;
-
-    @Inject
     private UserSessionSource userSessionSource;
 
     private Workflow activeWorkflow;

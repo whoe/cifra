@@ -2,7 +2,9 @@ package com.groupstp.cifra.web.document;
 
 import com.groupstp.cifra.Utils;
 import com.groupstp.cifra.WorkflowProcessService;
-import com.groupstp.cifra.entity.*;
+import com.groupstp.cifra.entity.CheckList;
+import com.groupstp.cifra.entity.CheckListService;
+import com.groupstp.cifra.entity.Document;
 import com.groupstp.workflowstp.entity.StepDirection;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
@@ -10,7 +12,6 @@ import com.groupstp.workflowstp.exception.WorkflowException;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.EntityStates;
-import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.data.Datasource;
@@ -158,6 +159,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     HashMap<String, String> map = buildParametersMapWorkflow();
                     map.put("doc_issued", "true");
                     workflowService.finishTask(task, map);
+                    notifyUser();
                 } catch (Exception e) {
                     throw new RuntimeException("Ошибка обработки заявки", e);
                 } finally {
@@ -187,6 +189,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     HashMap<String, String> map = buildParametersMapWorkflow();
                     map.put("doc_eliminated", "true");
                     workflowService.finishTask(task, map);
+                    notifyUser();
                 } catch (Exception e) {
                     throw new RuntimeException("Ошибка обработки заявки", e);
                 } finally {
@@ -222,6 +225,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     map = buildParametersMapWorkflow();
                     map.put("doc_flow_incoming", "false");
                     workflowService.finishTask(task, map);
+                    notifyUser();
                 } catch (Exception e) {
                     throw new RuntimeException("Ошибка обработки заявки", e);
                 } finally {
@@ -229,6 +233,15 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 }
             }
         });
+    }
+
+    /**
+     * Send notification about change step of Workflow
+     */
+    private void notifyUser() {
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(getItem(), workflowService.getActiveWorkflow());
+        String message = String.format(getMessage("hasWorkflowStepIteration") + ": %s", tasks.get(tasks.size() - 1).getStep().getStage().getName());
+        showNotification(message, NotificationType.TRAY);
     }
 
     /**
@@ -247,6 +260,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
         Workflow activeWorkflow = workflowService.getActiveWorkflow();
         if (workflowService.loadTasks(document, activeWorkflow).size() == 0) {
             workflowRunProcessing(activeWorkflow, document);
+            notifyUser();
             documentDs.refresh();
         }
 
@@ -337,6 +351,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
         HashMap<String, String> map = buildParametersMapWorkflow();
         WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
         workflowService.finishTask(task, map);
+        notifyUser();
     }
 
     /**
@@ -420,22 +435,35 @@ public class DocumentEdit extends AbstractEditor<Document> {
         return false;
     }
 
+    /**
+     * Action on Ok button (commit and close screen)
+     *
+     * @param ignore
+     */
     public void onOkBtnClick(Component ignore) {
+        if (checkCheckListFilledOrHasCommentary()) {
+            commitAndClose();
+        }
+    }
+
+    /**
+     * contain business logic. Checklist's all fields must be checked up or has commentary
+     *
+     * @return true, if conditions are satisfied, false - otherwise
+     */
+    private boolean checkCheckListFilledOrHasCommentary() {
         Boolean gotOriginal = getItem().getGotOriginal() == null ? false : getItem().getGotOriginal();
         if (gotOriginal) {
-
             for (CheckList object : checklistDs.getItems()) {
                 Boolean checked = object.getChecked() == null ? false : object.getChecked();
                 Boolean commented = object.getComment() != null;
                 if (!checked && !commented) {
                     showNotification("Введите комментарии в чек-лист");
-                    return;
+                    return false;
                 }
             }
-            commitAndClose();
-        } else {
-            commitAndClose();
         }
+        return true;
     }
 
     public void onCancelBtnClick(Component ignore) {

@@ -28,6 +28,7 @@
             <actions>
                 <action id="edit"/>
                 <action id="remove"/>
+                <action id="refresh"/>
             </actions>
             <columns>
                 <group>
@@ -51,6 +52,8 @@
                         action="tasksTable.edit"/>
                 <button id="removeBtn"
                         action="tasksTable.remove"/>
+                <button id="refreshBtn"
+                        action="tasksTable.refresh"/>
                 <button id="openDocument"
                         caption="msg://document"
                         icon="ENVELOPE"
