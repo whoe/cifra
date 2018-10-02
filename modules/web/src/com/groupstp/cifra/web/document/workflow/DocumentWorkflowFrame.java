@@ -2,25 +2,26 @@ package com.groupstp.cifra.web.document.workflow;
 
 import com.groupstp.cifra.entity.Document;
 import com.groupstp.cifra.web.document.DocumentEdit;
+import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.groupstp.workflowstp.entity.Stage;
 import com.groupstp.workflowstp.entity.StageType;
 import com.groupstp.workflowstp.entity.Workflow;
-import com.groupstp.workflowstp.exception.WorkflowException;
-import com.groupstp.workflowstp.service.WorkflowService;
-import com.haulmont.chile.core.model.MetaPropertyPath;
 import com.haulmont.cuba.core.global.Scripting;
-import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.WindowParam;
-import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.gui.components.actions.*;
+import com.haulmont.cuba.gui.components.AbstractFrame;
+import com.haulmont.cuba.gui.components.Button;
+import com.haulmont.cuba.gui.components.ButtonsPanel;
+import com.haulmont.cuba.gui.components.Table;
+import com.haulmont.cuba.gui.components.actions.EditAction;
+import com.haulmont.cuba.gui.components.actions.RefreshAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
-import com.haulmont.cuba.gui.icons.CubaIcon;
+import com.haulmont.cuba.gui.events.UiEvent;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ import java.util.UUID;
  * This frame using for create view for each stage of workflow
  *
  */
-public class DocumentWorkflowFrame extends AbstractFrame {
+public class DocumentWorkflowFrame extends AbstractFrame implements UiEvent {
     private static final Logger log = LoggerFactory.getLogger(DocumentWorkflowFrame.class);
 
     public static final String STAGE = "stage";

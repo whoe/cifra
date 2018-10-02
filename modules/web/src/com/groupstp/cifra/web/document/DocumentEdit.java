@@ -10,7 +10,10 @@ import com.groupstp.workflowstp.entity.StepDirection;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
-import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.core.global.AppBeans;
+import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.EntityStates;
+import com.haulmont.cuba.core.global.Security;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.data.Datasource;
@@ -18,8 +21,8 @@ import com.haulmont.cuba.gui.data.DsContext;
 import com.haulmont.cuba.gui.data.impl.CollectionPropertyDatasourceImpl;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
+import com.haulmont.cuba.security.entity.EntityOp;
 import com.haulmont.cuba.web.gui.components.WebLabel;
-import com.sun.org.apache.xerces.internal.impl.validation.EntityState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -134,8 +137,8 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
             Document savedDocument = (Document) result.stream().filter(entity -> entity.getClass() == Document.class).findFirst().get();
 
-
             workflowRunProcessing(workflow, savedDocument);
+            CifraUiEvent.push("documentCommitted");
 
         });
     }
@@ -454,6 +457,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * @param ignore
      */
     public void onOkBtnClick(Component ignore) {
+        CifraUiEvent.push("documentCommitted");
         if (checkCheckListFilledOrHasCommentary()) {
             commitAndClose();
         }
@@ -480,6 +484,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
     }
 
     public void onCancelBtnClick(Component ignore) {
+        CifraUiEvent.push("documentCommitted");
         this.close("close");
     }
 
