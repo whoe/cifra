@@ -5,13 +5,12 @@ import com.groupstp.cifra.WorkflowProcessService;
 import com.groupstp.cifra.entity.CheckList;
 import com.groupstp.cifra.entity.CheckListService;
 import com.groupstp.cifra.entity.Document;
+import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.groupstp.workflowstp.entity.StepDirection;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
-import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.EntityStates;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.data.Datasource;
@@ -104,8 +103,21 @@ public class DocumentEdit extends AbstractEditor<Document> {
         company.addOpenAction();
         company.addClearAction();
 
+        checkReadOnlyUserAccess();
         addListenerForStartingWorkflow();
 
+    }
+
+    /**
+     * if user's access is "check only" make some components are inaccessible
+     */
+    private void checkReadOnlyUserAccess() {
+        Security security = AppBeans.get(Security.class);
+        if (!security.isEntityOpPermitted(Document.class, EntityOp.CREATE)) {
+            getComponent("checkListDataGrid").setEnabled(false);
+            getComponent("fieldGroup.tag").setEnabled(false);
+
+        }
     }
 
     /**
@@ -314,6 +326,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     tasks = workflowService.loadTasks(document, workflow);
                     continueWorkflow(tasks);
                 }
+                notifyUser();
                 return;
             }
 

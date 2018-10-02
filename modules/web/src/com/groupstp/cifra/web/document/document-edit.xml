@@ -88,8 +88,6 @@
                 <field property="cell"/>
             </column>
         </fieldGroup>
-        <buttonsPanel id="buttonsPanel">
-        </buttonsPanel>
         <buttonsPanel id="workflowButtonsPanel">
             <label id="labelCurrentWorkflowStage"
                    stylename="bold"/>
