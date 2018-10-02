@@ -1,10 +1,13 @@
 package com.groupstp.cifra.web.tasks.tasktemplate;
 
+import com.groupstp.cifra.entity.Document;
 import com.groupstp.cifra.entity.tasks.TaskTemplate;
 import com.groupstp.cifra.entity.tasks.TaskTypical;
 import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.cuba.core.entity.Entity;
+import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.Security;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.WindowParams;
 import com.haulmont.cuba.gui.components.Action;
@@ -12,6 +15,7 @@ import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.EntityCombinedScreen;
 import com.haulmont.cuba.gui.components.Table;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
+import com.haulmont.cuba.security.entity.EntityOp;
 import com.haulmont.cuba.web.gui.components.WebTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +65,12 @@ public class TaskTemplateBrowse extends EntityCombinedScreen {
 
     }
 
+    @Override
+    public void ready() {
+        super.ready();
+
+    }
+
     /**
      * Change active workspace from left(template's table) to right(typical tasks) and back
      *
@@ -73,6 +83,10 @@ public class TaskTemplateBrowse extends EntityCombinedScreen {
 
         getComponent("lookupBox").setEnabled(!flag);
         getComponent("editBox").setEnabled(flag);
+
+        boolean entityOpPermitted = AppBeans.get(Security.class).isEntityOpPermitted(TaskTemplate.class, EntityOp.UPDATE);
+        getComponent("taskTypicalTable").setEnabled(entityOpPermitted);
+        getComponent("save").setEnabled(entityOpPermitted);
 
 
         taskTypicalTable.getDatasource().refresh();
