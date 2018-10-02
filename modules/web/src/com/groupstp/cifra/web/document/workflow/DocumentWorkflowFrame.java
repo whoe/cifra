@@ -40,33 +40,37 @@ public class DocumentWorkflowFrame extends AbstractFrame implements UiEvent {
     public static final String WORKFLOW = "workflow";
 
     @Inject
-    protected WorkflowService service;
+    private ComponentsFactory componentsFactory;
     @Inject
-    protected ComponentsFactory componentsFactory;
-    @Inject
-    protected UserSessionSource userSessionSource;
-    @Inject
-    protected Scripting scripting;
+    private Scripting scripting;
 
     @Inject
-    protected CollectionDatasource<Document, UUID> documentDs;
+    private CollectionDatasource<Document, UUID> documentDs;
     @Inject
-    protected Table<Document> documentsTable;
+    private Table<Document> documentsTable;
     @Inject
     protected ButtonsPanel buttonsPanel;
 
     @WindowParam(name = STAGE)
-    protected Stage stage;
+    private Stage stage;
 
     @WindowParam(name = WORKFLOW)
-    protected Workflow workflow;
+    private Workflow workflow;
+
+    @EventListener
+    public void onCifraUiEvent(CifraUiEvent event) {
+        showNotification("Event captured", NotificationType.HUMANIZED);
+        if ("documentCommitted".equals(event.getSource())) {
+            documentDs.refresh();
+        }
+    }
 
     @Override
     public void init(Map<String, Object> params) {
         super.init(params);
 
         initSqlQuery();
-        initStageTableBehaviour();
+        initStageQueriesView();
         initWorkflowExtension();
     }
 
@@ -76,176 +80,6 @@ public class DocumentWorkflowFrame extends AbstractFrame implements UiEvent {
         sqlQuery = sqlQuery + "where e.stepName = '" + stage.getName() + "'";
         documentDs.setQuery(sqlQuery);
         documentDs.refresh();
-    }
-
-    //setup actions which depends on workflow stage
-    private void initStageTableBehaviour() {
-        if (stage == null) {
-            initMyQueriesView();
-        } else {
-            initStageQueriesView();
-        }
-
-        EditAction editAction = (EditAction) documentsTable.getAction(EditAction.ACTION_ID);
-        if (editAction != null) {//after editing refresh table
-            editAction.setAfterCommitHandler(entity -> documentDs.refresh());
-        }
-    }
-
-    //Table view for 'My queries' tab
-    private void initMyQueriesView() {
-        //add additional columns
-        MetaPropertyPath path = documentDs.getMetaClass().getPropertyPath("status");
-        Table.Column column = new Table.Column(path, "status");
-        //noinspection ConstantConditions
-        column.setType(path.getRangeJavaClass());
-        column.setCaption(messages.getMessage(Document.class, "Document.status"));
-        documentsTable.addColumn(column);
-
-        path = documentDs.getMetaClass().getPropertyPath("stepName");
-        column = new Table.Column(path, "stepName");
-        //noinspection ConstantConditions
-        column.setType(path.getRangeJavaClass());
-        column.setCaption(messages.getMessage(Document.class, "Document.stepName"));
-        documentsTable.addColumn(column);
-
-        //add actions and buttons
-        CreateAction createAction = new CreateAction(documentsTable) {
-            @Override
-            public String getWindowId() {
-                return "cifra$Document.edit";
-            }
-        };
-        Button createButton = componentsFactory.createComponent(Button.class);
-        createButton.setAction(createAction);
-
-        EditAction editAction = new EditAction(documentsTable) {
-            @Override
-            public String getWindowId() {
-                return "cifra$Document.edit";
-            }
-
-            @Override
-            public Map<String, Object> getWindowParams() {
-                Map<String, Object> params = new HashMap<>();
-                Map<String, Object> superParams = super.getWindowParams();
-                if (superParams != null && superParams.size() > 0) {
-                    params.putAll(superParams);
-                }
-                params.put(DocumentEdit.EDITABLE, canEdit(documentsTable.getSingleSelected()));
-                return params;
-            }
-
-            @Override
-            public boolean isPermitted() {
-                if (super.isPermitted()) {
-                    Set<Document> documents = documentsTable.getSelected();
-                    return !CollectionUtils.isEmpty(documents) && documents.size() == 1;
-                }
-                return false;
-            }
-        };
-        Button editButton = componentsFactory.createComponent(Button.class);
-        editButton.setAction(editAction);
-
-        RemoveAction removeAction = new RemoveAction(documentsTable) {
-            @Override
-            public boolean isPermitted() {
-                if (super.isPermitted()) {
-                    Set<Document> documents = documentsTable.getSelected();
-                    if (!CollectionUtils.isEmpty(documents)) {
-                        for (Document query : documents) {
-                            if (!canDelete(query)) {
-                                return false;
-                            }
-                        }
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
-        Button removeButton = componentsFactory.createComponent(Button.class);
-        removeButton.setAction(removeAction);
-
-        BaseAction runAction = null;
-        Button runButton = null;
-        if (workflow != null) {
-            runAction = new BaseAction("run") {
-                @Override
-                public String getCaption() {
-                    return getMessage("documentsWorkflowBrowse.startWorkflow");
-                }
-
-                @Override
-                public String getIcon() {
-                    return CubaIcon.OK.source();
-                }
-
-                @Override
-                public void actionPerform(Component component) {
-                    final Document documents = documentsTable.getSingleSelected();
-                    if (documents != null) {
-                        Action doAction = new DialogAction(DialogAction.Type.YES, Status.PRIMARY).withHandler(event -> {
-                            try {
-                                service.startWorkflow(documents, workflow);
-                                showNotification(getMessage("documentsWorkflowBrowse.workflowStarted"), NotificationType.HUMANIZED);
-                            } catch (WorkflowException e) {
-                                log.error(String.format("Failed to launch workflow %s for document %s", workflow, documents), e);
-
-                                showNotification(String.format(getMessage("documentsWorkflowBrowse.workflowFailed"),
-                                        e.getMessage() == null ? getMessage("documentsWorkflowBrowse.notAvailable") : e.getMessage()),
-                                        NotificationType.ERROR);
-                            } finally {
-                                documentDs.refresh();
-                            }
-                        });
-                        showOptionDialog(
-                                messages.getMainMessage("dialogs.Confirmation"),
-                                getMessage("documentsWorkflowBrowse.startWorkflowConfirmation"),
-                                MessageType.CONFIRMATION,
-                                new Action[]{
-                                        doAction,
-                                        new DialogAction(DialogAction.Type.NO)
-                                }
-                        );
-                    }
-                }
-
-                @Override
-                public boolean isPermitted() {
-                    if (super.isPermitted()) {
-                        Set<Document> documents = documentsTable.getSelected();
-                        if (!CollectionUtils.isEmpty(documents) && documents.size() == 1) {
-                            return canRun(IterableUtils.get(documents, 0));
-                        }
-                    }
-                    return false;
-                }
-            };
-            runButton = componentsFactory.createComponent(Button.class);
-            runButton.setAction(runAction);
-        }
-
-        RefreshAction refreshAction = new RefreshAction(documentsTable);
-        Button refreshButton = componentsFactory.createComponent(Button.class);
-        refreshButton.setAction(refreshAction);
-
-
-        documentsTable.addAction(createAction);
-        documentsTable.addAction(editAction);
-        documentsTable.addAction(removeAction);
-        if (runAction != null) {
-            documentsTable.addAction(runAction);
-        }
-        documentsTable.addAction(refreshAction);
-        buttonsPanel.add(createButton);
-        buttonsPanel.add(editButton);
-        buttonsPanel.add(removeButton);
-        if (runButton != null) {
-            buttonsPanel.add(runButton);
-        }
-        buttonsPanel.add(refreshButton);
     }
 
     //Base table view for non 'My Queries' tab
@@ -279,6 +113,11 @@ public class DocumentWorkflowFrame extends AbstractFrame implements UiEvent {
                 return false;
             }
         };
+
+        editAction.setAfterWindowClosedHandler((window, closeActionId) -> {
+            CifraUiEvent.push("documentCommitted");
+        });
+
         Button viewButton = componentsFactory.createComponent(Button.class);
         viewButton.setAction(editAction);
 
