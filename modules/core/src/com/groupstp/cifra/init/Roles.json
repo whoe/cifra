@@ -1,13 +1,956 @@
 [
   {
     "_entityName": "sec$Role",
+    "id": "0c018061-b26f-4de2-a5be-dff348347f93",
+    "type": "SUPER",
+    "version": 0,
+    "permissions": [],
+    "name": "Administrators"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "cd541dd4-eeb7-cd5b-847e-d32236552fa9",
+    "type": "DENYING",
+    "version": 0,
+    "permissions": [],
+    "name": "Anonymous"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "4541b2a3-c836-c007-c963-83cc117ec3ca",
+    "type": "STANDARD",
+    "version": 1,
+    "permissions": [],
+    "name": "WorkFlow: все Шаги"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a",
+    "defaultRole": false,
+    "type": "STANDARD",
+    "version": 2,
+    "permissions": [
+      {
+        "_entityName": "sec$Permission",
+        "id": "9a9874f6-7e10-d5df-1526-4f1f542b0f3b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Division:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "7ab820f5-2cd6-a0cc-7135-b8da3e7789da",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceTask:delete"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "3add5adf-8900-46da-dfad-de5eb95647eb",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "sys$FileDescriptor:update"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "6d15cbf9-6ab5-56db-29d7-5a8ccd7ebebe",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Company.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "6df02d64-2559-e649-79e4-08da7f9ab63a",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceTask:update"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "dd7f3596-1019-2196-8ba6-e5af9fe5ad96",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$CheckListItems:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "52d1aa50-65b4-c902-0f8b-7febe41243e0",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceTask:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "558dba83-d1f4-2083-367f-83c6f27bda9e",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceComment:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "6b686189-050f-af37-15cd-f628c202cd97",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "sys$FileDescriptor:delete"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "2e681af3-45f5-30e9-fbb5-2a47ac964149",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "4a0f4ea6-6341-4733-4928-1e9632681da7",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "bd7e7b16-14b0-8e35-162a-eeb721127149",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "sec$User:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "ed8ec2d5-0897-a04a-5ea8-c007eb2ca3ae",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$CheckList:update"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "656ff028-0705-d19c-7cc8-be9b46bd0a9b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "sys$FileDescriptor:create"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "b10a1de2-031b-0a5a-b3ec-a6e1464fbcc6",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstance:create"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "b2efaf34-3a5f-4bec-6aa3-0130ead6b899",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document:create"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "9f11aa7a-d6be-8c3f-ea65-7081c8683ad0",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Division.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "368f38d6-c85a-949c-96ad-a292e6ee05f8",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceComment:delete"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "ef2e6a02-f192-e823-3c7c-4e47a1e38efd",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceTask:create"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "358f1d24-a925-eb13-5283-c7def8527a2b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document:delete"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "956cfe07-9ed4-ee80-72a9-c33241963c08",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$Workflow:update"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "2fe90e14-2c17-f4f0-328f-e07259082552",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "76b1e469-ebc2-0361-3276-2ae3d669bcc6",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "c8a45386-5410-757a-d228-54de9fe3089f",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$DocType.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "a8aeda62-7604-92a0-95ae-86f8688547f9",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Company.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "093dd59a-8d26-8bfc-2f21-24aba4d655e8",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Employee.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "955b3ad9-38cf-0291-9b35-b9c6181b39fe",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Employee:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "dea8de28-6315-1db0-5e20-4642c950bf5b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceComment:create"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "45d39896-7052-0d51-cfd0-a313ab232176",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$Workflow:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "4575eea6-4aa1-251d-02a5-587919fa2f18",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$CheckList:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "b41d4f06-d90c-5680-d92c-fd3c2bc01614",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$documentsMenu"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "02e69af7-7050-e5cd-6bf1-fa540934a1c9",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "5d2b183a-0f00-b19f-f7f0-72f7fdf9a024",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstance:delete"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "fb4ce914-6224-6c85-e238-00e464bf0d4c",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstance:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "a44fa5ee-b3ec-c299-9b42-4809403d177a",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$DocType:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "b70ef6bf-7540-eed0-4058-2f729db77960",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document:update"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "7511c261-c4f0-49aa-e9d0-c6baab1e8f83",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$Workflow:delete"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "ca585722-e5eb-0efd-aa3a-5e8beac068c3",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$CheckList:create"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "d2ccdc71-5d08-210f-1241-053822a1043d",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "sys$FileDescriptor:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "bdf74b28-ebd2-2cfb-5aee-7c4fbdc0bc77",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Company:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "b6df8456-9ed8-848e-da78-e6070add709f",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Contragent.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "7f79719d-9ed5-9d72-19b6-d3d646af4c6e",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Division.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "67ec6bbe-0542-a3e5-7f18-afd81327cef0",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceComment:update"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "295b5e8a-e989-8027-178f-ce91c2b1b434",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "fcf3e5d8-2cc7-4d39-8b3d-049b78e562f0",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "69174f5d-4c8c-44be-cbca-fdb8a686dc66",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$Workflow:create"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "9cdcc9d5-3252-ab22-9f43-d9e1e1cd7c67",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "dda9eff8-8022-429e-3095-80553d59aa81",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "3471926e-d2bb-5928-78df-b7d8f9ecdd92",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$CheckList:delete"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "f184909b-3550-98e9-7b16-cbb83b192c6a",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Contragent:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "68921c9a-76e0-f9d4-6669-ae0a32990a3b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstance:update"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "abd40daa-c1aa-eb0f-e3c0-740e218dcfe7",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "34f8374d-0fa3-8535-abd7-adc4b82e419a"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$DocType.edit"
+      }
+    ],
+    "name": "Документы: изменение"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3",
+    "type": "READONLY",
+    "version": 2,
+    "permissions": [
+      {
+        "_entityName": "sec$Permission",
+        "id": "82dea90b-c58f-c2f2-db39-ebee73f63049",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "sec$User:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "7146f8ba-c2df-99b4-faf6-e4b539bcd549",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$CheckList:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "b4c2d639-3b7a-9d7b-5dec-03504c9d38f9",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceComment:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "edbaab5f-a472-3b6c-93f1-e7c85c06c767",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "612d77c3-0d21-a2d1-672b-1749e07376e4",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Company.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "f96812f2-71f4-0d19-fe18-bb3d1f662f9f",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$DocType:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "abab3629-22bf-3745-df2c-a0d07997863f",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Division:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "652c4b51-3e61-6ecd-4d56-1655cc2f634f",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "7b6acc77-1be3-4bff-c6f6-961a22942d8a",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "8d10a8ec-c0d6-2295-315f-f07ff04752cc",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$DocType.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "5baf55e7-9472-4472-9d9a-e8c64864d3e4",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Company:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "3e33470f-5eda-1240-54f4-b7a160ecb04b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Contragent:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "5494c8de-883b-42c6-ca54-e33cda24ebae",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$CheckListItems:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "8911734e-9bf9-bc4f-8b3e-c525860b996f",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "5584b132-ba66-ce91-c93b-4561ebdda171",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "3433e315-1185-8fdd-cae2-3afef6712c84",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceTask:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "5f9ee1fc-e424-a643-1aa4-77e3b0bd3e88",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstance:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "cfe9ed9c-93e9-9fed-7063-2c32edc37f1b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$Workflow:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "b3b0e671-816c-04e8-ee29-ecc8e7700dce",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "83478fbe-660a-18c4-9c54-93a57d019fdd",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Employee:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "9b61bdbe-084d-84ab-3cd4-b7ba4ed554bf",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$documentsMenu"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "378de4be-6efd-e268-27b0-8bdb8ca067f2",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Division.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "b666cdef-de32-e5ed-5770-742f47e67230",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3e08edb4-bed5-e6e8-2443-23f6a8cf31e3"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document:read"
+      }
+    ],
+    "name": "Документы: чтение"
+  },
+  {
+    "_entityName": "sec$Role",
     "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848",
     "type": "STANDARD",
     "version": 1,
     "permissions": [
       {
         "_entityName": "sec$Permission",
-        "id": "fd1d2c04-ee67-6d2f-c1cb-dbbf1974b8e1",
+        "id": "702e4fdc-5478-fa5a-c155-341f02aa42b0",
         "role": {
           "_entityName": "sec$Role",
           "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
@@ -15,7 +958,7 @@
         "type": "SCREEN",
         "version": 1,
         "value": 1,
-        "target": "tasks$Task.list"
+        "target": "cifra$Document.edit"
       },
       {
         "_entityName": "sec$Permission",
@@ -31,7 +974,7 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "da71dd2a-3f79-439e-a202-c9225ce45f6d",
+        "id": "43db33f0-8074-a126-44ab-15d1fc19779b",
         "role": {
           "_entityName": "sec$Role",
           "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
@@ -39,7 +982,19 @@
         "type": "SCREEN",
         "version": 1,
         "value": 1,
-        "target": "tasks$TaskTemplate.browse"
+        "target": "tasks$TaskTypical.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "5316dd68-8c0e-a95a-00c3-a857dbb6758c",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Company.edit"
       },
       {
         "_entityName": "sec$Permission",
@@ -52,6 +1007,234 @@
         "version": 1,
         "value": 1,
         "target": "tasks$Task.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "ed20712b-39c0-1faf-5567-fc7e68f89d83",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$DocType:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "dddac89e-002d-4577-9fa4-e1d44ddcb9ba",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$DocType.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "a69824f1-42de-830b-db2e-2622e1bd19c5",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "dde2d343-580a-2c71-3724-80481560dcda",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$TaskTemplate:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "262243d9-d6ac-d021-ac68-031794ca27cd",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Employee.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "9cf94dc6-ad07-dee6-e2ab-1036f1e2e5b1",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Company:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "a455d373-cb00-ad4a-cde6-330f34d45b01",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Division:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "34ee0704-7abd-8f40-0eb7-db839f2cb61e",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "f8ec3cfe-e905-dec1-6027-21cd95c5ed2d",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Contragent:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "da71dd2a-3f79-439e-a202-c9225ce45f6d",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$TaskTemplate.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "2c32f3aa-1b0d-1af4-2683-36e6daaf913d",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$CheckListItems:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "27445a76-a567-33d3-6435-18daa188ca7c",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$TaskTypical:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "c3aef2d7-ea4e-f35a-02da-d39ccc239cec",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "881418c7-464f-e632-5cea-e3a7bb59ce5e",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceTask:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "e75e250a-9ba5-1ed4-c5c5-28e18a2d874b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "ee0e9bd0-91c7-0bb4-19ac-fa449d5f41b0",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "5e009159-6a7f-eb33-f40d-648193cf393c",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Division.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "fd1d2c04-ee67-6d2f-c1cb-dbbf1974b8e1",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task.list"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "07859e67-0d54-f966-ffef-0f8ff71dec99",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag.edit"
       },
       {
         "_entityName": "sec$Permission",
@@ -79,18 +1262,6 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "ee0e9bd0-91c7-0bb4-19ac-fa449d5f41b0",
-        "role": {
-          "_entityName": "sec$Role",
-          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
-        },
-        "type": "ENTITY_OP",
-        "version": 1,
-        "value": 1,
-        "target": "tasks$Task:read"
-      },
-      {
-        "_entityName": "sec$Permission",
         "id": "ac03489d-8e0d-25b8-47c1-fffdd205c568",
         "role": {
           "_entityName": "sec$Role",
@@ -100,6 +1271,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Employee:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "30837bbb-ba68-60ba-bc2d-102354ef6ab0",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$tasks"
       },
       {
         "_entityName": "sec$Permission",
@@ -115,15 +1298,15 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "54335672-c194-cbc2-83a2-c1ce6a69ab6c",
+        "id": "fc91d42d-c48e-6a5b-09c9-97b613b27a18",
         "role": {
           "_entityName": "sec$Role",
           "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
         },
-        "type": "SCREEN",
+        "type": "ENTITY_OP",
         "version": 1,
         "value": 1,
-        "target": "tasks$TaskableEntity.browse.frame"
+        "target": "cifra$CheckList:read"
       },
       {
         "_entityName": "sec$Permission",
@@ -139,7 +1322,7 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "262243d9-d6ac-d021-ac68-031794ca27cd",
+        "id": "54335672-c194-cbc2-83a2-c1ce6a69ab6c",
         "role": {
           "_entityName": "sec$Role",
           "id": "a1319982-5777-7d3a-cf2a-2fe4c4f24848"
@@ -147,7 +1330,7 @@
         "type": "SCREEN",
         "version": 1,
         "value": 1,
-        "target": "cifra$Employee.browse"
+        "target": "tasks$TaskableEntity.browse.frame"
       }
     ],
     "name": "Задачи: список (назначение)"
@@ -157,7 +1340,7 @@
     "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275",
     "defaultRole": false,
     "type": "STANDARD",
-    "version": 3,
+    "version": 1,
     "permissions": [
       {
         "_entityName": "sec$Permission",
@@ -173,6 +1356,30 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "6fb88d31-ba40-43b6-ca66-5c60b1fdd185",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Division:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "ea28a9bd-1ea5-ebfb-1318-ecc4bd80f855",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$TaskTypical.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "bc666a80-ca70-f735-1005-f208e2790793",
         "role": {
           "_entityName": "sec$Role",
@@ -185,27 +1392,39 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "096f59fe-3b69-db8f-b6c9-d5b829d8ad59",
+        "id": "3233a2d7-6e4f-94cc-82a3-92a87bfc5015",
         "role": {
           "_entityName": "sec$Role",
           "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
         },
         "type": "SCREEN",
         "version": 1,
-        "value": 0,
-        "target": "tasks$TaskableEntityImpl.browse"
+        "value": 1,
+        "target": "cifra$Company.edit"
       },
       {
         "_entityName": "sec$Permission",
-        "id": "35af2a81-7dbf-cbc3-706c-083f1f6d8ee6",
+        "id": "212a06bd-4422-59d3-1f8b-07a554d98758",
         "role": {
           "_entityName": "sec$Role",
           "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
         },
-        "type": "SCREEN",
+        "type": "ENTITY_ATTR",
         "version": 1,
-        "value": 0,
-        "target": "tasks$TaskableEntityImpl.edit"
+        "value": 1,
+        "target": "tasks$Task:deleteTs"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "ee98d027-0513-2026-a38e-922df4faa8d9",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:updateTs"
       },
       {
         "_entityName": "sec$Permission",
@@ -221,7 +1440,7 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "a73b1727-2815-6e0f-08bd-2cb95834fb98",
+        "id": "c1e682b3-9ad0-0f2a-8fd5-c4e9b1af4773",
         "role": {
           "_entityName": "sec$Role",
           "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
@@ -229,23 +1448,11 @@
         "type": "SCREEN",
         "version": 1,
         "value": 1,
-        "target": "tasks$TaskTemplate.browse"
+        "target": "cifra$Division.edit"
       },
       {
         "_entityName": "sec$Permission",
-        "id": "8bc4a422-6a18-fa41-0560-ca17a63aae1c",
-        "role": {
-          "_entityName": "sec$Role",
-          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
-        },
-        "type": "SCREEN",
-        "version": 1,
-        "value": 0,
-        "target": "tasks$TaskableEntity.browse.frame"
-      },
-      {
-        "_entityName": "sec$Permission",
-        "id": "2a26e56e-12fc-c93b-2ed5-75218508805c",
+        "id": "1b681d48-ff96-9203-b0bc-f4e453a90b0b",
         "role": {
           "_entityName": "sec$Role",
           "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
@@ -253,19 +1460,7 @@
         "type": "ENTITY_OP",
         "version": 1,
         "value": 1,
-        "target": "tasks$TaskTemplate:read"
-      },
-      {
-        "_entityName": "sec$Permission",
-        "id": "ad83806c-b6fe-9c54-a0c6-1ca08d95cf06",
-        "role": {
-          "_entityName": "sec$Role",
-          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
-        },
-        "type": "UI",
-        "version": 4,
-        "value": 0,
-        "target": "tasks$Task.list:tabSheet[taskableEntity]"
+        "target": "cifra$CheckList:read"
       },
       {
         "_entityName": "sec$Permission",
@@ -281,6 +1476,18 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "643d273f-bd76-f9ae-bc2b-c58349bcd8dd",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$DocType.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "bbafa42a-b062-a128-d630-cfaed1307bf4",
         "role": {
           "_entityName": "sec$Role",
@@ -290,6 +1497,18 @@
         "version": 1,
         "value": 1,
         "target": "tasks"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "845075d6-b0e2-6ffb-959e-fa4e29c7795e",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:controlNeeded"
       },
       {
         "_entityName": "sec$Permission",
@@ -305,6 +1524,318 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "ed549fc8-3c76-c81a-a44f-cf826b397913",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:createTs"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "dc389a46-a51d-c0a8-0b32-1dd840296252",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:performer"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "de53902e-d333-3ac0-6b46-2c14d35748d7",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:endDate"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "d839cfc8-7b9e-7138-62f7-69e13f3e3163",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:id"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "128baa33-f035-a078-ab72-d83537d96808",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 2,
+        "target": "tasks$Task:comment"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "646ab931-af0a-6752-5860-e60670659ca4",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:taskTypical"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "10fab55a-cd96-da75-03af-dfc5bba1f72e",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:taskableEntity"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "73469175-6f26-ac64-9c1f-3e90c87a036e",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "9d4c304c-0053-9d1a-6fcb-83d8ce91d120",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "6d6bed0e-3449-fba4-07c4-13ed0e2ef062",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:updatedBy"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "7f88021f-1655-e5dd-7587-52c4bfbd180c",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:version"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "a73b1727-2815-6e0f-08bd-2cb95834fb98",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$TaskTemplate.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "2a26e56e-12fc-c93b-2ed5-75218508805c",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$TaskTemplate:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "cd6ac78a-804d-735e-0c69-3b5e0540a9ab",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "ad83806c-b6fe-9c54-a0c6-1ca08d95cf06",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "UI",
+        "version": 1,
+        "value": 0,
+        "target": "tasks$Task.list:tabSheet[taskableEntity]"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "11f1a391-d8c9-17cf-e5e5-4c5b812c4884",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Company:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "f4371cae-8215-2c17-5753-11c8bed70ae6",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:author"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "eaa01505-9d8f-decf-7834-7a68dee98522",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "d74f2ec1-577d-ff24-32fe-c0a75fe10a5c",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Contragent:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "400d6e3f-a5bc-0462-b6dd-5eac93c19f28",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:createdBy"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "257c341c-6655-b5b4-7bf9-9082fde2c7ae",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:status"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "ccb79b27-b2ed-ce8d-764f-252c9da6c243",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:startDate"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "0f64cdba-84a5-a01a-9b26-5120782f143f",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "wfstp$WorkflowInstanceTask:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "e3b6d7b8-7073-d64c-6c7f-09ca48ac1b92",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$tasks"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "29e00751-b369-1045-ea3f-20c7e39b9ec4",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Document.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "748b6bbb-fb97-bdc0-9f3b-3bbba5247979",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "0ff78b30-48c1-b228-31df-49d86510b006",
         "role": {
           "_entityName": "sec$Role",
@@ -314,6 +1845,18 @@
         "version": 1,
         "value": 1,
         "target": "tasks$Task.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "c48160b7-918a-044b-497a-e60129f8840b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4d81cd82-b8a3-f7c1-aaf0-bdee0c01c275"
+        },
+        "type": "ENTITY_ATTR",
+        "version": 1,
+        "value": 1,
+        "target": "tasks$Task:deletedBy"
       }
     ],
     "name": "Задачи: список (работа)"
@@ -359,18 +1902,6 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "5385c9e4-a977-d068-d0b2-9d5a0465dad9",
-        "role": {
-          "_entityName": "sec$Role",
-          "id": "52e5a116-a6b2-832c-e45f-bcbe539de390"
-        },
-        "type": "ENTITY_OP",
-        "version": 1,
-        "value": 1,
-        "target": "cifra$Company:create"
-      },
-      {
-        "_entityName": "sec$Permission",
         "id": "503bff4f-2db7-d755-021f-692abf7d4164",
         "role": {
           "_entityName": "sec$Role",
@@ -383,6 +1914,18 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "5385c9e4-a977-d068-d0b2-9d5a0465dad9",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "52e5a116-a6b2-832c-e45f-bcbe539de390"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Company:create"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "475d8e60-c228-8f89-3083-dfdae4c67be8",
         "role": {
           "_entityName": "sec$Role",
@@ -392,6 +1935,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Company.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "b0438b37-d4e4-2a43-ff91-99858c6b2101",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "52e5a116-a6b2-832c-e45f-bcbe539de390"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$references"
       },
       {
         "_entityName": "sec$Permission",
@@ -452,6 +2007,18 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "83e6c994-53af-03a6-a26f-5a020f2c9556",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "9298ac41-f499-04bc-5c85-da6942e69d94"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$references"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "3ddc441c-043a-f727-dae3-61ec87ce48da",
         "role": {
           "_entityName": "sec$Role",
@@ -482,19 +2049,19 @@
     "id": "b74fcabe-417f-66e1-d0cd-aa759e983b98",
     "defaultRole": false,
     "type": "STANDARD",
-    "version": 2,
+    "version": 1,
     "permissions": [
       {
         "_entityName": "sec$Permission",
-        "id": "daf296d8-2a73-c18f-d07d-fcebfcdd18f5",
+        "id": "71a1b1bc-8968-b882-afd6-d9511f15eba5",
         "role": {
           "_entityName": "sec$Role",
           "id": "b74fcabe-417f-66e1-d0cd-aa759e983b98"
         },
-        "type": "ENTITY_OP",
+        "type": "SCREEN",
         "version": 1,
         "value": 1,
-        "target": "cifra$Contragent:read"
+        "target": "cifra$references"
       },
       {
         "_entityName": "sec$Permission",
@@ -522,15 +2089,15 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "f1b81159-16db-250e-02a6-c44d59d9e25c",
+        "id": "daf296d8-2a73-c18f-d07d-fcebfcdd18f5",
         "role": {
           "_entityName": "sec$Role",
           "id": "b74fcabe-417f-66e1-d0cd-aa759e983b98"
         },
-        "type": "SCREEN",
+        "type": "ENTITY_OP",
         "version": 1,
         "value": 1,
-        "target": "application-cifra"
+        "target": "cifra$Contragent:read"
       },
       {
         "_entityName": "sec$Permission",
@@ -543,6 +2110,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Contragent:update"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "f1b81159-16db-250e-02a6-c44d59d9e25c",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "b74fcabe-417f-66e1-d0cd-aa759e983b98"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "application-cifra"
       },
       {
         "_entityName": "sec$Permission",
@@ -600,6 +2179,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Contragent.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "c86d487a-07b6-b663-3e4b-870d76c14231",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "21b84a7a-b72a-b375-b552-295b1405f989"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$references"
       }
     ],
     "name": "Контрагенты: Чтение"
@@ -612,18 +2203,6 @@
     "permissions": [
       {
         "_entityName": "sec$Permission",
-        "id": "78a5d044-6cc1-5cbb-4247-de76e5e55d1f",
-        "role": {
-          "_entityName": "sec$Role",
-          "id": "1e0f6d5a-6183-c45d-e546-2e76be623546"
-        },
-        "type": "SCREEN",
-        "version": 1,
-        "value": 1,
-        "target": "application-cifra"
-      },
-      {
-        "_entityName": "sec$Permission",
         "id": "bee9ecc9-da6b-de63-1504-9bdd4521fe60",
         "role": {
           "_entityName": "sec$Role",
@@ -633,6 +2212,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Division:delete"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "78a5d044-6cc1-5cbb-4247-de76e5e55d1f",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "1e0f6d5a-6183-c45d-e546-2e76be623546"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "application-cifra"
       },
       {
         "_entityName": "sec$Permission",
@@ -717,6 +2308,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Division.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "c35d5913-ab56-4ee8-8afe-aa656e50a774",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "1e0f6d5a-6183-c45d-e546-2e76be623546"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$references"
       }
     ],
     "name": "Подразделения: изменение"
@@ -774,6 +2377,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Division:read"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "4094f7f7-d265-b55b-3bcc-894f1d4693c4",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "3b61d9ac-3f99-c156-dabe-33ccb3b56c01"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$references"
       }
     ],
     "name": "Подразделения: чтение"
@@ -834,6 +2449,18 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "ce18bd30-bf0a-c348-ee91-2e2f53794767",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "9d5e6184-51b8-570a-1361-1f7930b28cc0"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$references"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "1b73c657-7b6a-31b8-ee7f-66e6f7f80eec",
         "role": {
           "_entityName": "sec$Role",
@@ -891,6 +2518,18 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "de5f1885-5b2f-50d2-0e2c-f5ece1c35ce8",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "f2f59ce4-8efa-9966-5152-4978d8f197b4"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Warehouse.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "9c40b1e7-a2cd-8e57-d0b4-f8f5fce821b8",
         "role": {
           "_entityName": "sec$Role",
@@ -903,7 +2542,7 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "de5f1885-5b2f-50d2-0e2c-f5ece1c35ce8",
+        "id": "6aafe45d-8334-6028-6a87-eb2bb00f75c8",
         "role": {
           "_entityName": "sec$Role",
           "id": "f2f59ce4-8efa-9966-5152-4978d8f197b4"
@@ -911,7 +2550,7 @@
         "type": "SCREEN",
         "version": 1,
         "value": 1,
-        "target": "cifra$Warehouse.edit"
+        "target": "cifra$references"
       },
       {
         "_entityName": "sec$Permission",
@@ -932,7 +2571,7 @@
     "_entityName": "sec$Role",
     "id": "2bcde48c-4c4a-4120-bfa7-946f030590f2",
     "type": "STANDARD",
-    "version": 2,
+    "version": 1,
     "permissions": [
       {
         "_entityName": "sec$Permission",
@@ -960,6 +2599,18 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "9cc10432-cca7-9abc-99d4-43337540473d",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "2bcde48c-4c4a-4120-bfa7-946f030590f2"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$references"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "c1aac13f-7749-e004-2788-6b7f3a926b88",
         "role": {
           "_entityName": "sec$Role",
@@ -984,18 +2635,6 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "6ee46983-8e41-8f2d-f8fc-15f69d70f8d9",
-        "role": {
-          "_entityName": "sec$Role",
-          "id": "2bcde48c-4c4a-4120-bfa7-946f030590f2"
-        },
-        "type": "ENTITY_OP",
-        "version": 1,
-        "value": 1,
-        "target": "cifra$Employee:update"
-      },
-      {
-        "_entityName": "sec$Permission",
         "id": "ea17dbff-8961-b675-5e2d-bb7c9008d4cd",
         "role": {
           "_entityName": "sec$Role",
@@ -1005,6 +2644,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Employee:delete"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "6ee46983-8e41-8f2d-f8fc-15f69d70f8d9",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "2bcde48c-4c4a-4120-bfa7-946f030590f2"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Employee:update"
       },
       {
         "_entityName": "sec$Permission",
@@ -1049,11 +2700,11 @@
     "_entityName": "sec$Role",
     "id": "b7e1f79c-7db1-1212-43b1-681d0f82869b",
     "type": "STANDARD",
-    "version": 3,
+    "version": 1,
     "permissions": [
       {
         "_entityName": "sec$Permission",
-        "id": "c2f8dd4c-8162-cfbd-fd68-2ad847a2c63c",
+        "id": "d0faac54-f1fb-695b-47ce-6d36f5322e76",
         "role": {
           "_entityName": "sec$Role",
           "id": "b7e1f79c-7db1-1212-43b1-681d0f82869b"
@@ -1061,7 +2712,19 @@
         "type": "SCREEN",
         "version": 1,
         "value": 1,
-        "target": "cifra$Employee.browse"
+        "target": "cifra$references"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "e7590a7f-24bb-cd4c-8185-9d8f5983fba3",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "b7e1f79c-7db1-1212-43b1-681d0f82869b"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "application-cifra"
       },
       {
         "_entityName": "sec$Permission",
@@ -1077,7 +2740,7 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "e7590a7f-24bb-cd4c-8185-9d8f5983fba3",
+        "id": "c2f8dd4c-8162-cfbd-fd68-2ad847a2c63c",
         "role": {
           "_entityName": "sec$Role",
           "id": "b7e1f79c-7db1-1212-43b1-681d0f82869b"
@@ -1085,7 +2748,7 @@
         "type": "SCREEN",
         "version": 1,
         "value": 1,
-        "target": "application-cifra"
+        "target": "cifra$Employee.browse"
       }
     ],
     "name": "Сотрудники: чтение"
@@ -1095,7 +2758,7 @@
     "id": "4aa12c16-00f0-4099-fa0c-e3f5d7cfd8be",
     "defaultRole": false,
     "type": "STANDARD",
-    "version": 2,
+    "version": 1,
     "permissions": [
       {
         "_entityName": "sec$Permission",
@@ -1159,6 +2822,18 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "36f26c3a-d0e4-49aa-179c-82f0cfb0a492",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "4aa12c16-00f0-4099-fa0c-e3f5d7cfd8be"
+        },
+        "type": "ENTITY_OP",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$DocType:update"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "8d3b4606-90e1-c7ef-dd5f-81df2579fee2",
         "role": {
           "_entityName": "sec$Role",
@@ -1171,15 +2846,15 @@
       },
       {
         "_entityName": "sec$Permission",
-        "id": "36f26c3a-d0e4-49aa-179c-82f0cfb0a492",
+        "id": "cfe60a8f-ae98-8796-6c05-dc09e6eb7d4a",
         "role": {
           "_entityName": "sec$Role",
           "id": "4aa12c16-00f0-4099-fa0c-e3f5d7cfd8be"
         },
-        "type": "ENTITY_OP",
+        "type": "SCREEN",
         "version": 1,
         "value": 1,
-        "target": "cifra$DocType:update"
+        "target": "cifra$documentsMenu"
       },
       {
         "_entityName": "sec$Permission",
@@ -1285,7 +2960,7 @@
     "id": "60a3fddc-4a8a-4bca-3221-db2b8a3ad610",
     "defaultRole": false,
     "type": "STANDARD",
-    "version": 2,
+    "version": 1,
     "permissions": [
       {
         "_entityName": "sec$Permission",
@@ -1298,6 +2973,18 @@
         "version": 1,
         "value": 0,
         "target": "cifra$DocType.edit:create"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "1767b55a-fb6f-e12d-45ff-ff7ff4793434",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "60a3fddc-4a8a-4bca-3221-db2b8a3ad610"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$documentsMenu"
       },
       {
         "_entityName": "sec$Permission",
@@ -1430,6 +3117,18 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "79df194e-3e72-8a72-9fb9-549697caaec1",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "97ed4904-c827-85dc-bbb3-822d9195ad75"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$documentsMenu"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "197f35c4-1542-4e51-348c-fb78586b3a00",
         "role": {
           "_entityName": "sec$Role",
@@ -1439,30 +3138,6 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Tag:delete"
-      },
-      {
-        "_entityName": "sec$Permission",
-        "id": "2e7f5cd8-8d37-5522-245f-b2e9ca45c029",
-        "role": {
-          "_entityName": "sec$Role",
-          "id": "97ed4904-c827-85dc-bbb3-822d9195ad75"
-        },
-        "type": "SCREEN",
-        "version": 1,
-        "value": 1,
-        "target": "application-cifra"
-      },
-      {
-        "_entityName": "sec$Permission",
-        "id": "db54f387-2755-e8fe-0006-70b383f66f13",
-        "role": {
-          "_entityName": "sec$Role",
-          "id": "97ed4904-c827-85dc-bbb3-822d9195ad75"
-        },
-        "type": "SCREEN",
-        "version": 1,
-        "value": 1,
-        "target": "cifra$Tag.browse"
       },
       {
         "_entityName": "sec$Permission",
@@ -1478,6 +3153,18 @@
       },
       {
         "_entityName": "sec$Permission",
+        "id": "db54f387-2755-e8fe-0006-70b383f66f13",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "97ed4904-c827-85dc-bbb3-822d9195ad75"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Tag.browse"
+      },
+      {
+        "_entityName": "sec$Permission",
         "id": "6e746867-57ed-1df4-6a65-330778090ef9",
         "role": {
           "_entityName": "sec$Role",
@@ -1487,6 +3174,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Tag.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "2e7f5cd8-8d37-5522-245f-b2e9ca45c029",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "97ed4904-c827-85dc-bbb3-822d9195ad75"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "application-cifra"
       },
       {
         "_entityName": "sec$Permission",
@@ -1556,6 +3255,18 @@
         "version": 1,
         "value": 1,
         "target": "cifra$Tag.edit"
+      },
+      {
+        "_entityName": "sec$Permission",
+        "id": "04ae4506-8425-e580-8756-c497501d088d",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "1d492948-fd2a-43b0-0f62-aedee1bce454"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$documentsMenu"
       }
     ],
     "name": "Тэги: чтение"

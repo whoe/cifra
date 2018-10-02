@@ -1,5 +1,6 @@
 package com.groupstp.cifra.web.doctype;
 
+import com.groupstp.cifra.entity.CheckList;
 import com.groupstp.cifra.entity.CheckListItems;
 import com.groupstp.cifra.entity.DocType;
 import com.groupstp.cifra.entity.Document;
@@ -38,7 +39,7 @@ public class DocTypeEdit extends AbstractEditor<DocType> {
     public void ready() {
         super.ready();
         Security security = AppBeans.get(Security.class);
-        if (!security.isEntityOpPermitted(Document.class, EntityOp.CREATE)) {
+        if (!security.isEntityOpPermitted(CheckList.class, EntityOp.CREATE)) {
             getComponent("checkListItemsGrid").setEnabled(false);
         } else {
             checkListItemsGrid.setEnabled(!entityStates.isNew(docTypeDs.getItem()));
