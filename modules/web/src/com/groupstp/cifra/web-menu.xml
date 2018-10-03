@@ -14,6 +14,8 @@
         <item screen="tasks$TaskTypical.browse"/>
         <item screen="tasks$TaskTemplate.browse"/>
         <item screen="tasks$Task.browse"/>
+        <separator/>
+        <item screen="tasks$Smartsheet.export.frame"/>
     </menu>
     <menu id="cifra$references"
           insertBefore="administration">

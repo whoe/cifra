@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        class="com.groupstp.cifra.web.smartsheet.SmartsheetExport"
+        focusComponent="token"
+        lookupComponent="tab"
+        messagesPack="com.groupstp.cifra.web.smartsheet">
+    <dsContext>
+        <valueHierarchicalDatasource id="smartsheetDataSource"
+                                     datasourceClass="com.groupstp.cifra.web.smartsheet.SmartsheetDatasource"
+                                     hierarchyProperty="parent">
+            <properties idProperty="id">
+                <property datatype="long"
+                          name="id"/>
+                <property class="com.haulmont.cuba.core.entity.KeyValueEntity"
+                          name="parent"/>
+                <property datatype="string"
+                          name="Имя задачи"/>
+                <property datatype="string"
+                          name="Начало"/>
+                <property datatype="string"
+                          name="Дата выполнения"/>
+                <property datatype="string"
+                          name="Готово"/>
+                <property datatype="string"
+                          name="Автор"/>
+                <property datatype="string"
+                          name="Назначено"/>
+                <property datatype="string"
+                          name="Состояние"/>
+                <property datatype="string"
+                          name="Комментарии"/>
+            </properties>
+        </valueHierarchicalDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="tab">
+        <groupBox id="box">
+            <textField id="token"
+                       caption="msg://Token"
+                       width="300px"/>
+            <textField id="smartsheetId"
+                       caption="msg://smartsheetId"
+                       datatype="long"
+                       width="300px"/>
+        </groupBox>
+        <button caption="refresh"
+                invoke="refresh"/>
+        <treeTable id="tab"
+                   width="100%">
+            <columns>
+                <column id="id"/>
+                <column id="Имя задачи"/>
+                <column id="Начало"/>
+                <column id="Дата выполнения"/>
+                <column id="Готово"/>
+                <column id="Автор"/>
+                <column id="Назначено"/>
+                <column id="Состояние"/>
+                <column id="Комментарии"/>
+            </columns>
+            <rows datasource="smartsheetDataSource"/>
+        </treeTable>
+    </layout>
+</window>

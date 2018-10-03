@@ -56,6 +56,18 @@ public class Task extends StandardEntity {
     @JoinColumn(name = "DOCUMENT_ID")
     protected Document taskableEntity;
 
+    @Column(name = "SMARTSHEET_ID")
+    protected Long smartsheetId;
+
+    public void setSmartsheetId(Long smartsheetId) {
+        this.smartsheetId = smartsheetId;
+    }
+
+    public Long getSmartsheetId() {
+        return smartsheetId;
+    }
+
+
     public void setTaskableEntity(Document document) {
         this.taskableEntity = document;
     }
