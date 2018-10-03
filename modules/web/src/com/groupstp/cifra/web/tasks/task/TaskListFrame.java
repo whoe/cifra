@@ -6,13 +6,14 @@ import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskStatus;
 import com.groupstp.workflowstp.entity.Stage;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
+import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.WindowParam;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
-import com.haulmont.cuba.gui.data.DsContext;
 import com.haulmont.cuba.gui.data.GroupDatasource;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
@@ -62,7 +63,18 @@ public class TaskListFrame extends AbstractFrame {
         super.init(params);
 
         initJpqlQuery();
+        initStyleProvider();
         initFrame();
+    }
+
+    private void initStyleProvider() {
+        tasksTable.addStyleProvider((entity, property) -> {
+            if (entity.getEndDate().before(AppBeans.get(TimeSource.class).currentTimestamp())) {
+                return "overdue";
+            }
+            return null;
+
+        });
     }
 
 
