@@ -42,7 +42,6 @@ create table CIFRA_DOCUMENT (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    DOC_STATUS integer not null,
     WAREHOUSE_ID uuid,
     CELL varchar(50),
     CONTRAGENT_ID uuid,
@@ -212,20 +211,6 @@ create table CIFRA_TAG (
     primary key (ID)
 )^
 -- end CIFRA_TAG
--- begin CIFRA_DOCUMENT_TAG_LINK
-create table CIFRA_DOCUMENT_TAG_LINK (
-    TAG_ID uuid,
-    DOCUMENT_ID uuid,
-    primary key (TAG_ID, DOCUMENT_ID)
-)^
--- end CIFRA_DOCUMENT_TAG_LINK
--- begin CIFRA_JOURNAL_DOCUMENT_LINK
-create table CIFRA_JOURNAL_DOCUMENT_LINK (
-    JOURNAL_ID uuid,
-    DOCUMENT_ID uuid,
-    primary key (JOURNAL_ID, DOCUMENT_ID)
-)^
--- end CIFRA_JOURNAL_DOCUMENT_LINK
 -- begin TASKS_TASK
 create table TASKS_TASK (
     ID uuid,
@@ -246,6 +231,7 @@ create table TASKS_TASK (
     PERFORMER_ID uuid not null,
     COMMENT_ text,
     DOCUMENT_ID uuid not null,
+    SMARTSHEET_ID bigint,
     --
     primary key (ID)
 )^
@@ -293,3 +279,17 @@ create table TEMPLATE_TASK_TYPICAL_LINK (
     primary key (TASK_TEMPLATE_ID, TASK_TYPICAL_ID)
 )^
 -- end TEMPLATE_TASK_TYPICAL_LINK
+-- begin CIFRA_DOCUMENT_TAG_LINK
+create table CIFRA_DOCUMENT_TAG_LINK (
+    TAG_ID uuid,
+    DOCUMENT_ID uuid,
+    primary key (TAG_ID, DOCUMENT_ID)
+)^
+-- end CIFRA_DOCUMENT_TAG_LINK
+-- begin CIFRA_JOURNAL_DOCUMENT_LINK
+create table CIFRA_JOURNAL_DOCUMENT_LINK (
+    JOURNAL_ID uuid,
+    DOCUMENT_ID uuid,
+    primary key (JOURNAL_ID, DOCUMENT_ID)
+)^
+-- end CIFRA_JOURNAL_DOCUMENT_LINK
