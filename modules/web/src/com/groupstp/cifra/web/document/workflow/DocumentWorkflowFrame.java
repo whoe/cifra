@@ -59,9 +59,8 @@ public class DocumentWorkflowFrame extends AbstractFrame implements UiEvent {
 
     @EventListener
     public void onCifraUiEvent(CifraUiEvent event) {
-        showNotification("Event captured", NotificationType.HUMANIZED);
         if ("documentCommitted".equals(event.getSource())) {
-            documentDs.refresh();
+            getDsContext().refresh();
         }
     }
 
@@ -151,20 +150,5 @@ public class DocumentWorkflowFrame extends AbstractFrame implements UiEvent {
                 }
             }
         }
-    }
-
-    //check what we can provide to user to delete workflow
-    protected boolean canDelete(Document document) {
-        return document != null && document.getStatus() == null;
-    }
-
-    //check what we can provide to user to edit workflow
-    protected boolean canEdit(Document document) {
-        return document != null && document.getStatus() == null;
-    }
-
-    //check what we can provide to user to run workflow
-    protected boolean canRun(Document document) {
-        return document != null && document.getStatus() == null;
     }
 }

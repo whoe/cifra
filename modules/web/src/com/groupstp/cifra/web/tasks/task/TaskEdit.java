@@ -5,6 +5,7 @@ import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskStatus;
 import com.groupstp.cifra.entity.tasks.TaskTypical;
 import com.groupstp.cifra.entity.tasks.TaskableEntity;
+import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.UserSessionSource;
@@ -16,7 +17,7 @@ import javax.inject.Inject;
 import java.util.Date;
 import java.util.Map;
 
-import static com.groupstp.cifra.web.tasks.Utils.countEndDateFromStartDate;
+import static com.groupstp.cifra.web.tasks.UITasksUtils.countEndDateFromStartDate;
 
 public class TaskEdit extends AbstractEditor<Task> {
 
@@ -24,10 +25,10 @@ public class TaskEdit extends AbstractEditor<Task> {
     private FieldGroup fieldGroup;
 
     @Inject
-    UserSessionSource userSessionSource;
+    private UserSessionSource userSessionSource;
 
     @Inject
-    DataManager dataManager;
+    private DataManager dataManager;
 
     private TaskTypical taskTypical;
     private TaskableEntity taskableEntity;
@@ -75,5 +76,11 @@ public class TaskEdit extends AbstractEditor<Task> {
      */
     public void onOpenDocumentClick() {
         openEditor(((PickerField) fieldGroup.getComponent("taskableEntity")).getValue(), WindowManager.OpenType.NEW_WINDOW);
+    }
+
+    @Override
+    public void commitAndClose() {
+        super.commitAndClose();
+        CifraUiEvent.push("taskCommitted");
     }
 }

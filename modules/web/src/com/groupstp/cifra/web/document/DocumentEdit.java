@@ -5,7 +5,12 @@ import com.groupstp.cifra.WorkflowProcessService;
 import com.groupstp.cifra.entity.CheckList;
 import com.groupstp.cifra.entity.CheckListService;
 import com.groupstp.cifra.entity.Document;
+import com.groupstp.cifra.entity.tasks.TaskTemplate;
+import com.groupstp.cifra.entity.tasks.TaskTypical;
+import com.groupstp.cifra.entity.tasks.TaskableEntity;
 import com.groupstp.cifra.web.entity.CifraUiEvent;
+import com.groupstp.cifra.web.tasks.UITasksUtils;
+import com.groupstp.cifra.web.tasks.task.TaskEdit;
 import com.groupstp.workflowstp.entity.StepDirection;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
@@ -14,6 +19,7 @@ import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.EntityStates;
 import com.haulmont.cuba.core.global.Security;
+import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.data.Datasource;
@@ -71,9 +77,14 @@ public class DocumentEdit extends AbstractEditor<Document> {
     @Inject
     private ComponentsFactory componentsFactory;
 
+    @Inject
+    private ButtonsPanel tasksButtonsPanel;
+
     private boolean fileAttachedWhenFrameWasOpened;
 
     private boolean checkListStateWhenFrameWasOpened;
+
+    private final UITasksUtils uiTasksUtils = UITasksUtils.INSTANCE;
 
     @Override
     protected void initNewItem(Document item) {
@@ -108,6 +119,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
         checkReadOnlyUserAccess();
         addListenerForStartingWorkflow();
+        initTaskButton();
 
     }
 
@@ -457,10 +469,10 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * @param ignore
      */
     public void onOkBtnClick(Component ignore) {
-        CifraUiEvent.push("documentCommitted");
         if (checkCheckListFilledOrHasCommentary()) {
             commitAndClose();
         }
+        CifraUiEvent.push("documentCommitted");
     }
 
     /**
@@ -486,6 +498,73 @@ public class DocumentEdit extends AbstractEditor<Document> {
     public void onCancelBtnClick(Component ignore) {
         CifraUiEvent.push("documentCommitted");
         this.close("close");
+    }
+
+
+    private void initTaskButton() {
+
+        uiTasksUtils.makeButton(CubaIcon.CALENDAR_PLUS_O, new BaseAction("assigntask") {
+            @Override
+            public void actionPerform(Component component) {
+                super.actionPerform(component);
+                openLookup(TaskTypical.class, items -> {
+                    if (items.size() == 0) {
+                        return;
+                    } else if (items.size() > 1) {
+                        throw new IllegalArgumentException("Only one typical task can be selected!");
+                    }
+                    uiTasksUtils.createTaskInWindows(getItem(), items.iterator(), getFrame());
+                }, WindowManager.OpenType.DIALOG);
+            }
+        }, getMessage("assigntask"), tasksButtonsPanel);
+
+        uiTasksUtils.makeButton(CubaIcon.CALENDAR, new BaseAction("assigntasks") {
+            @Override
+            public void actionPerform(Component component) {
+                super.actionPerform(component);
+
+                openLookup(TaskTemplate.class, selectedTemplate -> {
+                    if (selectedTemplate.size() == 0) {
+                        return;
+                    } else if (selectedTemplate.size() > 1) {
+                        throw new IllegalArgumentException("Only one typical task can be selected!");
+                    }
+
+                    assignTaskOnTemplate(getItem(), (TaskTemplate) selectedTemplate.iterator().next(), getFrame());
+
+                }, WindowManager.OpenType.DIALOG);
+            }
+        }, getMessage("assigntasks"), tasksButtonsPanel);
+
+    }
+
+    /**
+     * Assign task to document on template
+     *
+     * @param document
+     * @param template
+     */
+    public void assignTaskOnTemplate(TaskableEntity document, TaskTemplate template, Frame frame) {
+
+        if (template.getTasks().size() == 0) return;
+
+        Iterator<TaskTypical> iteratorTemplate = template.getTasks().iterator();
+
+        TaskEdit taskEditWindow = uiTasksUtils.createTaskInWindows(document, iteratorTemplate, frame);
+
+        taskEditWindow.addCloseWithCommitListener(() -> showOptionDialog(
+                getMessage("templateModeWindow"),
+                getMessage("templateModeAsk"),
+                MessageType.CONFIRMATION,
+                new Action[]{
+                        new DialogAction(DialogAction.Type.OK, Action.Status.PRIMARY).withHandler(actionPerformedEvent -> uiTasksUtils.createTaskWithoutWindows(iteratorTemplate, taskEditWindow.getItem())),
+                        new DialogAction(DialogAction.Type.NO, Action.Status.NORMAL).withHandler(actionPerformedEvent -> {
+                            while (iteratorTemplate.hasNext()) {
+                                uiTasksUtils.createTaskInWindows(document, iteratorTemplate, getFrame());
+                            }
+                        })
+                }));
+
     }
 
 }

@@ -4,6 +4,7 @@ import com.groupstp.cifra.WorkflowProcessService;
 import com.groupstp.cifra.entity.Document;
 import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskStatus;
+import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.groupstp.workflowstp.entity.Stage;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.haulmont.cuba.core.global.AppBeans;
@@ -19,6 +20,7 @@ import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.util.CollectionUtils;
 
 import javax.inject.Inject;
@@ -58,6 +60,13 @@ public class TaskListFrame extends AbstractFrame {
 
     private Stage currentStage;
 
+    @EventListener
+    public void onCifraUiEvent(CifraUiEvent event) {
+        if ("taskCommitted".equals(event.getSource())) {
+            getDsContext().refresh();
+        }
+    }
+
     @Override
     public void init(Map<String, Object> params) {
         super.init(params);
@@ -68,13 +77,7 @@ public class TaskListFrame extends AbstractFrame {
     }
 
     private void initStyleProvider() {
-        tasksTable.addStyleProvider((entity, property) -> {
-            if (entity.getEndDate().before(AppBeans.get(TimeSource.class).currentTimestamp())) {
-                return "overdue";
-            }
-            return null;
-
-        });
+        tasksTable.addStyleProvider((entity, property) -> (entity.getEndDate() != null && entity.getEndDate().before(AppBeans.get(TimeSource.class).currentTimestamp())) ? "overdue" :  null);
     }
 
 

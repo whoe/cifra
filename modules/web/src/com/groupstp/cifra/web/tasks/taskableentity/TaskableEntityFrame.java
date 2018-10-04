@@ -1,30 +1,26 @@
 package com.groupstp.cifra.web.tasks.taskableentity;
 
 import com.groupstp.cifra.entity.Document;
-import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskTemplate;
 import com.groupstp.cifra.entity.tasks.TaskTypical;
 import com.groupstp.cifra.entity.tasks.TaskableEntity;
+import com.groupstp.cifra.web.entity.CifraUiEvent;
+import com.groupstp.cifra.web.tasks.UITasksUtils;
 import com.groupstp.cifra.web.tasks.task.TaskEdit;
 import com.groupstp.cifra.web.tasks.task.TaskListFrame;
-import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.cuba.core.entity.annotation.Listeners;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.components.actions.EditAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.icons.CubaIcon;
-import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 
 import javax.inject.Inject;
 import java.util.*;
-
-import static com.groupstp.cifra.web.tasks.Utils.countEndDateFromStartDate;
 
 /**
  * Controller for component's main screen (example)
@@ -38,21 +34,19 @@ public class TaskableEntityFrame extends AbstractFrame {
     private Table<Document> entitiesTable;
 
     @Inject
-    private ComponentsFactory componentsFactory;
-
-    @Inject
     private CollectionDatasource<Document, UUID> entitiesDs;
 
     @Inject
     private ButtonsPanel buttonsPanel;
 
-    @Inject
-    private DataManager dataManager;
+    private final UITasksUtils uiTasksUtils = UITasksUtils.INSTANCE;
 
-    @Inject
-    private Metadata metadata;
-
-    private TaskEdit taskEditWindow;
+    @EventListener
+    public void onCifraUiEvent(CifraUiEvent event) {
+        if ("documentCommitted".equals(event.getSource())) {
+            getDsContext().refresh();
+        }
+    }
 
     @Override
     public void init(Map<String, Object> params) {
@@ -68,7 +62,7 @@ public class TaskableEntityFrame extends AbstractFrame {
         EditAction action = (EditAction) entitiesTable.getAction(EditAction.ACTION_ID);
         Objects.requireNonNull(action).setAfterCommitHandler(entity -> entitiesDs.refresh());
 
-        makeButton(CubaIcon.CALENDAR_PLUS_O, new BaseAction("assigntask") {
+        uiTasksUtils.makeButton(CubaIcon.CALENDAR_PLUS_O, new BaseAction("assigntask") {
             @Override
             public void actionPerform(Component component) {
                 super.actionPerform(component);
@@ -80,13 +74,13 @@ public class TaskableEntityFrame extends AbstractFrame {
                     } else if (items.size() > 1) {
                         throw new IllegalArgumentException("Only one typical task can be selected!");
                     }
-                    createTaskInWindows(document, items.iterator());
+                    uiTasksUtils.createTaskInWindows(document, items.iterator(), getFrame());
 
                 }, WindowManager.OpenType.DIALOG));
             }
-        });
+        }, getMessage("assigntask"), buttonsPanel);
 
-        makeButton(CubaIcon.CALENDAR, new BaseAction("assigntasks") {
+        uiTasksUtils.makeButton(CubaIcon.CALENDAR, new BaseAction("assigntasks") {
             @Override
             public void actionPerform(Component component) {
                 super.actionPerform(component);
@@ -99,11 +93,11 @@ public class TaskableEntityFrame extends AbstractFrame {
                         throw new IllegalArgumentException("Only one typical task can be selected!");
                     }
 
-                    assignTaskOnTemplate(selectedDocument, (TaskTemplate) selectedTemplate.iterator().next());
+                    assignTaskOnTemplate(selectedDocument, (TaskTemplate) selectedTemplate.iterator().next(), getFrame());
 
                 }, WindowManager.OpenType.DIALOG));
             }
-        });
+        }, getMessage("assigntasks"), buttonsPanel);
 
     }
 
@@ -113,81 +107,27 @@ public class TaskableEntityFrame extends AbstractFrame {
      * @param document
      * @param template
      */
-    private void assignTaskOnTemplate(TaskableEntity document, TaskTemplate template) {
+    public void assignTaskOnTemplate(TaskableEntity document, TaskTemplate template, Frame frame) {
 
         if (template.getTasks().size() == 0) return;
 
         Iterator<TaskTypical> iteratorTemplate = template.getTasks().iterator();
 
-        taskEditWindow = createTaskInWindows(document, iteratorTemplate);
+        TaskEdit taskEditWindow = uiTasksUtils.createTaskInWindows(document, iteratorTemplate, frame);
 
         taskEditWindow.addCloseWithCommitListener(() -> showOptionDialog(
                 getMessage("templateModeWindow"),
                 getMessage("templateModeAsk"),
                 MessageType.CONFIRMATION,
                 new Action[]{
-                        new DialogAction(DialogAction.Type.OK, Action.Status.PRIMARY).withHandler(actionPerformedEvent -> createTaskWithoutWindows(iteratorTemplate, taskEditWindow.getItem())),
+                        new DialogAction(DialogAction.Type.OK, Action.Status.PRIMARY).withHandler(actionPerformedEvent -> uiTasksUtils.createTaskWithoutWindows(iteratorTemplate, taskEditWindow.getItem())),
                         new DialogAction(DialogAction.Type.NO, Action.Status.NORMAL).withHandler(actionPerformedEvent -> {
                             while (iteratorTemplate.hasNext()) {
-                                createTaskInWindows(document, iteratorTemplate);
+                                uiTasksUtils.createTaskInWindows(document, iteratorTemplate, getFrame());
                             }
                         })
                 }));
 
     }
-
-    /**
-     * Create tasks from sampleTask, copy all fields except taskTypical and endDate
-     *
-     * @param iteratorTemplate iterator of typical tasks from template
-     * @param sampleTask       Sample task
-     */
-    private void createTaskWithoutWindows(Iterator<TaskTypical> iteratorTemplate, Task sampleTask) {
-        while (iteratorTemplate.hasNext()) {
-            TaskTypical template = iteratorTemplate.next();
-            Task newTask = metadata.create(Task.class);
-            newTask.setTaskTypical(template);
-            newTask.setStartDate(sampleTask.getStartDate());
-            newTask.setEndDate(countEndDateFromStartDate(sampleTask.getEndDate(), template.getInterval(), template.getIntervalType()));
-            newTask.setStatus(sampleTask.getStatus());
-            newTask.setControlNeeded(sampleTask.getControlNeeded());
-            newTask.setAuthor(sampleTask.getAuthor());
-            newTask.setPerformer(sampleTask.getPerformer());
-            newTask.setTaskableEntity(sampleTask.getTaskableEntity());
-            newTask.setComment(sampleTask.getComment());
-            dataManager.commit(newTask);
-        }
-    }
-
-    /**
-     * Create oner task fot document and open windows form
-     *
-     * @param document
-     * @param iteratorTemplate
-     * @return
-     */
-    private TaskEdit createTaskInWindows(TaskableEntity document, Iterator<TaskTypical> iteratorTemplate) {
-        TaskTypical taskTypical;
-        taskTypical = iteratorTemplate.next();
-        Task newTask = metadata.create(Task.class);
-
-        return (TaskEdit) openEditor(newTask, WindowManager.OpenType.DIALOG, ParamsMap.of("taskTypical", taskTypical, "taskableEntity", document));
-
-    }
-
-    /**
-     * Make the button from Strategy and add it to screen
-     *
-     * @param cubaIcon - example CubaIcon.CHECK.source()
-     * @param action   - Pattern Strategy
-     */
-    private void makeButton(CubaIcon cubaIcon, BaseAction action) {
-        Button button = componentsFactory.createComponent(Button.class);
-        button.setAction(action);
-        button.setCaption(getMessage(action.getId()));
-        button.setIcon(cubaIcon.source());
-        buttonsPanel.add(button);
-    }
-
 }
 

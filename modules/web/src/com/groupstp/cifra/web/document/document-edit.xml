@@ -92,6 +92,8 @@
             <label id="labelCurrentWorkflowStage"
                    stylename="bold"/>
         </buttonsPanel>
+        <buttonsPanel id="tasksButtonsPanel">
+        </buttonsPanel>
         <dataGrid id="checkListDataGrid"
                   datasource="checklistDs"
                   editorEnabled="true"
