@@ -80,6 +80,7 @@ public class WorkflowProcessServiceBean implements WorkflowProcessService {
      * @return list of tasks, if no founded return empty list
      */
     public List<WorkflowInstanceTask> loadTasks(final Document document, final Workflow workflow) {
+        if (workflow == null) return Collections.emptyList();
         return dataManager.loadList(LoadContext.create(WorkflowInstanceTask.class)
                 .setQuery(new LoadContext.Query("select e from wfstp$" + "WorkflowInstanceTask e " +
                         "join e.instance i " +

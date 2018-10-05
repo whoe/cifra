@@ -15,6 +15,7 @@ import com.groupstp.workflowstp.entity.StepDirection;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
+import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.EntityStates;
@@ -80,6 +81,8 @@ public class DocumentEdit extends AbstractEditor<Document> {
     @Inject
     private ButtonsPanel tasksButtonsPanel;
 
+    private Document document;
+
     private boolean fileAttachedWhenFrameWasOpened;
 
     private boolean checkListStateWhenFrameWasOpened;
@@ -93,12 +96,23 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     @Override
     public void init(Map<String, Object> params) {
+        addListenerForComponents();
 
+        company.addLookupAction();
+        company.addOpenAction();
+        company.addClearAction();
+
+        checkAndSetAccessForComponents();
+
+        addListenerForStartingWorkflow();
+    }
+
+    private void addListenerForComponents() {
         documentDs.addItemPropertyChangeListener(e -> {
             if ("docType".equals(e.getProperty())) {
                 checklistDs.clear();
                 checklistDs.clearCommitLists();
-                List<CheckList> items = checkListService.fillCheckList(getItem());
+                List<CheckList> items = checkListService.fillCheckList(document);
                 items.forEach(checklistDs::addItem);
             } else if ("file".equals(e.getProperty())) {
                 dateLoad.setValue(new Date());
@@ -112,14 +126,14 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 checklistDs.modifyItem(item);
             }
         });
+    }
 
-        company.addLookupAction();
-        company.addOpenAction();
-        company.addClearAction();
-
+    private void checkAndSetAccessForComponents() {
+        checkWorkflowStepAccess();
         checkReadOnlyUserAccess();
-        addListenerForStartingWorkflow();
-        initTaskButton();
+    }
+
+    private void checkWorkflowStepAccess() {
 
     }
 
@@ -127,29 +141,38 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * if user's access is "check only" make some components are inaccessible
      */
     private void checkReadOnlyUserAccess() {
-        Security security = AppBeans.get(Security.class);
-        if (!security.isEntityOpPermitted(Document.class, EntityOp.CREATE)) {
-            getComponent("checkListDataGrid").setEnabled(false);
-            getComponent("fieldGroup.tag").setEnabled(false);
-
+        if (!isAccessReadOnly()) {
+            List<String> componentDisabled = Arrays.asList("checkListDataGrid", "workflowButtonsPanel", "tag", "tasksButtonsPanel");
+            Collection<Component> components = getComponents();
+            components.forEach(component -> {
+                if (componentDisabled.contains(component.getId())) {
+                    component.setEnabled(false);
+                }
+            });
         }
     }
 
+    private boolean isAccessReadOnly() {
+        Security security = AppBeans.get(Security.class);
+        return security.isEntityOpPermitted(Document.class, EntityOp.CREATE) ||
+                security.isEntityOpPermitted(Document.class, EntityOp.UPDATE);
+    }
+
     /**
-     * After commit document to DB start workflow processing
+     * After commit document to DB run workflow processing
      */
     private void addListenerForStartingWorkflow() {
 
         dsContext.addAfterCommitListener((context, result) -> {
+            dsContext.refresh();
 
-            Workflow workflow = workflowService.getActiveWorkflow();
-            if (workflow == null) {
+            if (workflowService.getActiveWorkflow() == null) {
                 return;
             }
 
-            Document savedDocument = (Document) result.stream().filter(entity -> entity.getClass() == Document.class).findFirst().get();
+            document = (Document) result.stream().filter(entity -> entity.getClass() == Document.class).findFirst().get();
 
-            workflowRunProcessing(workflow, savedDocument);
+            workflowRunProcessing();
             CifraUiEvent.push("documentCommitted");
 
         });
@@ -158,13 +181,13 @@ public class DocumentEdit extends AbstractEditor<Document> {
     @Override
     public void ready() {
         super.ready();
-        fileAttachedWhenFrameWasOpened = getItem().getFile() != null;
+        document = getItem();
+        fileAttachedWhenFrameWasOpened = document.getFile() != null;
         checkListStateWhenFrameWasOpened = getCheckListStatus();
 
         checkAndInitializeEmptyFields();
 
         refreshLabelCurrentWorkflowStage();
-
         makeButtonWorkflow(new BaseAction(Utils.STEP_ISSUE_NAME) {
             @Override
             public String getCaption() {
@@ -178,23 +201,10 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
             @Override
             public void actionPerform(Component component) {
-                commitIfNeeded();
-                Document document = getItem();
-                try {
-                    List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
-                    WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
-                    HashMap<String, String> map = buildParametersMapWorkflow();
-                    map.put("doc_issued", "true");
-                    workflowService.finishTask(task, map);
-                    notifyUser();
-                } catch (Exception e) {
-                    throw new RuntimeException("Ошибка обработки заявки", e);
-                } finally {
-                    close(WINDOW_COMMIT_AND_CLOSE);
-                }
+                continueWorkflow(ParamsMap.of("doc_issued", "true"));
+                close(WINDOW_COMMIT_AND_CLOSE);
             }
         });
-
         makeButtonWorkflow(new BaseAction(Utils.STEP_ELIMINATE_NAME) {
             @Override
             public String getCaption() {
@@ -208,24 +218,11 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
             @Override
             public void actionPerform(Component component) {
-                commitIfNeeded();
-                Document document = getItem();
-                try {
-                    List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
-                    WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
-                    HashMap<String, String> map = buildParametersMapWorkflow();
-                    map.put("doc_eliminated", "true");
-                    workflowService.finishTask(task, map);
-                    notifyUser();
-                } catch (Exception e) {
-                    throw new RuntimeException("Ошибка обработки заявки", e);
-                } finally {
-                    close(WINDOW_COMMIT_AND_CLOSE);
-                }
+                continueWorkflow(ParamsMap.of("doc_eliminated", "true"));
+                close(WINDOW_COMMIT_AND_CLOSE);
             }
         });
-
-        makeButtonWorkflow(new BaseAction("Входящий") {
+        makeButtonWorkflow(new BaseAction(Utils.STEP_INCOMING_NAME) {
             @Override
             public String getCaption() {
                 return getMessage("workflow.back");
@@ -238,37 +235,48 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
             @Override
             public void actionPerform(Component component) {
-                commitIfNeeded();
-                Document document = getItem();
-                try {
-                    List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
-                    WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
-                    HashMap<String, String> map = buildParametersMapWorkflow();
-                    map.put("doc_flow_incoming", "true");
-                    map.put("doc_issued", "false");
-                    workflowService.finishTask(task, map);
-                    tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
-                    task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().get();
-                    map = buildParametersMapWorkflow();
-                    map.put("doc_flow_incoming", "false");
-                    workflowService.finishTask(task, map);
-                    notifyUser();
-                } catch (Exception e) {
-                    throw new RuntimeException("Ошибка обработки заявки", e);
-                } finally {
-                    close(WINDOW_COMMIT_AND_CLOSE);
-                }
+                continueWorkflow(ParamsMap.of("doc_flow_incoming", "true", "doc_issued", "false", "doc_archived", "false"));
+                continueWorkflow(ParamsMap.of("doc_flow_incoming", "false"));
+                close(WINDOW_COMMIT_AND_CLOSE);
             }
         });
+
+        makeButtonWorkflow(new BaseAction(Utils.STEP_ARCHIVE_NAME) {
+            @Override
+            public String getCaption() {
+                return getMessage("workflow.archive");
+            }
+
+            @Override
+            public String getIcon() {
+                return CubaIcon.ARCHIVE.source();
+            }
+
+            @Override
+            public void actionPerform(Component component) {
+                if (!isConditionForArchive()) {
+                    showNotification(getMessage("workflow.noConditionForArchive"), NotificationType.ERROR);
+                    return;
+                }
+                List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
+                continueWorkflow(ParamsMap.of("doc_archived", true));
+                close(WINDOW_COMMIT_AND_CLOSE);
+            }
+        });
+
+        if (!AppBeans.get(EntityStates.class).isNew(document)) {
+            initTaskButton();
+        }
     }
 
     /**
      * Send notification about change step of Workflow
      */
     private void notifyUser() {
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(getItem(), workflowService.getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
         String message = String.format(getMessage("hasWorkflowStepIteration") + ": %s", tasks.get(tasks.size() - 1).getStep().getStage().getName());
         showNotification(message, NotificationType.TRAY);
+        CifraUiEvent.push("documentCommitted");
     }
 
     /**
@@ -277,8 +285,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
      */
     private void checkAndInitializeEmptyFields() {
 
-        Document document = getItem();
-
         EntityStates entityStates = AppBeans.get(EntityStates.class);
         if (entityStates.isNew(document)) {
             return;
@@ -286,7 +292,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
         Workflow activeWorkflow = workflowService.getActiveWorkflow();
         if (workflowService.loadTasks(document, activeWorkflow).size() == 0) {
-            workflowRunProcessing(activeWorkflow, document);
+            workflowRunProcessing();
             notifyUser();
             documentDs.refresh();
         }
@@ -302,7 +308,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * set label with current workflow's step name
      */
     private void refreshLabelCurrentWorkflowStage() {
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(getItem(), workflowService.getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
         WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
         if (task != null) {
             ((WebLabel) getComponent("labelCurrentWorkflowStage")).setValue(getMessage("workflow.currentStep") + ": " + task.getStep().getStage().getName());
@@ -322,26 +328,25 @@ public class DocumentEdit extends AbstractEditor<Document> {
     /**
      * Processing workflow for document
      * CONTAIN WORKFLOW'S BUSINESS LOGIC
-     * @param workflow
-     * @param document
-     * @throws Exception handled up
      */
-    private void workflowRunProcessing(Workflow workflow, Document document) {
+    private void workflowRunProcessing() {
 
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflow);
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
 
         if(tasks==null) return;
 
-        try {
             if (tasks.size() == 0) {
                 //no workflow task for current document, start new
-                workflowService.startWorkflow(document, workflow);
-
-                if (document.getFile() != null) {
-                    tasks = workflowService.loadTasks(document, workflow);
-                    continueWorkflow(tasks);
+                try {
+                    workflowService.startWorkflow(document, workflowService.getActiveWorkflow());
+                } catch (WorkflowException ex) {
+                    throw new RuntimeException(getMessage("workflow.Error"), ex);
                 }
-                notifyUser();
+                if (document.getFile() != null) {
+                    continueWorkflow();
+                } else {
+                    notifyUser();
+                }
                 return;
             }
 
@@ -354,48 +359,57 @@ public class DocumentEdit extends AbstractEditor<Document> {
             if (document.getFile() == null) return;
 
             String lastTaskName = lastTask.getStep().getStage().getName();
-            if (Utils.STEP_INCOMING_NAME.equals(lastTaskName) && (isFileAttachedWhenFrameWasOpened())) {
-                continueWorkflow(tasks);
+            if (Utils.STEP_INCOMING_NAME.equals(lastTaskName) && (isFileAttachedChanged())) {
+                continueWorkflow();
             }
 
             // step equal Обработано or Проблемы and was have change(file attached or checkListDataGrid changed), we must run workflow
             if (Utils.STEP_PROCESSING_NAME.equals(lastTaskName) || Utils.STEP_PROBLEM_NAME.equals(lastTaskName)) {
-                if (isFileAttachedWhenFrameWasOpened() || isCheckListChanged()) {
-                    continueWorkflow(tasks);
+                if (isFileAttachedChanged() || isCheckListChanged()) {
+                    continueWorkflow();
                 }
             }
-        } catch (WorkflowException ex) {
-            throw new RuntimeException(getMessage("workflow.Error"), ex);
-        }
+    }
+
+    /**
+     * Check condition
+     *
+     * @return
+     */
+    private boolean isConditionForArchive() {
+        return document.getWarehouse() != null && !document.getCell().isEmpty();
     }
 
     /**
      * Build map with common parameters and continue workflow
      *
-     * @param tasks list of all workflow's tasks
      * @throws WorkflowException
      */
-    private void continueWorkflow(List<WorkflowInstanceTask> tasks) throws WorkflowException {
+    private void continueWorkflow() {
+        continueWorkflow(null);
+    }
+
+    /**
+     * Build map with common and input parameters, after that continue workflow
+     *
+     * @param paramsMap map of input parameters for workflow step conditions
+     * @throws WorkflowException
+     */
+    private void continueWorkflow(Map<String, Object> paramsMap) {
+        commitIfNeeded();
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
         HashMap<String, String> map = buildParametersMapWorkflow();
+        if (paramsMap != null) {
+            paramsMap.forEach((parameter, value) -> map.putIfAbsent(parameter, value.toString()));
+        }
         WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
-        workflowService.finishTask(task, map);
+        try {
+            workflowService.finishTask(task, map);
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка обработки заявки", e);
+        }
         notifyUser();
     }
-
-    /**
-     * @return true, if file had been attached in this work's session
-     */
-    private boolean isFileAttachedWhenFrameWasOpened() {
-        return !fileAttachedWhenFrameWasOpened && getItem().getFile() != null;
-    }
-
-    /**
-     * @return trus, if checklist status(filled/) had been changed in this work's session
-     */
-    private boolean isCheckListChanged() {
-        return checkListStateWhenFrameWasOpened != getCheckListStatus();
-    }
-
 
     /**
      * Build Map with common parameters (keys) for continue workflow
@@ -408,6 +422,21 @@ public class DocumentEdit extends AbstractEditor<Document> {
         map.put(Utils.CHECKLIST_STATUS_FLAG, getCheckListStatus() ? "true" : "false");
         return map;
     }
+
+    /**
+     * @return true, if file had been attached in this work's session
+     */
+    private boolean isFileAttachedChanged() {
+        return !fileAttachedWhenFrameWasOpened && document.getFile() != null;
+    }
+
+    /**
+     * @return trus, if checklist status(filled/) had been changed in this work's session
+     */
+    private boolean isCheckListChanged() {
+        return checkListStateWhenFrameWasOpened != getCheckListStatus();
+    }
+
 
     /**
      * Check checkListDataGrid status (fully filled/no fully filled).
@@ -449,7 +478,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
      */
     private boolean isHasNextStep(String nextStep) {
 
-        Document document = getItem();
         if (document == null) return false;
 
         List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
@@ -481,7 +509,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * @return true, if conditions are satisfied, false - otherwise
      */
     private boolean checkCheckListFilledOrHasCommentary() {
-        Boolean gotOriginal = getItem().getGotOriginal() == null ? false : getItem().getGotOriginal();
+        Boolean gotOriginal = document.getGotOriginal() == null ? false : document.getGotOriginal();
         if (gotOriginal) {
             for (CheckList object : checklistDs.getItems()) {
                 Boolean checked = object.getChecked() == null ? false : object.getChecked();
@@ -501,6 +529,9 @@ public class DocumentEdit extends AbstractEditor<Document> {
     }
 
 
+    /**
+     * set on screen buttons for task's control
+     */
     private void initTaskButton() {
 
         uiTasksUtils.makeButton(CubaIcon.CALENDAR_PLUS_O, new BaseAction("assigntask") {
@@ -513,7 +544,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     } else if (items.size() > 1) {
                         throw new IllegalArgumentException("Only one typical task can be selected!");
                     }
-                    uiTasksUtils.createTaskInWindows(getItem(), items.iterator(), getFrame());
+                    uiTasksUtils.createTaskInWindows(document, items.iterator(), getFrame());
                 }, WindowManager.OpenType.DIALOG);
             }
         }, getMessage("assigntask"), tasksButtonsPanel);
@@ -530,7 +561,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                         throw new IllegalArgumentException("Only one typical task can be selected!");
                     }
 
-                    assignTaskOnTemplate(getItem(), (TaskTemplate) selectedTemplate.iterator().next(), getFrame());
+                    assignTaskOnTemplate(document, (TaskTemplate) selectedTemplate.iterator().next(), getFrame());
 
                 }, WindowManager.OpenType.DIALOG);
             }

@@ -3,7 +3,7 @@
     "_entityName": "wfstp$Workflow",
     "id": "d59aab88-accf-a92e-0d7f-ed02d9e7b677",
     "active": true,
-    "version": 4,
+    "version": 10,
     "steps": [
       {
         "_entityName": "wfstp$Step",
@@ -40,20 +40,21 @@
               "stage": {
                 "_entityName": "wfstp$Stage",
                 "id": "e025c436-c147-2d40-96f2-134768cfcf9b",
+                "browseScreenGroovyScript": "true",
                 "type": "USERS_INTERACTION",
-                "version": 1,
-                "actors": [
+                "version": 2,
+                "actors": [],
+                "actorsRoles": [
                   {
-                    "_entityName": "sec$User",
-                    "id": "60885987-1b61-4247-94c7-dff348347f93",
-                    "login": "admin",
-                    "version": 0,
-                    "name": "Administrator"
+                    "_entityName": "sec$Role",
+                    "id": "4541b2a3-c836-c007-c963-83cc117ec3ca",
+                    "version": 1,
+                    "name": "WorkFlow: все Шаги"
                   }
                 ],
-                "actorsRoles": [],
                 "entityName": "cifra$Document",
                 "name": "Исходящий",
+                "editorScreenGroovyScript": "true",
                 "entityCaption": "Документ"
               },
               "workflow": {
@@ -77,16 +78,17 @@
                       "_entityName": "wfstp$Stage",
                       "id": "0eb1036e-aac4-3004-d496-7aaf33643a8c",
                       "type": "USERS_INTERACTION",
-                      "version": 1,
-                      "actors": [
+                      "version": 2,
+                      "actors": [],
+                      "actorsRoles": [
                         {
-                          "_entityName": "sec$User",
-                          "id": "60885987-1b61-4247-94c7-dff348347f93"
+                          "_entityName": "sec$Role",
+                          "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
                         }
                       ],
-                      "actorsRoles": [],
                       "entityName": "cifra$Document",
                       "name": "В работе (заполнение)",
+                      "editorScreenGroovyScript": "true",
                       "entityCaption": "Документ"
                     },
                     "workflow": {
@@ -109,17 +111,19 @@
                           "stage": {
                             "_entityName": "wfstp$Stage",
                             "id": "9bc50a3a-e0d4-d548-b032-2ec89a13d37d",
+                            "browseScreenGroovyScript": "true",
                             "type": "USERS_INTERACTION",
-                            "version": 1,
-                            "actors": [
+                            "version": 2,
+                            "actors": [],
+                            "actorsRoles": [
                               {
-                                "_entityName": "sec$User",
-                                "id": "60885987-1b61-4247-94c7-dff348347f93"
+                                "_entityName": "sec$Role",
+                                "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
                               }
                             ],
-                            "actorsRoles": [],
                             "entityName": "cifra$Document",
                             "name": "Отправлен",
+                            "editorScreenGroovyScript": "true",
                             "entityCaption": "Документ"
                           },
                           "workflow": {
@@ -209,17 +213,19 @@
               "stage": {
                 "_entityName": "wfstp$Stage",
                 "id": "a5ed34af-bc1c-c7ea-1d1b-ca4bc1cb5731",
+                "browseScreenGroovyScript": "true",
                 "type": "USERS_INTERACTION",
-                "version": 1,
-                "actors": [
+                "version": 2,
+                "actors": [],
+                "actorsRoles": [
                   {
-                    "_entityName": "sec$User",
-                    "id": "60885987-1b61-4247-94c7-dff348347f93"
+                    "_entityName": "sec$Role",
+                    "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
                   }
                 ],
-                "actorsRoles": [],
                 "entityName": "cifra$Document",
                 "name": "Входящий",
+                "editorScreenGroovyScript": "true",
                 "entityCaption": "Документ"
               },
               "workflow": {
@@ -242,17 +248,19 @@
                     "stage": {
                       "_entityName": "wfstp$Stage",
                       "id": "0d6b103d-91b6-fa30-f7e0-33d0556863dc",
+                      "browseScreenGroovyScript": "true",
                       "type": "USERS_INTERACTION",
-                      "version": 1,
-                      "actors": [
+                      "version": 2,
+                      "actors": [],
+                      "actorsRoles": [
                         {
-                          "_entityName": "sec$User",
-                          "id": "60885987-1b61-4247-94c7-dff348347f93"
+                          "_entityName": "sec$Role",
+                          "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
                         }
                       ],
-                      "actorsRoles": [],
                       "entityName": "cifra$Document",
                       "name": "Проблема",
+                      "editorScreenGroovyScript": "true",
                       "entityCaption": "Документ"
                     },
                     "workflow": {
@@ -275,17 +283,19 @@
                           "stage": {
                             "_entityName": "wfstp$Stage",
                             "id": "fe1970bd-a3e6-c553-50f2-f38d85e85f1f",
+                            "browseScreenGroovyScript": "true",
                             "type": "USERS_INTERACTION",
-                            "version": 1,
-                            "actors": [
+                            "version": 2,
+                            "actors": [],
+                            "actorsRoles": [
                               {
-                                "_entityName": "sec$User",
-                                "id": "60885987-1b61-4247-94c7-dff348347f93"
+                                "_entityName": "sec$Role",
+                                "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
                               }
                             ],
-                            "actorsRoles": [],
                             "entityName": "cifra$Document",
                             "name": "Обработано",
+                            "editorScreenGroovyScript": "true",
                             "entityCaption": "Документ"
                           },
                           "workflow": {
@@ -323,17 +333,19 @@
                                 "stage": {
                                   "_entityName": "wfstp$Stage",
                                   "id": "cd5586ef-17e8-0bee-0c2e-b5575274b39b",
+                                  "browseScreenGroovyScript": "true",
                                   "type": "USERS_INTERACTION",
-                                  "version": 1,
-                                  "actors": [
+                                  "version": 2,
+                                  "actors": [],
+                                  "actorsRoles": [
                                     {
-                                      "_entityName": "sec$User",
-                                      "id": "60885987-1b61-4247-94c7-dff348347f93"
+                                      "_entityName": "sec$Role",
+                                      "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
                                     }
                                   ],
-                                  "actorsRoles": [],
                                   "entityName": "cifra$Document",
                                   "name": "Выдано",
+                                  "editorScreenGroovyScript": "true",
                                   "entityCaption": "Документ"
                                 },
                                 "workflow": {
@@ -428,14 +440,14 @@
                                   "id": "e8c28773-e382-ba10-880f-aea405c2a11c",
                                   "browseScreenGroovyScript": "true",
                                   "type": "USERS_INTERACTION",
-                                  "version": 1,
-                                  "actors": [
+                                  "version": 2,
+                                  "actors": [],
+                                  "actorsRoles": [
                                     {
-                                      "_entityName": "sec$User",
-                                      "id": "60885987-1b61-4247-94c7-dff348347f93"
+                                      "_entityName": "sec$Role",
+                                      "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
                                     }
                                   ],
-                                  "actorsRoles": [],
                                   "entityName": "cifra$Document",
                                   "name": "В работе (задачи)",
                                   "editorScreenGroovyScript": "true",
@@ -466,6 +478,62 @@
                                 "order": 11
                               },
                               "order": 4
+                            },
+                            {
+                              "_entityName": "wfstp$StepDirection",
+                              "id": "95ef29b6-578e-d131-08c8-1f7530f5f32b",
+                              "version": 1,
+                              "conditionGroovyScript": "\"true\".equalsIgnoreCase(context[\"doc_archived\"])",
+                              "from": {
+                                "_entityName": "wfstp$Step",
+                                "id": "85949fa8-2f3e-46c7-07dc-38e7f3c1586c"
+                              },
+                              "to": {
+                                "_entityName": "wfstp$Step",
+                                "id": "c6d6e5d2-fac1-db10-71ba-858fad81484f",
+                                "stage": {
+                                  "_entityName": "wfstp$Stage",
+                                  "id": "be8c2c5a-358e-a2d3-8801-b468b2b5a1d1",
+                                  "browseScreenGroovyScript": "true",
+                                  "type": "USERS_INTERACTION",
+                                  "version": 2,
+                                  "actors": [],
+                                  "actorsRoles": [
+                                    {
+                                      "_entityName": "sec$Role",
+                                      "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
+                                    }
+                                  ],
+                                  "entityName": "cifra$Document",
+                                  "name": "Архив",
+                                  "editorScreenGroovyScript": "true",
+                                  "entityCaption": "Документ"
+                                },
+                                "workflow": {
+                                  "_entityName": "wfstp$Workflow",
+                                  "id": "d59aab88-accf-a92e-0d7f-ed02d9e7b677"
+                                },
+                                "directions": [
+                                  {
+                                    "_entityName": "wfstp$StepDirection",
+                                    "id": "2e9c666e-09fa-85d5-8611-2e13f4f71279",
+                                    "version": 2,
+                                    "conditionGroovyScript": "\"false\".equalsIgnoreCase(context[\"doc_archived\"])",
+                                    "from": {
+                                      "_entityName": "wfstp$Step",
+                                      "id": "c6d6e5d2-fac1-db10-71ba-858fad81484f"
+                                    },
+                                    "to": {
+                                      "_entityName": "wfstp$Step",
+                                      "id": "93e82816-f44d-f8ca-b5ea-5b49ed73f663"
+                                    },
+                                    "order": 1
+                                  }
+                                ],
+                                "version": 3,
+                                "order": 12
+                              },
+                              "order": 5
                             }
                           ],
                           "version": 2,
@@ -558,6 +626,10 @@
       {
         "_entityName": "wfstp$Step",
         "id": "bd1fbd87-fc10-ca73-0829-40b92155f165"
+      },
+      {
+        "_entityName": "wfstp$Step",
+        "id": "c6d6e5d2-fac1-db10-71ba-858fad81484f"
       }
     ],
     "entityName": "cifra$Document",
