@@ -20,13 +20,13 @@ public interface WorkflowProcessService {
 
     Workflow getActiveWorkflow(Class<? extends WorkflowEntity> entityClass);
 
-    List<WorkflowInstanceTask> loadTasks(final Document document, final Workflow workflow);
+    List<WorkflowInstanceTask> loadTasks(final Document document);
 
     void finishTask(WorkflowInstanceTask task, @Nullable Map<String, String> params) throws WorkflowException;
 
     UUID startWorkflow(WorkflowEntity entity, Workflow wf) throws WorkflowException;
 
-    WorkflowInstanceTask loadLastTask(Document document, Workflow activeWorkflow);
+    WorkflowInstanceTask loadLastOpenTask(Document document);
 
     void processWorkflowWithTask(Task task);
 

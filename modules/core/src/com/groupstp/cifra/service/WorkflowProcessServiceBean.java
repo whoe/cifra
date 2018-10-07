@@ -76,10 +76,11 @@ public class WorkflowProcessServiceBean implements WorkflowProcessService {
      * Load all tasks for document for workflow
      *
      * @param document
-     * @param workflow
      * @return list of tasks, if no founded return empty list
      */
-    public List<WorkflowInstanceTask> loadTasks(final Document document, final Workflow workflow) {
+    public List<WorkflowInstanceTask> loadTasks(final Document document) {
+
+        Workflow workflow = getActiveWorkflow();
         if (workflow == null) return Collections.emptyList();
         return dataManager.loadList(LoadContext.create(WorkflowInstanceTask.class)
                 .setQuery(new LoadContext.Query("select e from wfstp$" + "WorkflowInstanceTask e " +
@@ -103,8 +104,8 @@ public class WorkflowProcessServiceBean implements WorkflowProcessService {
     }
 
     @Override
-    public WorkflowInstanceTask loadLastTask(Document document, Workflow activeWorkflow) {
-        List<WorkflowInstanceTask> tasks = loadTasks(document, activeWorkflow);
+    public WorkflowInstanceTask loadLastOpenTask(Document document) {
+        List<WorkflowInstanceTask> tasks = loadTasks(document);
         for (WorkflowInstanceTask task : tasks) {
             if (task.getEndDate() == null) return task;
         }
@@ -118,7 +119,7 @@ public class WorkflowProcessServiceBean implements WorkflowProcessService {
 
         Document document = dataManager.load(Document.class).id(taskableEntity.getId()).one();
 
-        WorkflowInstanceTask lastTask = loadLastTask(document, getActiveWorkflow());
+        WorkflowInstanceTask lastTask = loadLastOpenTask(document);
         if (lastTask == null) return;
 
         String nameOfLastStep = lastTask.getStep().getStage().getName();
@@ -137,7 +138,7 @@ public class WorkflowProcessServiceBean implements WorkflowProcessService {
     @Override
     public void processWorkflowWithTask(Document document) {
         if (!isItActiveTaskForDocument(document)) {
-            WorkflowInstanceTask lastTask = loadLastTask(document, getActiveWorkflow());
+            WorkflowInstanceTask lastTask = loadLastOpenTask(document);
             if (lastTask == null) return;
             try {
                 workflowService.finishTask(lastTask, Collections.singletonMap("doc_has_tasks", "false"));

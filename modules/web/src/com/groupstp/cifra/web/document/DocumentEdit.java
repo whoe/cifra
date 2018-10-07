@@ -5,6 +5,7 @@ import com.groupstp.cifra.WorkflowProcessService;
 import com.groupstp.cifra.entity.CheckList;
 import com.groupstp.cifra.entity.CheckListService;
 import com.groupstp.cifra.entity.Document;
+import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskTemplate;
 import com.groupstp.cifra.entity.tasks.TaskTypical;
 import com.groupstp.cifra.entity.tasks.TaskableEntity;
@@ -12,7 +13,6 @@ import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.groupstp.cifra.web.tasks.UITasksUtils;
 import com.groupstp.cifra.web.tasks.task.TaskEdit;
 import com.groupstp.workflowstp.entity.StepDirection;
-import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
 import com.haulmont.bali.util.ParamsMap;
@@ -36,6 +36,10 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
+
+import static com.groupstp.cifra.web.UIUtils.disableComponents;
+import static com.groupstp.cifra.web.UIUtils.editableOffComponent;
+import static com.groupstp.cifra.web.UIUtils.enableComponents;
 
 public class DocumentEdit extends AbstractEditor<Document> {
 
@@ -81,6 +85,9 @@ public class DocumentEdit extends AbstractEditor<Document> {
     @Inject
     private ButtonsPanel tasksButtonsPanel;
 
+    @Inject
+    private Security security;
+
     private Document document;
 
     private boolean fileAttachedWhenFrameWasOpened;
@@ -102,11 +109,12 @@ public class DocumentEdit extends AbstractEditor<Document> {
         company.addOpenAction();
         company.addClearAction();
 
-        checkAndSetAccessForComponents();
-
         addListenerForStartingWorkflow();
     }
 
+    /**
+     * add Listener to components
+     */
     private void addListenerForComponents() {
         documentDs.addItemPropertyChangeListener(e -> {
             if ("docType".equals(e.getProperty())) {
@@ -126,36 +134,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 checklistDs.modifyItem(item);
             }
         });
-    }
-
-    private void checkAndSetAccessForComponents() {
-        checkWorkflowStepAccess();
-        checkReadOnlyUserAccess();
-    }
-
-    private void checkWorkflowStepAccess() {
-
-    }
-
-    /**
-     * if user's access is "check only" make some components are inaccessible
-     */
-    private void checkReadOnlyUserAccess() {
-        if (!isAccessReadOnly()) {
-            List<String> componentDisabled = Arrays.asList("checkListDataGrid", "workflowButtonsPanel", "tag", "tasksButtonsPanel");
-            Collection<Component> components = getComponents();
-            components.forEach(component -> {
-                if (componentDisabled.contains(component.getId())) {
-                    component.setEnabled(false);
-                }
-            });
-        }
-    }
-
-    private boolean isAccessReadOnly() {
-        Security security = AppBeans.get(Security.class);
-        return security.isEntityOpPermitted(Document.class, EntityOp.CREATE) ||
-                security.isEntityOpPermitted(Document.class, EntityOp.UPDATE);
     }
 
     /**
@@ -240,7 +218,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 close(WINDOW_COMMIT_AND_CLOSE);
             }
         });
-
         makeButtonWorkflow(new BaseAction(Utils.STEP_ARCHIVE_NAME) {
             @Override
             public String getCaption() {
@@ -258,7 +235,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     showNotification(getMessage("workflow.noConditionForArchive"), NotificationType.ERROR);
                     return;
                 }
-                List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
                 continueWorkflow(ParamsMap.of("doc_archived", true));
                 close(WINDOW_COMMIT_AND_CLOSE);
             }
@@ -267,13 +243,55 @@ public class DocumentEdit extends AbstractEditor<Document> {
         if (!AppBeans.get(EntityStates.class).isNew(document)) {
             initTaskButton();
         }
+
+        checkAndSetAccessForComponents();
+    }
+
+    /**
+     * check and set access for components
+     * run order is important
+     */
+    private void checkAndSetAccessForComponents() {
+
+        if (!security.isEntityOpPermitted(Document.class, EntityOp.UPDATE)) {
+            List<Component> componentsToDisable = Arrays.asList(
+                    getComponent("fieldGroup.tag"),
+                    getComponent("checkListDataGrid"),
+                    getComponent("workflowButtonsPanel"));
+            disableComponents(componentsToDisable);
+            return;
+        }
+
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document);
+        if (tasks.isEmpty()) return;
+
+        String nameOfLastStep = tasks.get(tasks.size() - 1).getStep().getStage().getName();
+        if (Utils.STEP_ELIMINATE_NAME.equals(nameOfLastStep)) {
+            editableOffComponent(new ArrayList<>(getComponents()));
+            List<Component> componentsToDisable = Arrays.asList(
+                    getComponent("fieldGroup.tag"),
+                    getComponent("checkListDataGrid"),
+                    getComponent("workflowButtonsPanel"),
+                    getComponent("tasksButtonsPanel"));
+            disableComponents(componentsToDisable);
+        } else if (Utils.STEP_ARCHIVE_NAME.equals(nameOfLastStep)) {
+            editableOffComponent(new ArrayList<>(getComponents()));
+            List<Component> componentsToDisable = Arrays.asList(
+                    getComponent("fieldGroup.tag"),
+                    getComponent("checkListDataGrid"),
+                    getComponent("workflowButtonsPanel"),
+                    getComponent("tasksButtonsPanel"));
+            disableComponents(componentsToDisable);
+            List<Component> componentsToEnable = Arrays.asList(getComponent(Utils.STEP_INCOMING_NAME));
+            enableComponents(componentsToEnable);
+        }
     }
 
     /**
      * Send notification about change step of Workflow
      */
     private void notifyUser() {
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document);
         String message = String.format(getMessage("hasWorkflowStepIteration") + ": %s", tasks.get(tasks.size() - 1).getStep().getStage().getName());
         showNotification(message, NotificationType.TRAY);
         CifraUiEvent.push("documentCommitted");
@@ -290,8 +308,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
             return;
         }
 
-        Workflow activeWorkflow = workflowService.getActiveWorkflow();
-        if (workflowService.loadTasks(document, activeWorkflow).size() == 0) {
+        if (workflowService.loadTasks(document).size() == 0) {
             workflowRunProcessing();
             notifyUser();
             documentDs.refresh();
@@ -308,7 +325,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * set label with current workflow's step name
      */
     private void refreshLabelCurrentWorkflowStage() {
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document);
         WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
         if (task != null) {
             ((WebLabel) getComponent("labelCurrentWorkflowStage")).setValue(getMessage("workflow.currentStep") + ": " + task.getStep().getStage().getName());
@@ -331,7 +348,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
      */
     private void workflowRunProcessing() {
 
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document);
 
         if(tasks==null) return;
 
@@ -397,7 +414,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
      */
     private void continueWorkflow(Map<String, Object> paramsMap) {
         commitIfNeeded();
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document);
         HashMap<String, String> map = buildParametersMapWorkflow();
         if (paramsMap != null) {
             paramsMap.forEach((parameter, value) -> map.putIfAbsent(parameter, value.toString()));
@@ -465,6 +482,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
         if (isHasNextStep(action.getId())) {
             Button button = componentsFactory.createComponent(Button.class);
+            button.setId(action.getId());
             button.setAction(action);
             ((ButtonsPanel) getComponent("workflowButtonsPanel")).add(button);
             this.addAction(action);
@@ -480,7 +498,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
         if (document == null) return false;
 
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document, workflowService.getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document);
         for (WorkflowInstanceTask task : tasks) {
             if (task.getEndDate() == null) {
                 task = dataManager.reload(task, "workflowInstanceTask-process");
@@ -533,6 +551,8 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * set on screen buttons for task's control
      */
     private void initTaskButton() {
+
+        if (!security.isEntityOpPermitted(Task.class, EntityOp.CREATE)) return;
 
         uiTasksUtils.makeButton(CubaIcon.CALENDAR_PLUS_O, new BaseAction("assigntask") {
             @Override

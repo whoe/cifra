@@ -3,6 +3,7 @@ package com.groupstp.cifra.web.document;
 import com.groupstp.cifra.entity.Document;
 import com.groupstp.cifra.entity.Tag;
 import com.groupstp.cifra.web.document.workflow.DocumentWorkflowFrame;
+import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.groupstp.workflowstp.entity.Stage;
 import com.groupstp.workflowstp.entity.StageType;
 import com.groupstp.workflowstp.entity.Step;
@@ -19,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -57,6 +59,12 @@ public class DocumentBrowse extends AbstractLookup {
     private Workflow activeWorkflow;
     private User user;
 
+    @EventListener
+    public void onCifraUiEvent(CifraUiEvent event) {
+        if ("documentCommitted".equals(event.getSource())) {
+            getDsContext().refresh();
+        }
+    }
 
     @Override
     public void init(Map<String, Object> params) {

@@ -221,7 +221,7 @@ public class TaskListFrame extends AbstractFrame {
      * @return Current workflow's stage. null if no stage.
      */
     private Stage getStageOfWorkflow() {
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(getCurrentDocument(), workflowService.getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(getCurrentDocument());
         return CollectionUtils.isEmpty(tasks) ? null : tasks.get(tasks.size() - 1).getStep().getStage();
     }
 
@@ -230,7 +230,7 @@ public class TaskListFrame extends AbstractFrame {
      * Send notification about change step of Workflow
      */
     private void notifyUser() {
-        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(getCurrentDocument(), workflowService.getActiveWorkflow());
+        List<WorkflowInstanceTask> tasks = workflowService.loadTasks(getCurrentDocument());
         String message = String.format(getMessage("hasWorkflowStepIteration") + ": %s", tasks.get(tasks.size() - 1).getStep().getStage().getName());
         showNotification(message, NotificationType.TRAY);
     }
