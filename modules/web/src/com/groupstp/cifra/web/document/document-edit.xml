@@ -37,6 +37,13 @@
                 <![CDATA[select e from cifra$Tag e]]>
             </query>
         </collectionDatasource>
+        <collectionDatasource id="tasksDs"
+                              class="com.groupstp.cifra.entity.tasks.Task"
+                              view="tasks-full">
+            <query>
+                <![CDATA[select e from tasks$Task e where e.taskableEntity.id = :ds$documentDs]]>
+            </query>
+        </collectionDatasource>
     </dsContext>
     <actions>
         <action id="onOkBtnClick"
@@ -50,44 +57,61 @@
                 width="1000"/>
     <layout expand="checkListDataGrid"
             spacing="true">
-        <fieldGroup id="fieldGroup"
-                    datasource="documentDs">
-            <column width="300px">
-                <field optionsDatasource="docTypesDs"
-                       property="docType"/>
-                <field property="description"/>
-                <field property="number"/>
-                <field property="date"/>
-                <field editable="false"
-                       property="externalId"/>
-                <field id="tag"
-                       caption="Тэги"
-                       property="tag">
-                    <tokenList datasource="tagDs"
-                               inline="true">
-                        <lookup lookup="true"
-                                multiselect="true"
-                                optionsDatasource="allTagsDs"/>
-                    </tokenList>
-                </field>
-                <field property="direction"/>
-            </column>
-            <column width="300px">
-                <field optionsDatasource="companiesDs"
-                       property="company"/>
-                <field property="division"/>
-                <field property="contragent"/>
-            </column>
-            <column width="300px">
-                <field property="file"/>
-                <field editable="false"
-                       property="dateLoad"/>
-                <field property="gotOriginal"/>
-                <field property="fixDue"/>
-                <field property="warehouse"/>
-                <field property="cell"/>
-            </column>
-        </fieldGroup>
+        <split orientation="horizontal"
+               pos="75"
+               width="100%">
+            <fieldGroup id="fieldGroup"
+                        datasource="documentDs"
+                        width="1387px">
+                <column width="300px">
+                    <field optionsDatasource="docTypesDs"
+                           property="docType"/>
+                    <field property="description"/>
+                    <field property="number"/>
+                    <field property="date"/>
+                    <field editable="false"
+                           property="externalId"/>
+                    <field id="tag"
+                           caption="Тэги"
+                           property="tag">
+                        <tokenList datasource="tagDs"
+                                   inline="true">
+                            <lookup lookup="true"
+                                    multiselect="true"
+                                    optionsDatasource="allTagsDs"/>
+                        </tokenList>
+                    </field>
+                    <field property="direction"/>
+                </column>
+                <column width="300px">
+                    <field optionsDatasource="companiesDs"
+                           property="company"/>
+                    <field property="division"/>
+                    <field property="contragent"/>
+                </column>
+                <column width="300px">
+                    <field property="file"/>
+                    <field editable="false"
+                           property="dateLoad"/>
+                    <field property="gotOriginal"/>
+                    <field property="fixDue"/>
+                    <field property="warehouse"/>
+                    <field property="cell"/>
+                </column>
+            </fieldGroup>
+            <table id="tasksListDataGrid"
+                   height="300px"
+                   reorderingAllowed="false"
+                   width="100%">
+                <columns>
+                    <column id="taskTypical.name"/>
+                    <column id="startDate"/>
+                    <column id="endDate"/>
+                    <column id="status"/>
+                </columns>
+                <rows datasource="tasksDs"/>
+            </table>
+        </split>
         <buttonsPanel id="workflowButtonsPanel">
             <label id="labelCurrentWorkflowStage"
                    stylename="bold"/>

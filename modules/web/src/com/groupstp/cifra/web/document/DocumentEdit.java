@@ -25,6 +25,7 @@ import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.data.Datasource;
 import com.haulmont.cuba.gui.data.DsContext;
+import com.haulmont.cuba.gui.data.impl.CollectionDatasourceImpl;
 import com.haulmont.cuba.gui.data.impl.CollectionPropertyDatasourceImpl;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
@@ -37,9 +38,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
 
-import static com.groupstp.cifra.web.UIUtils.disableComponents;
-import static com.groupstp.cifra.web.UIUtils.editableOffComponent;
-import static com.groupstp.cifra.web.UIUtils.enableComponents;
+import static com.groupstp.cifra.web.UIUtils.*;
 
 public class DocumentEdit extends AbstractEditor<Document> {
 
@@ -54,6 +53,9 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     @Inject
     private CollectionPropertyDatasourceImpl<CheckList, UUID> checklistDs;
+
+    @Inject
+    private CollectionDatasourceImpl<Task, UUID> tasksDs;
 
     @Inject
     private CheckListService checkListService;
@@ -132,6 +134,15 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 CheckList item = event.getItem();
                 item.setChecked(!item.getChecked());
                 checklistDs.modifyItem(item);
+            }
+        });
+
+        ((Table<Task>) getComponent("tasksListDataGrid")).setItemClickAction(new BaseAction("taskOpen") {
+            @Override
+            public void actionPerform(Component component) {
+                Task selectedTask = ((Table<Task>) getComponent("tasksListDataGrid")).getSelected().iterator().next();
+                AbstractEditor abstractEditor = openEditor(selectedTask, WindowManager.OpenType.DIALOG);
+                abstractEditor.addCloseWithCommitListener(() -> tasksDs.refresh());
             }
         });
     }
@@ -564,7 +575,11 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     } else if (items.size() > 1) {
                         throw new IllegalArgumentException("Only one typical task can be selected!");
                     }
-                    uiTasksUtils.createTaskInWindows(document, items.iterator(), getFrame());
+                    TaskEdit taskInWindows = uiTasksUtils.createTaskInWindows(document, items.iterator(), getFrame());
+                    taskInWindows.addCloseWithCommitListener(() -> {
+                        refreshLabelCurrentWorkflowStage();
+                        tasksDs.refresh();
+                    });
                 }, WindowManager.OpenType.DIALOG);
             }
         }, getMessage("assigntask"), tasksButtonsPanel);
@@ -582,7 +597,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     }
 
                     assignTaskOnTemplate(document, (TaskTemplate) selectedTemplate.iterator().next(), getFrame());
-
                 }, WindowManager.OpenType.DIALOG);
             }
         }, getMessage("assigntasks"), tasksButtonsPanel);
@@ -603,18 +617,23 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
         TaskEdit taskEditWindow = uiTasksUtils.createTaskInWindows(document, iteratorTemplate, frame);
 
-        taskEditWindow.addCloseWithCommitListener(() -> showOptionDialog(
-                getMessage("templateModeWindow"),
-                getMessage("templateModeAsk"),
-                MessageType.CONFIRMATION,
-                new Action[]{
-                        new DialogAction(DialogAction.Type.OK, Action.Status.PRIMARY).withHandler(actionPerformedEvent -> uiTasksUtils.createTaskWithoutWindows(iteratorTemplate, taskEditWindow.getItem())),
-                        new DialogAction(DialogAction.Type.NO, Action.Status.NORMAL).withHandler(actionPerformedEvent -> {
-                            while (iteratorTemplate.hasNext()) {
-                                uiTasksUtils.createTaskInWindows(document, iteratorTemplate, getFrame());
-                            }
-                        })
-                }));
+        taskEditWindow.addCloseWithCommitListener(() -> {
+            showOptionDialog(
+                    getMessage("templateModeWindow"),
+                    getMessage("templateModeAsk"),
+                    MessageType.CONFIRMATION,
+                    new Action[]{
+                            new DialogAction(DialogAction.Type.OK, Action.Status.PRIMARY).withHandler(actionPerformedEvent -> uiTasksUtils.createTaskWithoutWindows(iteratorTemplate, taskEditWindow.getItem())),
+                            new DialogAction(DialogAction.Type.NO, Action.Status.NORMAL).withHandler(actionPerformedEvent -> {
+                                while (iteratorTemplate.hasNext()) {
+                                    uiTasksUtils.createTaskInWindows(document, iteratorTemplate, getFrame());
+                                }
+                            })
+                    });
+
+            refreshLabelCurrentWorkflowStage();
+            tasksDs.refresh();
+        });
 
     }
 
