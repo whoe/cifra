@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '6.9.4'
+    ext.cubaVersion = '6.10.0'
     repositories {
         
         mavenLocal()
@@ -52,7 +52,7 @@ cuba {
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
     appComponent("de.diedavids.cuba.runtimediagnose:runtime-diagnose-global:1.0.0")
-    appComponent("com.groupstp.workflowstp:wfstp-global:0.3")
+    appComponent("com.groupstp.workflowstp:wfstp-global:0.4")
 
 }
 
@@ -79,7 +79,9 @@ configure([globalModule, coreModule, guiModule, webModule]) {
 }
 
 configure(globalModule) {
-    task enhance(type: CubaEnhancing)
+    entitiesEnhancing {
+        main { enabled = true }
+    }
 
     dependencies {
         compile('com.smartsheet:smartsheet-sdk-java:2.2.5')
