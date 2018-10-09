@@ -37,7 +37,7 @@ apply(plugin: 'cuba')
 cuba {
     artifact {
         group = 'com.groupstp.cifra'
-        version = '0.1'
+        version = "0.2"
         isSnapshot = true
     }
     tomcat {
