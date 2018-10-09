@@ -3,7 +3,7 @@
     "_entityName": "wfstp$Workflow",
     "id": "d59aab88-accf-a92e-0d7f-ed02d9e7b677",
     "active": true,
-    "version": 10,
+    "version": 23,
     "steps": [
       {
         "_entityName": "wfstp$Step",
@@ -42,7 +42,7 @@
                 "id": "e025c436-c147-2d40-96f2-134768cfcf9b",
                 "browseScreenGroovyScript": "true",
                 "type": "USERS_INTERACTION",
-                "version": 2,
+                "version": 3,
                 "actors": [],
                 "actorsRoles": [
                   {
@@ -65,8 +65,8 @@
                 {
                   "_entityName": "wfstp$StepDirection",
                   "id": "1c04c3da-0344-cefa-798b-2c19e31792b0",
-                  "version": 1,
-                  "conditionGroovyScript": "\"true\".equalsIgnoreCase(context[\"doc_to_work\"])",
+                  "version": 3,
+                  "conditionGroovyScript": "\"true\".equalsIgnoreCase(context[\"doc_out_towork\"])",
                   "from": {
                     "_entityName": "wfstp$Step",
                     "id": "721e60c0-749d-7e04-3926-c2d388d50a3a"
@@ -78,7 +78,7 @@
                       "_entityName": "wfstp$Stage",
                       "id": "0eb1036e-aac4-3004-d496-7aaf33643a8c",
                       "type": "USERS_INTERACTION",
-                      "version": 2,
+                      "version": 3,
                       "actors": [],
                       "actorsRoles": [
                         {
@@ -99,8 +99,8 @@
                       {
                         "_entityName": "wfstp$StepDirection",
                         "id": "621ff1bf-c973-0f57-ca4e-61f4ca5b8033",
-                        "version": 1,
-                        "conditionGroovyScript": "\"true\".equalsIgnoreCase(context[\"doc_send\"])",
+                        "version": 2,
+                        "conditionGroovyScript": "\"true\".equalsIgnoreCase(context[\"doc_sent\"])",
                         "from": {
                           "_entityName": "wfstp$Step",
                           "id": "909c5f64-af21-63c0-399a-ad50f3e0a44f"
@@ -113,7 +113,7 @@
                             "id": "9bc50a3a-e0d4-d548-b032-2ec89a13d37d",
                             "browseScreenGroovyScript": "true",
                             "type": "USERS_INTERACTION",
-                            "version": 2,
+                            "version": 3,
                             "actors": [],
                             "actorsRoles": [
                               {
@@ -166,13 +166,13 @@
                               "order": 1
                             }
                           ],
-                          "version": 1,
+                          "version": 2,
                           "order": 4
                         },
                         "order": 1
                       }
                     ],
-                    "version": 1,
+                    "version": 3,
                     "order": 3
                   },
                   "order": 1
@@ -180,8 +180,8 @@
                 {
                   "_entityName": "wfstp$StepDirection",
                   "id": "3e494d4b-e7a9-c8ca-c966-1d6bd24fc060",
-                  "version": 1,
-                  "conditionGroovyScript": "\"true\".equalsIgnoreCase(context[\"doc_send\"])",
+                  "version": 2,
+                  "conditionGroovyScript": "\"true\".equalsIgnoreCase(context[\"doc_sent\"])",
                   "from": {
                     "_entityName": "wfstp$Step",
                     "id": "721e60c0-749d-7e04-3926-c2d388d50a3a"
@@ -193,7 +193,7 @@
                   "order": 2
                 }
               ],
-              "version": 1,
+              "version": 4,
               "order": 2
             },
             "order": 1
@@ -215,7 +215,7 @@
                 "id": "a5ed34af-bc1c-c7ea-1d1b-ca4bc1cb5731",
                 "browseScreenGroovyScript": "true",
                 "type": "USERS_INTERACTION",
-                "version": 2,
+                "version": 3,
                 "actors": [],
                 "actorsRoles": [
                   {
@@ -250,7 +250,7 @@
                       "id": "0d6b103d-91b6-fa30-f7e0-33d0556863dc",
                       "browseScreenGroovyScript": "true",
                       "type": "USERS_INTERACTION",
-                      "version": 2,
+                      "version": 3,
                       "actors": [],
                       "actorsRoles": [
                         {
@@ -285,7 +285,7 @@
                             "id": "fe1970bd-a3e6-c553-50f2-f38d85e85f1f",
                             "browseScreenGroovyScript": "true",
                             "type": "USERS_INTERACTION",
-                            "version": 2,
+                            "version": 3,
                             "actors": [],
                             "actorsRoles": [
                               {
@@ -335,7 +335,7 @@
                                   "id": "cd5586ef-17e8-0bee-0c2e-b5575274b39b",
                                   "browseScreenGroovyScript": "true",
                                   "type": "USERS_INTERACTION",
-                                  "version": 2,
+                                  "version": 3,
                                   "actors": [],
                                   "actorsRoles": [
                                     {
@@ -384,7 +384,7 @@
                                     "order": 2
                                   }
                                 ],
-                                "version": 1,
+                                "version": 3,
                                 "order": 9
                               },
                               "order": 2
@@ -425,64 +425,8 @@
                             },
                             {
                               "_entityName": "wfstp$StepDirection",
-                              "id": "e59e248e-b925-c413-6786-9cdd2438289c",
-                              "version": 1,
-                              "conditionGroovyScript": "\"true\".equalsIgnoreCase(context[\"doc_has_tasks\"])",
-                              "from": {
-                                "_entityName": "wfstp$Step",
-                                "id": "85949fa8-2f3e-46c7-07dc-38e7f3c1586c"
-                              },
-                              "to": {
-                                "_entityName": "wfstp$Step",
-                                "id": "bd1fbd87-fc10-ca73-0829-40b92155f165",
-                                "stage": {
-                                  "_entityName": "wfstp$Stage",
-                                  "id": "e8c28773-e382-ba10-880f-aea405c2a11c",
-                                  "browseScreenGroovyScript": "true",
-                                  "type": "USERS_INTERACTION",
-                                  "version": 2,
-                                  "actors": [],
-                                  "actorsRoles": [
-                                    {
-                                      "_entityName": "sec$Role",
-                                      "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
-                                    }
-                                  ],
-                                  "entityName": "cifra$Document",
-                                  "name": "В работе (задачи)",
-                                  "editorScreenGroovyScript": "true",
-                                  "entityCaption": "Документ"
-                                },
-                                "workflow": {
-                                  "_entityName": "wfstp$Workflow",
-                                  "id": "d59aab88-accf-a92e-0d7f-ed02d9e7b677"
-                                },
-                                "directions": [
-                                  {
-                                    "_entityName": "wfstp$StepDirection",
-                                    "id": "90861d43-5cb4-aa50-abd2-1206ef9e1e96",
-                                    "version": 1,
-                                    "conditionGroovyScript": "\"false\".equalsIgnoreCase(context[\"doc_has_tasks\"])",
-                                    "from": {
-                                      "_entityName": "wfstp$Step",
-                                      "id": "bd1fbd87-fc10-ca73-0829-40b92155f165"
-                                    },
-                                    "to": {
-                                      "_entityName": "wfstp$Step",
-                                      "id": "85949fa8-2f3e-46c7-07dc-38e7f3c1586c"
-                                    },
-                                    "order": 1
-                                  }
-                                ],
-                                "version": 1,
-                                "order": 11
-                              },
-                              "order": 4
-                            },
-                            {
-                              "_entityName": "wfstp$StepDirection",
                               "id": "95ef29b6-578e-d131-08c8-1f7530f5f32b",
-                              "version": 1,
+                              "version": 2,
                               "conditionGroovyScript": "\"true\".equalsIgnoreCase(context[\"doc_archived\"])",
                               "from": {
                                 "_entityName": "wfstp$Step",
@@ -496,7 +440,7 @@
                                   "id": "be8c2c5a-358e-a2d3-8801-b468b2b5a1d1",
                                   "browseScreenGroovyScript": "true",
                                   "type": "USERS_INTERACTION",
-                                  "version": 2,
+                                  "version": 3,
                                   "actors": [],
                                   "actorsRoles": [
                                     {
@@ -530,13 +474,13 @@
                                     "order": 1
                                   }
                                 ],
-                                "version": 3,
-                                "order": 12
+                                "version": 5,
+                                "order": 11
                               },
-                              "order": 5
+                              "order": 4
                             }
                           ],
-                          "version": 2,
+                          "version": 4,
                           "order": 8
                         },
                         "order": 1
@@ -557,7 +501,7 @@
                         "order": 2
                       }
                     ],
-                    "version": 1,
+                    "version": 3,
                     "order": 7
                   },
                   "order": 1
@@ -578,13 +522,13 @@
                   "order": 2
                 }
               ],
-              "version": 1,
+              "version": 3,
               "order": 6
             },
             "order": 2
           }
         ],
-        "version": 1,
+        "version": 2,
         "order": 1
       },
       {
@@ -622,10 +566,6 @@
       {
         "_entityName": "wfstp$Step",
         "id": "d8e6ba04-f5f7-2118-48d4-6319f34f67ec"
-      },
-      {
-        "_entityName": "wfstp$Step",
-        "id": "bd1fbd87-fc10-ca73-0829-40b92155f165"
       },
       {
         "_entityName": "wfstp$Step",

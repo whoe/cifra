@@ -11,6 +11,9 @@ public class Utils {
     public static final String STEP_PROCESSING_NAME = "Обработано";
     public static final String STEP_ISSUE_NAME = "Выдано";
     public static final String STEP_ELIMINATE_NAME = "Уничтожен";
-    public static final String STEP_WORK_NAME = "В работе (задачи)";
+
+    public static final String STEP_WORKOUT_NAME = "В работе (заполнение)";
+    public static final String STEP_SENT_NAME = "Отправлен";
+    public static final String STEP_RECEIVED_NAME = "Получен";
 
 }

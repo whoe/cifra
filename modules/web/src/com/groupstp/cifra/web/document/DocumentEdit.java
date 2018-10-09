@@ -32,7 +32,6 @@ import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import com.haulmont.cuba.security.entity.EntityOp;
 import com.haulmont.cuba.web.gui.components.WebLabel;
-import com.haulmont.cuba.web.theme.HaloTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -179,6 +178,17 @@ public class DocumentEdit extends AbstractEditor<Document> {
         checkAndInitializeEmptyFields();
 
         refreshLabels();
+        makeButtonsForWorkflow();
+
+        if (!AppBeans.get(EntityStates.class).isNew(document)) {
+            initTaskButton();
+        }
+
+        checkAndSetAccessForComponents();
+    }
+
+    private void makeButtonsForWorkflow() {
+
         makeButtonWorkflow(new BaseAction(Utils.STEP_ISSUE_NAME) {
             @Override
             public String getCaption() {
@@ -252,12 +262,57 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 close(WINDOW_COMMIT_AND_CLOSE);
             }
         });
+        makeButtonWorkflow(new BaseAction(Utils.STEP_WORKOUT_NAME) {
+            @Override
+            public String getCaption() {
+                return getMessage("workflow.workout");
+            }
 
-        if (!AppBeans.get(EntityStates.class).isNew(document)) {
-            initTaskButton();
-        }
+            @Override
+            public String getIcon() {
+                return CubaIcon.FILE_TEXT.source();
+            }
 
-        checkAndSetAccessForComponents();
+            @Override
+            public void actionPerform(Component component) {
+                continueWorkflow(ParamsMap.of("doc_out_towork", true));
+                close(WINDOW_COMMIT_AND_CLOSE);
+            }
+        });
+        makeButtonWorkflow(new BaseAction(Utils.STEP_SENT_NAME) {
+            @Override
+            public String getCaption() {
+                return getMessage("workflow.sent");
+            }
+
+            @Override
+            public String getIcon() {
+                return CubaIcon.SIGN_OUT.source();
+            }
+
+            @Override
+            public void actionPerform(Component component) {
+                continueWorkflow(ParamsMap.of("doc_sent", true));
+                close(WINDOW_COMMIT_AND_CLOSE);
+            }
+        });
+        makeButtonWorkflow(new BaseAction(Utils.STEP_RECEIVED_NAME) {
+            @Override
+            public String getCaption() {
+                return getMessage("workflow.received");
+            }
+
+            @Override
+            public String getIcon() {
+                return CubaIcon.SIGN_IN.source();
+            }
+
+            @Override
+            public void actionPerform(Component component) {
+                continueWorkflow(ParamsMap.of("doc_received", true));
+                close(WINDOW_COMMIT_AND_CLOSE);
+            }
+        });
     }
 
     /**
@@ -346,7 +401,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
      */
     private void refreshLabelCurrentWorkflowStage() {
         List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document);
-        WorkflowInstanceTask task = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
+        WorkflowInstanceTask task = tasks.stream().findFirst().orElse(null);
         if (task != null) {
             ((WebLabel) getComponent("labelCurrentWorkflowStage")).setValue(getMessage("workflow.currentStep") + ": " + task.getStep().getStage().getName());
         }
