@@ -9,6 +9,7 @@ import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskTemplate;
 import com.groupstp.cifra.entity.tasks.TaskTypical;
 import com.groupstp.cifra.entity.tasks.TaskableEntity;
+import com.groupstp.cifra.service.TaskService;
 import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.groupstp.cifra.web.tasks.UITasksUtils;
 import com.groupstp.cifra.web.tasks.task.TaskEdit;
@@ -31,6 +32,7 @@ import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import com.haulmont.cuba.security.entity.EntityOp;
 import com.haulmont.cuba.web.gui.components.WebLabel;
+import com.haulmont.cuba.web.theme.HaloTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -176,7 +178,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
         checkAndInitializeEmptyFields();
 
-        refreshLabelCurrentWorkflowStage();
+        refreshLabels();
         makeButtonWorkflow(new BaseAction(Utils.STEP_ISSUE_NAME) {
             @Override
             public String getCaption() {
@@ -333,6 +335,13 @@ public class DocumentEdit extends AbstractEditor<Document> {
     }
 
     /**
+     * refresh all labels in screen
+     */
+    private void refreshLabels() {
+        refreshLabelCurrentWorkflowStage();
+        refreshLabelTask();
+    }
+    /**
      * set label with current workflow's step name
      */
     private void refreshLabelCurrentWorkflowStage() {
@@ -341,6 +350,14 @@ public class DocumentEdit extends AbstractEditor<Document> {
         if (task != null) {
             ((WebLabel) getComponent("labelCurrentWorkflowStage")).setValue(getMessage("workflow.currentStep") + ": " + task.getStep().getStage().getName());
         }
+    }
+
+    /**
+     * set label for task (be or not)
+     */
+    private void refreshLabelTask() {
+        TaskService taskService = AppBeans.get(TaskService.class);
+        ((WebLabel) getComponent("labelTasks")).setValue(getMessage(taskService.isItActiveTaskForDocument(document)? "tasks.HasActive":"tasks.NoActive"));
     }
 
 
@@ -577,7 +594,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     }
                     TaskEdit taskInWindows = uiTasksUtils.createTaskInWindows(document, items.iterator(), getFrame());
                     taskInWindows.addCloseWithCommitListener(() -> {
-                        refreshLabelCurrentWorkflowStage();
+                        refreshLabels();
                         tasksDs.refresh();
                     });
                 }, WindowManager.OpenType.DIALOG);
@@ -631,7 +648,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                             })
                     });
 
-            refreshLabelCurrentWorkflowStage();
+            refreshLabelTask();
             tasksDs.refresh();
         });
 

@@ -117,6 +117,8 @@
                    stylename="bold"/>
         </buttonsPanel>
         <buttonsPanel id="tasksButtonsPanel">
+            <label id="labelTasks"
+                   stylename="bold"/>
         </buttonsPanel>
         <dataGrid id="checkListDataGrid"
                   datasource="checklistDs"

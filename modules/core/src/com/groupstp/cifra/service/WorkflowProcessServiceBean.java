@@ -1,12 +1,7 @@
 package com.groupstp.cifra.service;
 
-import com.groupstp.cifra.Utils;
 import com.groupstp.cifra.WorkflowProcessService;
 import com.groupstp.cifra.entity.Document;
-import com.groupstp.cifra.entity.tasks.Task;
-import com.groupstp.cifra.entity.tasks.TaskStatus;
-import com.groupstp.cifra.entity.tasks.TaskableEntity;
-import com.groupstp.cifra.listener.TaskEntityListener;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowEntity;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
@@ -30,7 +25,7 @@ import java.util.UUID;
 @Service(WorkflowProcessService.NAME)
 public class WorkflowProcessServiceBean implements WorkflowProcessService {
 
-    private static final Logger log = LoggerFactory.getLogger(TaskEntityListener.class);
+    private static final Logger log = LoggerFactory.getLogger(WorkflowProcessServiceBean.class);
 
     @Inject
     Metadata metadata;
@@ -110,54 +105,6 @@ public class WorkflowProcessServiceBean implements WorkflowProcessService {
             if (task.getEndDate() == null) return task;
         }
         return null;
-    }
-
-    @Override
-    public void processWorkflowWithTask(Task task) {
-        TaskableEntity taskableEntity = task.getTaskableEntity();
-        if (taskableEntity == null) return;
-
-        Document document = dataManager.load(Document.class).id(taskableEntity.getId()).one();
-
-        WorkflowInstanceTask lastTask = loadLastOpenTask(document);
-        if (lastTask == null) return;
-
-        String nameOfLastStep = lastTask.getStep().getStage().getName();
-
-        try {
-            if (Utils.STEP_PROCESSING_NAME.equals(nameOfLastStep) && isItActiveTaskForDocument(document)) {
-                workflowService.finishTask(lastTask, Collections.singletonMap("doc_has_tasks", "true"));
-            } else if (Utils.STEP_WORK_NAME.equals(nameOfLastStep) && !isItActiveTaskForDocument(document)) {
-                workflowService.finishTask(lastTask, Collections.singletonMap("doc_has_tasks", "false"));
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException("Ошибка обработки заявки", ex);
-        }
-    }
-
-    @Override
-    public void processWorkflowWithTask(Document document) {
-        if (!isItActiveTaskForDocument(document)) {
-            WorkflowInstanceTask lastTask = loadLastOpenTask(document);
-            if (lastTask == null) return;
-            try {
-                workflowService.finishTask(lastTask, Collections.singletonMap("doc_has_tasks", "false"));
-            } catch (Exception ex) {
-                throw new RuntimeException("Ошибка обработки заявки", ex);
-            }
-        }
-
-    }
-
-    private boolean isItActiveTaskForDocument(Document document) {
-
-        List<Task> tasks = dataManager.loadList(LoadContext.create(Task.class).setQuery(
-                LoadContext.createQuery("select t from tasks$Task t where t.taskableEntity.id=:docId and (t.status=:taskStatusRunning or t.status=:taskStatusAssigned)")
-                        .setParameter("docId", document.getId())
-                        .setParameter("taskStatusAssigned", TaskStatus.Assigned)
-                        .setParameter("taskStatusRunning", TaskStatus.Running)));
-
-        return !tasks.isEmpty();
     }
 
 }

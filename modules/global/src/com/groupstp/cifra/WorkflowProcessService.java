@@ -2,7 +2,6 @@ package com.groupstp.cifra;
 
 
 import com.groupstp.cifra.entity.Document;
-import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowEntity;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
@@ -28,7 +27,4 @@ public interface WorkflowProcessService {
 
     WorkflowInstanceTask loadLastOpenTask(Document document);
 
-    void processWorkflowWithTask(Task task);
-
-    void processWorkflowWithTask(Document document);
 }

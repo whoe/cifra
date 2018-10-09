@@ -9,7 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Listeners("cifra_TaskEntityListener")
 @Table(name = "TASKS_TASK")
 @Entity(name = "tasks$Task")
 public class Task extends StandardEntity {
