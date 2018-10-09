@@ -14,7 +14,8 @@ public class CifraTestContainer extends TestContainer {
     public CifraTestContainer() {
         super();
         appComponents = new ArrayList<>(Arrays.asList(
-                "com.haulmont.cuba"
+                "com.haulmont.cuba",
+                "com.groupstp.workflowstp"
                 // add CUBA premium add-ons here
                 // "com.haulmont.bpm",
                 // "com.haulmont.charts",
@@ -34,7 +35,7 @@ public class CifraTestContainer extends TestContainer {
     }
 
     private void initDbProperties() {
-        File contextXmlFile = new File("modules/core/web/META-INF/context.xml");
+        File contextXmlFile = new File("modules/core/test/context.xml");
         if (!contextXmlFile.exists()) {
             contextXmlFile = new File("web/META-INF/context.xml");
         }
