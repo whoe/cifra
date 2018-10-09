@@ -1,5 +1,7 @@
 package com.groupstp.cifra.entity;
 
+import com.groupstp.cifra.entity.tasks.Task;
+import com.groupstp.cifra.entity.tasks.TaskableEntity;
 import com.groupstp.workflowstp.entity.WorkflowEntity;
 import com.groupstp.workflowstp.entity.WorkflowEntityStatus;
 import com.haulmont.chile.core.annotations.Composition;
@@ -7,7 +9,6 @@ import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.entity.StandardEntity;
-import com.haulmont.cuba.core.entity.annotation.Listeners;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
@@ -20,16 +21,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Listeners("cifra_DocumentListener")
 @NamePattern("%s %s %s|number,date,description")
 @Table(name = "CIFRA_DOCUMENT")
 @Entity(name = "cifra$Document")
-public class Document extends StandardEntity implements WorkflowEntity<UUID> {
+public class Document extends StandardEntity implements WorkflowEntity<UUID>, TaskableEntity {
     private static final long serialVersionUID = -5504376796832237678L;
-
-    @NotNull
-    @Column(name = "DOC_STATUS", nullable = false)
-    protected Integer docStatus;
 
     @JoinTable(name = "CIFRA_DOCUMENT_TAG_LINK",
         joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
@@ -127,11 +123,19 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     @Column(name = "EXTERNAL_ID")
     protected String externalId;
 
+    @Column(name = "WF_STATUS")
+    private Integer status;
 
+    @Column(name = "WF_STEP_NAME")
+    private String stepName;
 
-
-
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WF_INITIATOR_ID")
+    private Employee initiator;
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "taskableEntity")
+    protected List<Task> tasks;
 
     public void setDirection(Direction direction) {
         this.direction = direction == null ? null : direction.getId();
@@ -151,7 +155,7 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     }
 
 
-    void setExternalId(String externalId) {
+    public void setExternalId(String externalId) {
         this.externalId = externalId;
     }
 
@@ -160,7 +164,7 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     }
 
 
-    void setExternalLink(String externalLink) {
+    public void setExternalLink(String externalLink) {
         this.externalLink = externalLink;
     }
 
@@ -187,13 +191,8 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     }
 
 
-    void setDateLoad(Date dateLoad) {
+    public void setDateLoad(Date dateLoad) {
         this.dateLoad = dateLoad;
-    }
-
-
-    public void setDocStatus(DocStatus docStatus) {
-        this.docStatus = docStatus == null ? null : docStatus.getId();
     }
 
 
@@ -221,12 +220,6 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     public Division getDivision() {
         return division;
     }
-
-
-    public DocStatus getDocStatus() {
-        return docStatus == null ? null : DocStatus.fromId(docStatus);
-    }
-
 
     public DocType getDocType() {
         return docType;
@@ -263,7 +256,7 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
         return file;
     }
 
-    void setGotOriginal(Boolean gotOriginal) {
+    public void setGotOriginal(Boolean gotOriginal) {
         this.gotOriginal = gotOriginal;
     }
 
@@ -325,25 +318,22 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
         return dateLoad;
     }
 
-    //@MetaProperty(related = "destination")
     public String getDestination() {
         return destination;
     }
 
-    void setDestination(String destination) {
+    public void setDestination(String destination) {
         this.destination = destination;
     }
 
-    //workflowmodule module
-    @Column(name = "WF_STATUS")
-    private Integer status;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 
-    @Column(name = "WF_STEP_NAME")
-    private String stepName;
+    public List<Task> getTasks() {
+        return tasks;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "WF_INITIATOR_ID", nullable = true)
-    private Employee initiator;
 
     @Override
     public String getStepName() {
@@ -372,4 +362,10 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID> {
     public void setInitiator(Employee initiator) {
         this.initiator = initiator;
     }
+
+    @Override
+    public TaskableEntity getTaskableEntity() {
+        return this;
+    }
+
 }

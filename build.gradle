@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '6.9.4'
+    ext.cubaVersion = '6.10.0'
     repositories {
         
         mavenLocal()
@@ -26,6 +26,7 @@ def globalModule = project(":${modulePrefix}-global")
 def coreModule = project(":${modulePrefix}-core")
 def guiModule = project(":${modulePrefix}-gui")
 def webModule = project(":${modulePrefix}-web")
+def webThemesModule = project(":${modulePrefix}-web-themes")
 
 def servletApi = 'javax.servlet:javax.servlet-api:3.1.0'
 
@@ -51,8 +52,8 @@ cuba {
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
     appComponent("de.diedavids.cuba.runtimediagnose:runtime-diagnose-global:1.0.0")
+    appComponent("com.groupstp.workflowstp:wfstp-global:0.4")
     appComponent("com.company.googledrive:googledrive-global:0.1-SNAPSHOT")
-    appComponent("com.groupstp.workflowstp:wfstp-global:0.2")
     appComponent("com.groupstp.googleoauth:oauth-global:0.1-SNAPSHOT")
 }
 
@@ -79,9 +80,13 @@ configure([globalModule, coreModule, guiModule, webModule]) {
 }
 
 configure(globalModule) {
-    task enhance(type: CubaEnhancing)
+    entitiesEnhancing {
+        main { enabled = true }
+    }
 
-    
+    dependencies {
+        compile('com.smartsheet:smartsheet-sdk-java:2.2.5')
+    }
 }
 
 configure(coreModule) {
@@ -191,6 +196,30 @@ configure(webModule) {
     task deploy(dependsOn: [assemble, cleanConf], type: CubaDeployment) {
         appName = "${modulePrefix}"
         appJars(modulePrefix + '-global', modulePrefix + '-gui', modulePrefix + '-web')
+    }
+    task buildScssThemes(type: CubaWebScssThemeCreation)
+    task deployThemes(type: CubaDeployThemeTask, dependsOn: buildScssThemes)
+    assemble.dependsOn buildScssThemes
+}
+
+configure(webThemesModule) {
+    apply(plugin: 'java')
+    apply(plugin: 'maven')
+    apply(plugin: 'cuba')
+
+    appModuleType = 'web-themes'
+
+    buildDir = file('../build/scss-themes')
+
+    sourceSets {
+        main {
+            java {
+                srcDir '.'
+            }
+            resources {
+                srcDir '.'
+            }
+        }
     }
 }
 

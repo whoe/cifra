@@ -1,0 +1,11 @@
+@import "halo-defaults";
+@import "com.groupstp.cifra/halo-ext-defaults";
+@import "app-components";
+@import "com.groupstp.cifra/halo-ext";
+
+.halo {
+  // include auto-generated app components SCSS
+  @include app_components;
+  
+  @include com_groupstp_cifra-halo-ext;
+}

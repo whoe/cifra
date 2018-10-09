@@ -1,16 +1,10 @@
 package com.groupstp.cifra.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Table(name = "CIFRA_CHECK_LIST")
@@ -57,6 +51,7 @@ public class CheckList extends StandardEntity {
     }
 
     public Boolean getChecked() {
+        if (checked == null) return false;
         return checked;
     }
 

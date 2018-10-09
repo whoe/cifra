@@ -1,0 +1,13 @@
+/* Define your theme modifications inside next mixin */
+@mixin com_groupstp_cifra-halo-ext {
+
+  .overdue {
+    background: red;
+    &.v-selected {
+      .v-table-cell-content {
+        color: white;
+      }
+    }
+  }
+
+}

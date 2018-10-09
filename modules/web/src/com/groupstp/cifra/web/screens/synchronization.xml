@@ -8,8 +8,20 @@
     <layout expand="log"
             margin="true"
             spacing="true">
+        <hbox spacing="true">
+            <label value="Date start"/>
+            <dateField id="dateStart"
+                       dateFormat="dd.MM.yyyy"/>
+            <label value="Date end"/>
+            <dateField id="dateEnd"
+                       dateFormat="dd.MM.yyyy"/>
+        </hbox>
         <hbox align="MIDDLE_LEFT"
               spacing="true">
+            <label id="url"
+                   value="URL"/>
+            <textField id="txtUrl"
+                       width="400px"/>
             <label description="msg://Password"
                    value="msg://Password"/>
             <textField id="txtPass"/>

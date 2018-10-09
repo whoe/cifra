@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.groupstp.cifra.web.tasks.tasktypical.TaskTypicalEdit"
+        datasource="taskTypicalDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.groupstp.cifra.web.tasks.tasktypical">
+    <dsContext>
+        <datasource id="taskTypicalDs"
+                    class="com.groupstp.cifra.entity.tasks.TaskTypical"
+                    view="_local"/>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="windowActions"
+            spacing="true">
+        <fieldGroup id="fieldGroup"
+                    datasource="taskTypicalDs">
+            <column width="250px">
+                <field property="name"/>
+                <field property="description"
+                       rows="5"/>
+                <field property="interval"/>
+                <field property="intervalType"/>
+            </column>
+        </fieldGroup>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

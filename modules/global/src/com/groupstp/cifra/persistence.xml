@@ -14,5 +14,8 @@
         <class>com.groupstp.cifra.entity.Journal</class>
         <class>com.groupstp.cifra.entity.Warehouse</class>
         <class>com.groupstp.cifra.entity.Tag</class>
+        <class>com.groupstp.cifra.entity.tasks.Task</class>
+        <class>com.groupstp.cifra.entity.tasks.TaskTemplate</class>
+        <class>com.groupstp.cifra.entity.tasks.TaskTypical</class>
     </persistence-unit>
 </persistence>

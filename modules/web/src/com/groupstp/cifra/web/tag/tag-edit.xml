@@ -33,7 +33,6 @@
                     <action id="remove"/>
                 </actions>
                 <columns>
-                    <column id="docStatus"/>
                     <column id="cell"/>
                     <column id="gotOriginal"/>
                     <column id="description"/>
