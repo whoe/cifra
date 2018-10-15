@@ -26,6 +26,8 @@
                        value="com.groupstp.cifra.WorkflowProcessService"/>
                 <entry key="cifra_TaskService"
                        value="com.groupstp.cifra.service.TaskService"/>
+                <entry key="cifra_UploadedFilesFinderService"
+                       value="com.groupstp.cifra.service.UploadedFilesFinderService"/>
             </map>
         </property>
     </bean>

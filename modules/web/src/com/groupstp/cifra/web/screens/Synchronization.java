@@ -1,22 +1,24 @@
 package com.groupstp.cifra.web.screens;
 
 import com.groupstp.cifra.entity.ImportDocs1CService;
-import com.groupstp.cifra.entity.Sync1CService;
+import com.groupstp.cifra.service.UploadedFilesFinderService;
 import com.haulmont.cuba.core.global.TimeSource;
-import com.haulmont.cuba.gui.components.*;
-
-import javax.inject.Inject;
-import javax.xml.bind.Element;
-
+import com.haulmont.cuba.gui.components.AbstractWindow;
+import com.haulmont.cuba.gui.components.DateField;
+import com.haulmont.cuba.gui.components.ResizableTextArea;
+import com.haulmont.cuba.gui.components.TextField;
 import com.haulmont.cuba.gui.settings.Settings;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
+import javax.inject.Inject;
 
 public class Synchronization extends AbstractWindow {
 
     @Inject
     private ImportDocs1CService importDocs1CService;
+
+    @Inject
+    private UploadedFilesFinderService uploadedFilesFinderService;
+
     @Inject
     private ResizableTextArea log;
 
@@ -35,6 +37,8 @@ public class Synchronization extends AbstractWindow {
             importDocs1CService.ImportCompanies1C(txtUrl.getRawValue(), txtPass.getRawValue());
             importDocs1CService.ImportDocs1C(txtUrl.getRawValue(), txtPass.getRawValue(), dateStart.getValue(), dateEnd.getValue());
             // http://stpserver.groupstp.ru:1805/accnt2016/
+
+            uploadedFilesFinderService.find();
     }
 
     /**
