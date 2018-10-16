@@ -1,0 +1,5 @@
+create table TEMPLATE_TASK_TYPICAL_LINK (
+    TASK_TEMPLATE_ID uuid,
+    TASK_TYPICAL_ID uuid,
+    primary key (TASK_TEMPLATE_ID, TASK_TYPICAL_ID)
+);

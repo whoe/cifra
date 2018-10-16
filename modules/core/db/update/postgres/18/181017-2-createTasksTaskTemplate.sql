@@ -1,0 +1,1 @@
+create unique index IDX_TASKS_TASK_TEMPLATE_UK_NAME on TASKS_TASK_TEMPLATE (NAME) where DELETE_TS is null ;
