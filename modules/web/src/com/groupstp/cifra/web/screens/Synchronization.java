@@ -1,7 +1,9 @@
 package com.groupstp.cifra.web.screens;
 
+import com.groupstp.cifra.config.SynchronizationConfig;
 import com.groupstp.cifra.entity.ImportDocs1CService;
 import com.groupstp.cifra.entity.Sync1CService;
+import com.haulmont.cuba.core.global.Configuration;
 import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.gui.components.*;
 
@@ -17,24 +19,28 @@ public class Synchronization extends AbstractWindow {
 
     @Inject
     private ImportDocs1CService importDocs1CService;
+
     @Inject
     private ResizableTextArea log;
 
     @Inject
-    private TextField txtPass;
+    private PasswordField txtPass;
 
     @Inject
     private TextField txtUrl;
 
     @Inject
     private DateField dateEnd;
+
     @Inject
     private DateField dateStart;
 
+    @Inject
+    protected SynchronizationConfig synchronizationConfig;
+
     public void onTestSyncClick() throws Exception {
-            importDocs1CService.ImportCompanies1C(txtUrl.getRawValue(), txtPass.getRawValue());
-            importDocs1CService.ImportDocs1C(txtUrl.getRawValue(), txtPass.getRawValue(), dateStart.getValue(), dateEnd.getValue());
-            // http://stpserver.groupstp.ru:1805/accnt2016/
+            importDocs1CService.ImportCompanies1C(txtUrl.getRawValue(), txtPass.getValue());
+            importDocs1CService.ImportDocs1C(txtUrl.getRawValue(), txtPass.getValue(), dateStart.getValue(), dateEnd.getValue());
     }
 
     /**
@@ -43,7 +49,7 @@ public class Synchronization extends AbstractWindow {
     @Override
     public void saveSettings() {
         org.dom4j.Element x = getSettings().get(this.getId());
-        x.addAttribute("value", txtPass.getRawValue());
+        x.addAttribute("value", txtPass.getValue());
         x.addAttribute("url", txtUrl.getRawValue());
         getSettings().setModified(true);
         super.saveSettings();
@@ -61,6 +67,8 @@ public class Synchronization extends AbstractWindow {
     public void ready() {
         dateStart.setValue(timeSource.currentTimestamp());
         dateEnd.setValue(timeSource.currentTimestamp());
+        txtPass.setValue(synchronizationConfig.getPassword());
+        txtUrl.setValue(synchronizationConfig.getUrl());
     }
 
     /**

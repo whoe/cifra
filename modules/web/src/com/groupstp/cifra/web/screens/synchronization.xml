@@ -24,7 +24,7 @@
                        width="400px"/>
             <label description="msg://Password"
                    value="msg://Password"/>
-            <textField id="txtPass"/>
+            <passwordField id="txtPass"/>
         </hbox>
         <button id="testSync"
                 caption="msg://test"
