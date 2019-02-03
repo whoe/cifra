@@ -122,4 +122,24 @@
             <property name="intervalType"/>
         </property>
     </view>
+    <view class="com.haulmont.cuba.security.entity.User"
+          extends="_minimal"
+          name="user-with-role">
+        <property name="userRoles"
+                  view="_minimal">
+            <property name="role"
+                      view="_minimal"/>
+        </property>
+    </view>
+    <view class="com.groupstp.workflowstp.entity.Workflow"
+          extends="workflow-browse"
+          name="workflow-browse">
+        <property name="steps">
+            <property name="stage"
+                      view="_minimal">
+                <property name="actorsRoles"
+                          view="_minimal"/>
+            </property>
+        </property>
+    </view>
 </views>
