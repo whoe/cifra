@@ -55,9 +55,9 @@ cuba {
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
     appComponent("de.diedavids.cuba.runtimediagnose:runtime-diagnose-global:1.0.0")
-    appComponent("com.groupstp.workflowstp:wfstp-global:0.4")
     appComponent("com.company.googledrive:googledrive-global:0.1-SNAPSHOT")
     appComponent("com.groupstp.googleoauth:oauth-global:0.2-SNAPSHOT")
+    appComponent("com.groupstp.workflowstp:wfstp-global:1.0.7")
 }
 
 def postgres = 'org.postgresql:postgresql:9.4.1212'

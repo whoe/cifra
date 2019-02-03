@@ -3,7 +3,8 @@
     "_entityName": "wfstp$Workflow",
     "id": "d59aab88-accf-a92e-0d7f-ed02d9e7b677",
     "active": true,
-    "version": 23,
+    "version": 24,
+    "code": "document",
     "steps": [
       {
         "_entityName": "wfstp$Step",

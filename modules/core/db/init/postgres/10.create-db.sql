@@ -62,6 +62,7 @@ create table CIFRA_DOCUMENT (
     EXTERNAL_ID varchar(255),
     WF_STATUS integer,
     WF_STEP_NAME varchar(255),
+    WORKFLOW_ID uuid,
     WF_INITIATOR_ID uuid,
     --
     primary key (ID)

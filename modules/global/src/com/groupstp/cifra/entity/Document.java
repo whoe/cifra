@@ -2,6 +2,7 @@ package com.groupstp.cifra.entity;
 
 import com.groupstp.cifra.entity.tasks.Task;
 import com.groupstp.cifra.entity.tasks.TaskableEntity;
+import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowEntity;
 import com.groupstp.workflowstp.entity.WorkflowEntityStatus;
 import com.haulmont.chile.core.annotations.Composition;
@@ -128,6 +129,10 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
 
     @Column(name = "WF_STEP_NAME")
     private String stepName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WORKFLOW_ID")
+    private Workflow workflow;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WF_INITIATOR_ID")
@@ -343,6 +348,16 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
     @Override
     public void setStepName(String stepName) {
         this.stepName = stepName;
+    }
+
+    @Override
+    public Workflow getWorkflow() {
+        return this.workflow;
+    }
+
+    @Override
+    public void setWorkflow(Workflow workflow) {
+        this.workflow = workflow;
     }
 
     @Override
