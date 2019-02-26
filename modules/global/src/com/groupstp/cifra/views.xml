@@ -139,6 +139,7 @@
                       view="_minimal">
                 <property name="actorsRoles"
                           view="_minimal"/>
+                <property name="browseScreenGroovyScript"/>
             </property>
         </property>
     </view>
