@@ -1,13 +1,18 @@
 package com.groupstp.cifra.web.document.workflow;
 
 import com.groupstp.workflowstp.entity.Stage;
+import com.groupstp.workflowstp.entity.StageType;
 import com.groupstp.workflowstp.entity.Step;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.DevelopmentException;
+import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.components.AbstractWindow;
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.TabSheet;
+import com.haulmont.cuba.security.entity.User;
+import com.haulmont.cuba.security.entity.UserRole;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -20,6 +25,9 @@ public class RegisterHelperWindow extends AbstractWindow {
 
     @Inject
     DataManager dataManager;
+
+    @Inject
+    private UserSessionSource userSessionSource;
 
     protected void initTabSheets(TabSheet tabs, String workflowCode) {
         workflow = getRegisterWorkflowByCode(workflowCode);
@@ -43,7 +51,23 @@ public class RegisterHelperWindow extends AbstractWindow {
     }
 
     private boolean isSatisfyByUser(Stage stage) {
-        return true;
+        User user = getUser();
+        if (stage != null) {
+            if (StageType.USERS_INTERACTION.equals(stage.getType())) {
+                if (!CollectionUtils.isEmpty(stage.getActorsRoles())) {
+                    if (!CollectionUtils.isEmpty(user.getUserRoles())) {
+                        for (UserRole ur : user.getUserRoles()) {
+                            if (stage.getActorsRoles().contains(ur.getRole())) {
+                                return true;
+                            }
+                        }
+                    }
+                } else if (!CollectionUtils.isEmpty(stage.getActors())) {
+                    return stage.getActors().contains(user);
+                }
+            }
+        }
+        return false;
     }
 
     private Workflow getRegisterWorkflowByCode(String code) {
@@ -53,5 +77,17 @@ public class RegisterHelperWindow extends AbstractWindow {
                 .parameter("code", code)
                 .view("workflow-browse")
                 .one();
+    }
+
+    private User getUser() {
+        User user = userSessionSource.getUserSession().getCurrentOrSubstitutedUser();
+        if (user == null) {
+            throw new DevelopmentException(getMessage("documentsWorkflowBrowse.reloadedUserNotFound"));
+        }
+        user = dataManager.reload(user, "user-with-role");
+        if (user == null) {
+            throw new DevelopmentException(getMessage("documentsWorkflowBrowse.reloadedUserNotFound"));
+        }
+        return user;
     }
 }
