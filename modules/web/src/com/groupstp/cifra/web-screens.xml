@@ -64,4 +64,10 @@
             template="/com/groupstp/cifra/web/document/workflow/document-workflow-frame.xml"/>
     <screen id="tasks$Smartsheet.export.frame"
             template="com/groupstp/cifra/web/smartsheet/SmartsheetExport.xml"/>
+    <screen id="IncomingRegister"
+            template="com/groupstp/cifra/web/document/IncomingRegister.xml"/>
+    <screen id="cifra$RegisterWorkflow.frame"
+            template="/com/groupstp/cifra/web/document/workflow/register-workflow-frame.xml"/>
+    <screen id="OutgoingRegister"
+            template="com/groupstp/cifra/web/document/OutgoingRegister.xml"/>
 </screen-config>

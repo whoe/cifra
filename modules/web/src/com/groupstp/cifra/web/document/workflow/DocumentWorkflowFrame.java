@@ -74,7 +74,7 @@ public class DocumentWorkflowFrame extends AbstractFrame implements UiEvent {
     }
 
     //setup table datasource sql workflow
-    private void initSqlQuery() {
+    protected void initSqlQuery() {
         String sqlQuery = "select e from cifra$Document e ";
         sqlQuery = sqlQuery + "where e.stepName = '" + stage.getName() + "'";
         documentDs.setQuery(sqlQuery);

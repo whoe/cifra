@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://outgoing-register-caption"
+        class="com.groupstp.cifra.web.document.OutgoingRegister"
+        messagesPack="com.groupstp.cifra.web.document">
+    <dialogMode height="600"
+                width="800"/>
+    <layout>
+        <tabSheet id="tabs"
+                  height="100%"/>
+    </layout>
+</window>

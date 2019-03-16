@@ -4,6 +4,9 @@
           insertBefore="administration">
         <item screen="cifra$Document.browse"/>
         <separator/>
+        <item screen="IncomingRegister"/>
+        <item screen="OutgoingRegister"/>
+        <separator/>
         <item screen="cifra$DocType.browse"/>
         <item screen="cifra$Tag.browse"/>
     </menu>

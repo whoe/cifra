@@ -143,4 +143,16 @@
             </property>
         </property>
     </view>
+    <view class="com.groupstp.workflowstp.entity.Workflow"
+          extends="_minimal"
+          name="workflow-incoming-outgoing-register">
+        <property name="active"/>
+        <property name="steps"
+                  view="_minimal"/>
+    </view>
+    <view entity="cifra$Document"
+          extends="document-wf_view"
+          name="document-wf-register-view">
+        <property name="workflow"/>
+    </view>
 </views>

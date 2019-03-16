@@ -576,5 +576,322 @@
     "entityName": "cifra$Document",
     "name": "Входящие/исходящие документы",
     "entityCaption": "Документ"
+  },
+  {
+    "_entityName": "wfstp$Workflow",
+    "id": "9d42c5c5-2a90-16fa-09ab-0ef40e09e179",
+    "code": "inreg",
+    "active": true,
+    "version": 35,
+    "steps": [
+      {
+        "_entityName": "wfstp$Step",
+        "id": "cee2bd63-0c86-f915-7dcc-c9953a6d3c08",
+        "workflow": {
+          "_entityName": "wfstp$Workflow",
+          "id": "9d42c5c5-2a90-16fa-09ab-0ef40e09e179"
+        },
+        "start": true,
+        "version": 3,
+        "stage": {
+          "_entityName": "wfstp$Stage",
+          "id": "ead77d7a-6502-3e7b-6536-00c4b1a112d0",
+          "type": "USERS_INTERACTION",
+          "version": 1,
+          "entityName": "cifra$Document",
+          "name": "Новое",
+          "entityCaption": "Документ"
+        },
+        "directions": [
+          {
+            "_entityName": "wfstp$StepDirection",
+            "id": "5da48352-b026-3bb5-137a-3a0ba1a1e776",
+            "version": 2,
+            "conditionGroovyScript": "context[\u0027problem\u0027].equals(\u0027false\u0027)",
+            "from": {
+              "_entityName": "wfstp$Step",
+              "id": "cee2bd63-0c86-f915-7dcc-c9953a6d3c08"
+            },
+            "to": {
+              "_entityName": "wfstp$Step",
+              "id": "11d874d5-e941-2324-cbca-1bf2a8c395e8",
+              "workflow": {
+                "_entityName": "wfstp$Workflow",
+                "id": "9d42c5c5-2a90-16fa-09ab-0ef40e09e179"
+              },
+              "start": false,
+              "version": 8,
+              "stage": {
+                "_entityName": "wfstp$Stage",
+                "id": "5f7428ef-2a89-cab4-99af-408ff444db01",
+                "type": "USERS_INTERACTION",
+                "version": 1,
+                "entityName": "cifra$Document",
+                "name": "В работе (реестры)",
+                "entityCaption": "Документ"
+              },
+              "directions": [
+                {
+                  "_entityName": "wfstp$StepDirection",
+                  "id": "dedb95ed-5378-9286-b597-11a91c3c1955",
+                  "version": 8,
+                  "conditionGroovyScript": "return context[\u0027problem\u0027].equals(\u0027false\u0027)",
+                  "from": {
+                    "_entityName": "wfstp$Step",
+                    "id": "11d874d5-e941-2324-cbca-1bf2a8c395e8"
+                  },
+                  "to": {
+                    "_entityName": "wfstp$Step",
+                    "id": "0bb3f226-9f23-dcc3-0454-c8bf9a1a1ce2",
+                    "workflow": {
+                      "_entityName": "wfstp$Workflow",
+                      "id": "9d42c5c5-2a90-16fa-09ab-0ef40e09e179"
+                    },
+                    "start": false,
+                    "version": 1,
+                    "stage": {
+                      "_entityName": "wfstp$Stage",
+                      "id": "fe1970bd-a3e6-c553-50f2-f38d85e85f1f",
+                      "type": "USERS_INTERACTION",
+                      "version": 1,
+                      "entityName": "cifra$Document",
+                      "name": "Обработано",
+                      "entityCaption": "Документ"
+                    },
+                    "directions": [],
+                    "order": 3
+                  },
+                  "order": 1
+                },
+                {
+                  "_entityName": "wfstp$StepDirection",
+                  "id": "801d243a-9b2b-473f-dbdc-ca245a45339d",
+                  "version": 7,
+                  "conditionGroovyScript": "return context[\u0027problem\u0027].equals(\u0027true\u0027)",
+                  "from": {
+                    "_entityName": "wfstp$Step",
+                    "id": "11d874d5-e941-2324-cbca-1bf2a8c395e8"
+                  },
+                  "to": {
+                    "_entityName": "wfstp$Step",
+                    "id": "560460e3-cc03-2291-96b7-54531e86a050",
+                    "workflow": {
+                      "_entityName": "wfstp$Workflow",
+                      "id": "9d42c5c5-2a90-16fa-09ab-0ef40e09e179"
+                    },
+                    "start": false,
+                    "version": 1,
+                    "stage": {
+                      "_entityName": "wfstp$Stage",
+                      "id": "0d6b103d-91b6-fa30-f7e0-33d0556863dc",
+                      "type": "USERS_INTERACTION",
+                      "version": 1,
+                      "entityName": "cifra$Document",
+                      "name": "Проблема",
+                      "entityCaption": "Документ"
+                    },
+                    "directions": [],
+                    "order": 4
+                  },
+                  "order": 2
+                }
+              ],
+              "order": 2
+            },
+            "order": 1
+          },
+          {
+            "_entityName": "wfstp$StepDirection",
+            "id": "4883ec59-58b9-bbe7-588d-490ebea73318",
+            "version": 1,
+            "conditionGroovyScript": "context[\u0027problem\u0027].equals(\u0027true\u0027)",
+            "from": {
+              "_entityName": "wfstp$Step",
+              "id": "cee2bd63-0c86-f915-7dcc-c9953a6d3c08"
+            },
+            "to": {
+              "_entityName": "wfstp$Step",
+              "id": "560460e3-cc03-2291-96b7-54531e86a050"
+            },
+            "order": 2
+          }
+        ],
+        "order": 1
+      },
+      {
+        "_entityName": "wfstp$Step",
+        "id": "11d874d5-e941-2324-cbca-1bf2a8c395e8"
+      },
+      {
+        "_entityName": "wfstp$Step",
+        "id": "0bb3f226-9f23-dcc3-0454-c8bf9a1a1ce2"
+      },
+      {
+        "_entityName": "wfstp$Step",
+        "id": "560460e3-cc03-2291-96b7-54531e86a050"
+      }
+    ],
+    "entityName": "cifra$Document",
+    "name": "Реестр электронных обращений",
+    "entityCaption": "Документ"
+  },
+  {
+    "_entityName": "wfstp$Workflow",
+    "id": "1e73e3b0-6c50-3703-6796-6e07b6deba25",
+    "code": "outreg",
+    "active": true,
+    "version": 6,
+    "steps": [
+      {
+        "_entityName": "wfstp$Step",
+        "id": "f58255df-ad92-c395-8888-d32b87ce6fda",
+        "workflow": {
+          "_entityName": "wfstp$Workflow",
+          "id": "1e73e3b0-6c50-3703-6796-6e07b6deba25"
+        },
+        "start": true,
+        "version": 3,
+        "stage": {
+          "_entityName": "wfstp$Stage",
+          "id": "ead77d7a-6502-3e7b-6536-00c4b1a112d0",
+          "type": "USERS_INTERACTION",
+          "version": 1,
+          "entityName": "cifra$Document",
+          "name": "Новое",
+          "entityCaption": "Документ"
+        },
+        "directions": [
+          {
+            "_entityName": "wfstp$StepDirection",
+            "id": "2826b5f1-e079-a28c-56bf-b2a908a10ba8",
+            "version": 2,
+            "conditionGroovyScript": "context[\u0027problem\u0027].equals(\u0027false\u0027)",
+            "from": {
+              "_entityName": "wfstp$Step",
+              "id": "f58255df-ad92-c395-8888-d32b87ce6fda"
+            },
+            "to": {
+              "_entityName": "wfstp$Step",
+              "id": "58d0c197-57f7-2592-d060-496258432e3d",
+              "workflow": {
+                "_entityName": "wfstp$Workflow",
+                "id": "1e73e3b0-6c50-3703-6796-6e07b6deba25"
+              },
+              "start": false,
+              "version": 1,
+              "stage": {
+                "_entityName": "wfstp$Stage",
+                "id": "5f7428ef-2a89-cab4-99af-408ff444db01",
+                "type": "USERS_INTERACTION",
+                "version": 1,
+                "entityName": "cifra$Document",
+                "name": "В работе (реестры)",
+                "entityCaption": "Документ"
+              },
+              "directions": [
+                {
+                  "_entityName": "wfstp$StepDirection",
+                  "id": "8021283d-3e30-514e-cca9-5c6aa700d5c6",
+                  "version": 1,
+                  "conditionGroovyScript": "return context[\u0027problem\u0027].equals(\u0027false\u0027)",
+                  "from": {
+                    "_entityName": "wfstp$Step",
+                    "id": "58d0c197-57f7-2592-d060-496258432e3d"
+                  },
+                  "to": {
+                    "_entityName": "wfstp$Step",
+                    "id": "f0f57329-dc3b-f324-5a46-c33cab44cabf",
+                    "workflow": {
+                      "_entityName": "wfstp$Workflow",
+                      "id": "1e73e3b0-6c50-3703-6796-6e07b6deba25"
+                    },
+                    "start": false,
+                    "version": 1,
+                    "stage": {
+                      "_entityName": "wfstp$Stage",
+                      "id": "fe1970bd-a3e6-c553-50f2-f38d85e85f1f",
+                      "type": "USERS_INTERACTION",
+                      "version": 1,
+                      "entityName": "cifra$Document",
+                      "name": "Обработано",
+                      "entityCaption": "Документ"
+                    },
+                    "directions": [],
+                    "order": 3
+                  },
+                  "order": 1
+                },
+                {
+                  "_entityName": "wfstp$StepDirection",
+                  "id": "9aa93860-6766-38ac-eae8-b90aac2c3b80",
+                  "version": 1,
+                  "conditionGroovyScript": "return context[\u0027problem\u0027].equals(\u0027true\u0027)",
+                  "from": {
+                    "_entityName": "wfstp$Step",
+                    "id": "58d0c197-57f7-2592-d060-496258432e3d"
+                  },
+                  "to": {
+                    "_entityName": "wfstp$Step",
+                    "id": "cb851b54-7e78-4fee-0c1b-1af61d181127",
+                    "workflow": {
+                      "_entityName": "wfstp$Workflow",
+                      "id": "1e73e3b0-6c50-3703-6796-6e07b6deba25"
+                    },
+                    "start": false,
+                    "version": 1,
+                    "stage": {
+                      "_entityName": "wfstp$Stage",
+                      "id": "0d6b103d-91b6-fa30-f7e0-33d0556863dc",
+                      "type": "USERS_INTERACTION",
+                      "version": 1,
+                      "entityName": "cifra$Document",
+                      "name": "Проблема",
+                      "entityCaption": "Документ"
+                    },
+                    "directions": [],
+                    "order": 4
+                  },
+                  "order": 2
+                }
+              ],
+              "order": 2
+            },
+            "order": 1
+          },
+          {
+            "_entityName": "wfstp$StepDirection",
+            "id": "c8ff9d12-655b-40a2-0d23-20c69f1785aa",
+            "version": 1,
+            "conditionGroovyScript": "context[\u0027problem\u0027].equals(\u0027true\u0027)",
+            "from": {
+              "_entityName": "wfstp$Step",
+              "id": "f58255df-ad92-c395-8888-d32b87ce6fda"
+            },
+            "to": {
+              "_entityName": "wfstp$Step",
+              "id": "cb851b54-7e78-4fee-0c1b-1af61d181127"
+            },
+            "order": 2
+          }
+        ],
+        "order": 1
+      },
+      {
+        "_entityName": "wfstp$Step",
+        "id": "58d0c197-57f7-2592-d060-496258432e3d"
+      },
+      {
+        "_entityName": "wfstp$Step",
+        "id": "f0f57329-dc3b-f324-5a46-c33cab44cabf"
+      },
+      {
+        "_entityName": "wfstp$Step",
+        "id": "cb851b54-7e78-4fee-0c1b-1af61d181127"
+      }
+    ],
+    "entityName": "cifra$Document",
+    "name": "Реестр исходящих писем",
+    "entityCaption": "Документ",
+    "order": 3
   }
 ]
