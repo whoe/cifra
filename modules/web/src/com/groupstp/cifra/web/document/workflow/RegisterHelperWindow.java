@@ -75,7 +75,7 @@ public class RegisterHelperWindow extends AbstractWindow {
                 .query("select e from wfstp$Workflow e where " +
                         "e.active = true and e.code = :code")
                 .parameter("code", code)
-                .view("workflow-browse")
+                .view("workflow-incoming-outgoing-register")
                 .one();
     }
 

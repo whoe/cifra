@@ -600,7 +600,15 @@
           "version": 1,
           "entityName": "cifra$Document",
           "name": "Новое",
-          "entityCaption": "Документ"
+          "entityCaption": "Документ",
+          "actorsRoles": [
+            {
+              "_entityName": "sec$Role",
+              "id": "4541b2a3-c836-c007-c963-83cc117ec3ca",
+              "version": 1,
+              "name": "WorkFlow: все Шаги"
+            }
+          ]
         },
         "directions": [
           {
@@ -628,7 +636,15 @@
                 "version": 1,
                 "entityName": "cifra$Document",
                 "name": "В работе (реестры)",
-                "entityCaption": "Документ"
+                "entityCaption": "Документ",
+                "actorsRoles": [
+                  {
+                    "_entityName": "sec$Role",
+                    "id": "4541b2a3-c836-c007-c963-83cc117ec3ca",
+                    "version": 1,
+                    "name": "WorkFlow: все Шаги"
+                  }
+                ]
               },
               "directions": [
                 {
@@ -758,7 +774,15 @@
           "version": 1,
           "entityName": "cifra$Document",
           "name": "Новое",
-          "entityCaption": "Документ"
+          "entityCaption": "Документ",
+          "actorsRoles": [
+            {
+              "_entityName": "sec$Role",
+              "id": "4541b2a3-c836-c007-c963-83cc117ec3ca",
+              "version": 1,
+              "name": "WorkFlow: все Шаги"
+            }
+          ]
         },
         "directions": [
           {
@@ -786,7 +810,13 @@
                 "version": 1,
                 "entityName": "cifra$Document",
                 "name": "В работе (реестры)",
-                "entityCaption": "Документ"
+                "entityCaption": "Документ",
+                "actorsRoles": [
+                  {
+                    "_entityName": "sec$Role",
+                    "id": "4541b2a3-c836-c007-c963-83cc117ec3ca"
+                  }
+                ]
               },
               "directions": [
                 {
