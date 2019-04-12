@@ -68,7 +68,7 @@ public class RegisterWorkflowFrame extends DocumentWorkflowFrame {
                 WorkflowInstanceTask instanceTask = workflowService.getWorkflowInstanceTask(entity);
                 workflowService.finishTask(instanceTask, params);
             } catch (WorkflowException e) {
-                log.error("start register workflow", e);
+                log.error("finish task in register workflow", e);
             }
         });
     }

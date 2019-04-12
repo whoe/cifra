@@ -3,6 +3,7 @@
     <menu id="cifra$documentsMenu"
           insertBefore="administration">
         <item screen="cifra$Document.browse"/>
+        <item screen="cifra$Coordination"/>
         <separator/>
         <item screen="IncomingRegister"/>
         <item screen="OutgoingRegister"/>

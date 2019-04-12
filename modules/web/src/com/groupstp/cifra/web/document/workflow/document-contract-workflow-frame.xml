@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        xmlns:wf="http://schemas.groupstp.com/wf/0.1/wf-schema.xsd"
+        class="com.groupstp.cifra.web.document.workflow.DocumentContractWorkflowFrame"
+        messagesPack="com.groupstp.cifra.web.document.workflow">
+    <dsContext>
+        <collectionDatasource id="documentDs"
+                              class="com.groupstp.cifra.entity.Document"
+                              view="document-contract-view"/>
+    </dsContext>
+    <layout expand="documentsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="documentsTable"
+                datasource="documentDs">
+            <properties include=".*"/>
+        </filter>
+        <table id="documentsTable"
+               multiselect="true"
+               width="100%">
+            <columns>
+                <column id="company"/>
+                <column id="division"/>
+                <column id="date"/>
+                <column id="contragent"/>
+                <column id="description"/>
+                <column id="number"/>
+            </columns>
+            <rows datasource="documentDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true"/>
+        </table>
+    </layout>
+</window>

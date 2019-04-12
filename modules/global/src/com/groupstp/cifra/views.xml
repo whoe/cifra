@@ -29,17 +29,10 @@
                   view="_minimal"/>
         <property name="tag"
                   view="_minimal"/>
-        <property name="description"/>
-        <property name="number"/>
-        <property name="date"/>
         <property name="warehouse"
                   view="_minimal"/>
-        <property name="dateLoad"/>
-        <property name="problems"/>
-        <property name="fixDue"/>
-        <property name="externalId"/>
-        <property name="cell"/>
-        <property name="externalLink"/>
+        <property name="workflow"
+                  view="_minimal"/>
     </view>
     <view class="com.groupstp.cifra.entity.CheckListItems"
           extends="_local"
@@ -155,4 +148,7 @@
           name="document-wf-register-view">
         <property name="workflow"/>
     </view>
+    <view class="com.groupstp.cifra.entity.Document"
+          extends="document-wf_view"
+          name="document-contract-view"/>
 </views>

@@ -70,4 +70,8 @@
             template="/com/groupstp/cifra/web/document/workflow/register-workflow-frame.xml"/>
     <screen id="OutgoingRegister"
             template="com/groupstp/cifra/web/document/OutgoingRegister.xml"/>
+    <screen id="cifra$Coordination"
+            template="com/groupstp/cifra/web/document/coordination.xml"/>
+    <screen id="cifra$DocumentContractWorkflow.frame"
+            template="com/groupstp/cifra/web/document/workflow/document-contract-workflow-frame.xml"/>
 </screen-config>

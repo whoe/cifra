@@ -3351,5 +3351,157 @@
       }
     ],
     "name": "Экспорт Smartsheet"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "cb04ac09-eccf-315f-2614-86d1d45049f0",
+    "type": "STANDARD",
+    "version": 2,
+    "permissions": [
+      {
+        "_entityName": "sec$Permission",
+        "id": "c5915590-12b9-4f0c-0d48-e5c4a97f930d",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "cb04ac09-eccf-315f-2614-86d1d45049f0"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Coordination"
+      }
+    ],
+    "name": "Финансист"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "801e7b6d-662e-a14a-7453-30ab1477fd88",
+    "defaultRole": false,
+    "type": "STANDARD",
+    "version": 2,
+    "permissions": [
+      {
+        "_entityName": "sec$Permission",
+        "id": "c6309928-b6c3-edb9-91e7-0509e9880b99",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "801e7b6d-662e-a14a-7453-30ab1477fd88"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Coordination"
+      }
+    ],
+    "name": "Юрист"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "9679cacb-466a-392e-c699-f27e12d596ee",
+    "defaultRole": false,
+    "type": "STANDARD",
+    "version": 2,
+    "permissions": [
+      {
+        "_entityName": "sec$Permission",
+        "id": "b59c0e05-f452-2b35-488a-f52c572d926f",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "9679cacb-466a-392e-c699-f27e12d596ee"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Coordination"
+      }
+    ],
+    "name": "Бухгалтер"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "904e3677-259b-4eea-badc-f78dd100eb0b",
+    "defaultRole": false,
+    "type": "STANDARD",
+    "version": 2,
+    "permissions": [
+      {
+        "_entityName": "sec$Permission",
+        "id": "a4c0bd9d-1e37-33a8-efb4-1a66cda1a86b",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "904e3677-259b-4eea-badc-f78dd100eb0b"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Coordination"
+      }
+    ],
+    "name": "Директор"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "7e479012-f2c5-bc3a-8503-07f7443a7051",
+    "defaultRole": false,
+    "type": "STANDARD",
+    "version": 2,
+    "permissions": [
+      {
+        "_entityName": "sec$Permission",
+        "id": "936b96e5-df70-5c45-952a-bb1d568abc0a",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "7e479012-f2c5-bc3a-8503-07f7443a7051"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Coordination"
+      }
+    ],
+    "name": "Бухгалтер по договорам"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "6953303d-762f-331d-92ab-c9de70fc0523",
+    "type": "STANDARD",
+    "version": 1,
+    "permissions": [
+      {
+        "_entityName": "sec$Permission",
+        "id": "07f45f00-4af8-56a1-5e00-6c151a70a3a4",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "6953303d-762f-331d-92ab-c9de70fc0523"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Coordination"
+      }
+    ],
+    "name": "Архивариус"
+  },
+  {
+    "_entityName": "sec$Role",
+    "id": "1422bdb4-b49b-237d-49b7-6cbd4135ccb2",
+    "defaultRole": false,
+    "type": "STANDARD",
+    "version": 1,
+    "permissions": [
+      {
+        "_entityName": "sec$Permission",
+        "id": "5cc5894d-7ce0-1338-6ba5-87743651c479",
+        "role": {
+          "_entityName": "sec$Role",
+          "id": "1422bdb4-b49b-237d-49b7-6cbd4135ccb2"
+        },
+        "type": "SCREEN",
+        "version": 1,
+        "value": 1,
+        "target": "cifra$Coordination"
+      }
+    ],
+    "name": "Сотрудник компании"
   }
 ]

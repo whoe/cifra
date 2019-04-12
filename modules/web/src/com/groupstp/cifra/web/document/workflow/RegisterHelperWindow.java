@@ -29,6 +29,8 @@ public class RegisterHelperWindow extends AbstractWindow {
     @Inject
     private UserSessionSource userSessionSource;
 
+    private String frame;
+
     protected void initTabSheets(TabSheet tabs, String workflowCode) {
         workflow = getRegisterWorkflowByCode(workflowCode);
         if (workflow != null && !CollectionUtils.isEmpty(workflow.getSteps())) {
@@ -44,8 +46,20 @@ public class RegisterHelperWindow extends AbstractWindow {
         }
     }
 
+    /**
+     * set frame for tabs
+     * @param frame frame for tabs
+     */
+    protected void setFrame(String frame) {
+        this.frame = frame;
+    }
+
     private Component createTab(@Nullable Stage stage) {
-        return openFrame(null, "cifra$RegisterWorkflow.frame",
+        if (frame == null) {
+            frame = "cifra$RegisterWorkflow.frame";
+        }
+
+        return openFrame(null, frame,
                 ParamsMap.of(DocumentWorkflowFrame.STAGE, stage,
                         DocumentWorkflowFrame.WORKFLOW, workflow));
     }
