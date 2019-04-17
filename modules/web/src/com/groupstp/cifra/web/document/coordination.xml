@@ -6,7 +6,7 @@
     <dsContext>
         <groupDatasource id="documentsDs"
                          class="com.groupstp.cifra.entity.Document"
-                         view="document-view">
+                         view="document-contract-view">
             <query>
                 <![CDATA[select e from cifra$Document e where e.createdBy = :session$userLogin]]>
             </query>
@@ -28,13 +28,8 @@
                             multiselect="true"
                             width="100%">
                     <actions>
-                        <action id="edit"
-                                openType="DIALOG"/>
-                        <action id="create"
-                                openType="DIALOG"/>
                         <action id="remove"/>
                         <action id="refresh"/>
-                        <action id="toWork"/>
                         <action id="history"/>
                     </actions>
                     <columns>
@@ -52,22 +47,14 @@
                     <rowsCount/>
                     <buttonsPanel id="buttonsPanel"
                                   alwaysVisible="true">
-                        <button id="createBtn"
-                                action="contracts.create"/>
-                        <button id="editBtn"
-                                action="contracts.edit"/>
+                        <button id="createBtn"/>
+                        <button id="editBtn"/>
                         <button id="removeBtn"
                                 action="contracts.remove"/>
                         <button id="refreshBtn"
                                 action="contracts.refresh"/>
-                        <button id="workBtn"
-                                action="contracts.toWork"
-                                caption="msg://contracts.toWork"
-                                icon="icons/ok.png"/>
-                        <button id="historyBtn"
-                                action="contracts.history"
-                                caption="msg://contracts.history"
-                                icon="HISTORY"/>
+                        <button id="toWorkBtn"/>
+                        <button id="historyBtn"/>
                         <button id="irrelevantBtn"/>
                     </buttonsPanel>
                 </groupTable>

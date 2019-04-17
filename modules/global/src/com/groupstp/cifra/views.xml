@@ -149,6 +149,17 @@
         <property name="workflow"/>
     </view>
     <view class="com.groupstp.cifra.entity.Document"
-          extends="document-wf_view"
-          name="document-contract-view"/>
+          extends="_minimal"
+          name="document-contract-view">
+        <property name="company"
+                  view="_minimal"/>
+        <property name="division"
+                  view="_minimal"/>
+        <property name="docType"
+                  view="_minimal"/>
+        <property name="contragent"
+                  view="_minimal"/>
+        <property name="status"/>
+        <property name="direction"/>
+    </view>
 </views>

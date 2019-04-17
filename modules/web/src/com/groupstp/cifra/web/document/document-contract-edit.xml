@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        xmlns:wf="http://schemas.groupstp.com/wf/0.1/wf-schema.xsd"
+        caption="msg://editorCaption"
+        class="com.groupstp.cifra.web.document.DocumentContractEdit"
+        datasource="documentDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.groupstp.cifra.web.document">
+    <dsContext>
+        <datasource id="documentDs"
+                    class="com.groupstp.cifra.entity.Document"
+                    view="document-contract-view">
+        </datasource>
+        <collectionDatasource id="docTypesDs"
+                              class="com.groupstp.cifra.entity.DocType"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$DocType e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="divisionsDs"
+                              class="com.groupstp.cifra.entity.Division"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$Division e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="companiesDs"
+                              class="com.groupstp.cifra.entity.Company"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$Company e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="warehousesDs"
+                              class="com.groupstp.cifra.entity.Warehouse"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from cifra$Warehouse e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="scrollBox"
+            spacing="true">
+        <scrollBox id="scrollBox"
+                   spacing="true">
+            <fieldGroup id="fieldGroup"
+                        datasource="documentDs">
+                <column width="250px">
+                    <field property="docType"
+                           editable="false"
+                           enable="false">
+                        <textField
+                            enable="false"
+                            editable="false"/>
+                    </field>
+                    <field property="contragent"/>
+                    <field optionsDatasource="companiesDs"
+                           property="company"/>
+                    <field optionsDatasource="divisionsDs"
+                           property="division"/>
+                    <field property="description"/>
+                    <field property="number"/>
+                    <field property="date"/>
+                </column>
+            </fieldGroup>
+        </scrollBox>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>

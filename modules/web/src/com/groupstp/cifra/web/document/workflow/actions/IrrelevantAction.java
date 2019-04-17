@@ -16,16 +16,17 @@ import java.util.HashMap;
 /**
  *
  */
-public class IrrelevantAction extends ItemTrackingAction{
+public class IrrelevantAction extends ItemTrackingAction {
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     private WorkflowService workflowService;
 
-    public IrrelevantAction(ListComponent listComponent, WorkflowService service) {
-        super(listComponent, "contracts.irrelevant");
+    public IrrelevantAction(ListComponent target, WorkflowService service) {
+        super(target, "contracts.irrelevant");
         this.workflowService = service;
         setCaption(messages.getMessage("com.groupstp.cifra.web.document.workflow", "button.irrelevant"));
         setIcon(CubaIcon.TRASH.source());
+        target.addAction(this);
     }
 
 

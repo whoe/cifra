@@ -4,12 +4,12 @@ import com.haulmont.cuba.gui.components.ListComponent;
 import com.haulmont.cuba.gui.components.actions.ItemTrackingAction;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 
-public class CoordinateAction extends ItemTrackingAction {
+public class ToWorkAction extends ItemTrackingAction {
 
-    public CoordinateAction(ListComponent target) {
-        super("coordinateAction");
+    public ToWorkAction(ListComponent target) {
+        super("toWork");
+        setCaption(messages.getMessage("com.groupstp.cifra.web.document.workflow", "button.toWork"));
         setIcon(CubaIcon.OK.source());
-        setCaption(messages.getMessage("com.groupstp.cifra.web.document.workflow", "button.coordinate"));
         target.addAction(this);
     }
 }

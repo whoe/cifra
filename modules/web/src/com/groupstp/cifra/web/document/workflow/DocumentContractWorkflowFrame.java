@@ -7,10 +7,7 @@ import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.service.WorkflowService;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.WindowParam;
-import com.haulmont.cuba.gui.components.AbstractFrame;
-import com.haulmont.cuba.gui.components.Button;
-import com.haulmont.cuba.gui.components.ButtonsPanel;
-import com.haulmont.cuba.gui.components.Table;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.EditAction;
 import com.haulmont.cuba.gui.components.actions.RefreshAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
@@ -38,8 +35,10 @@ public class DocumentContractWorkflowFrame extends AbstractFrame implements UiEv
 
     @Inject
     private CollectionDatasource<Document, UUID> documentDs;
+
     @Inject
     private Table<Document> documentsTable;
+
     @Inject
     protected ButtonsPanel buttonsPanel;
 
@@ -89,16 +88,18 @@ public class DocumentContractWorkflowFrame extends AbstractFrame implements UiEv
 
     private void initIrrelevantButton() {
         Button irrelevantButton = componentsFactory.createComponent(Button.class);
-        irrelevantButton.setAction(new IrrelevantAction(documentsTable, workflowService));
+        Action action = new IrrelevantAction(documentsTable, workflowService);
+        irrelevantButton.setAction(action);
         buttonsPanel.add(irrelevantButton);
     }
 
     private void initEditButton() {
         Button editButton = componentsFactory.createComponent(Button.class);
-        editButton.setAction(new EditAction(documentsTable)
+        Action action = new EditAction(documentsTable)
                 .withCaption(getMessage("button.edit"))
-                .withIcon(CubaIcon.EDIT.source())
-        );
+                .withIcon(CubaIcon.EDIT.source());
+        editButton.setAction(action);
+        documentsTable.addAction(action);
         buttonsPanel.add(editButton);
     }
 
@@ -113,32 +114,32 @@ public class DocumentContractWorkflowFrame extends AbstractFrame implements UiEv
 
     private void initRepeatContractButton() {
         Button browseButton = componentsFactory.createComponent(Button.class);
-        browseButton.setAction(new RepeatContractAction());
+        browseButton.setAction(new RepeatContractAction(documentsTable));
         buttonsPanel.add(browseButton);
     }
 
     private void initEnteredContractButton() {
         Button browseButton = componentsFactory.createComponent(Button.class);
-        browseButton.setAction(new EnteredContractAction());
+        browseButton.setAction(new EnteredContractAction(documentsTable));
         buttonsPanel.add(browseButton);
     }
 
     private void initHistoryButton() {
         Button historyButton = componentsFactory.createComponent(Button.class);
-        historyButton.setAction(new HistoryAction());
+        historyButton.setAction(new HistoryAction(documentsTable));
         buttonsPanel.add(historyButton);
     }
 
     private void initProblemButton() {
         Button problemButton = componentsFactory.createComponent(Button.class);
-        problemButton.setAction(new ProblemAction());
+        problemButton.setAction(new ProblemAction(documentsTable));
         buttonsPanel.add(problemButton);
     }
 
 
     private void initCoordinateButton() {
         Button problemButton = componentsFactory.createComponent(Button.class);
-        problemButton.setAction(new CoordinateAction());
+        problemButton.setAction(new CoordinateAction(documentsTable));
         buttonsPanel.add(problemButton);
     }
 
