@@ -7,6 +7,7 @@ import com.groupstp.workflowstp.entity.WorkflowEntity;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
 import com.groupstp.workflowstp.service.WorkflowService;
+import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.gui.WindowParam;
 import com.haulmont.cuba.gui.components.ButtonsPanel;
 import com.haulmont.cuba.gui.components.Table;
@@ -62,7 +63,8 @@ public class RegisterWorkflowFrame extends DocumentWorkflowFrame {
     }
 
     private void finishTaskWithParams(HashMap<String, String> params) {
-        documentsTable.getSelected().forEach(o -> {
+        for (Object o:
+            documentsTable.getSelected()) {
             WorkflowEntity entity = (WorkflowEntity) o;
             try {
                 WorkflowInstanceTask instanceTask = workflowService.getWorkflowInstanceTask(entity);
@@ -70,7 +72,7 @@ public class RegisterWorkflowFrame extends DocumentWorkflowFrame {
             } catch (WorkflowException e) {
                 log.error("finish task in register workflow", e);
             }
-        });
+        }
     }
 
     @Override

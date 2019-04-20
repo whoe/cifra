@@ -1,8 +1,7 @@
-
 buildscript {
     ext.cubaVersion = '6.10.2'
     repositories {
-        
+
         mavenLocal()
         maven {
             url 'https://repo.cuba-platform.com/content/groups/work'
@@ -11,9 +10,9 @@ buildscript {
                 password(rootProject.hasProperty('repoPass') ? rootProject['repoPass'] : 'cuba123')
             }
         }
-	maven {
-	    url  "https://dl.bintray.com/mariodavid/cuba-components"
-	}
+        maven {
+            url "https://dl.bintray.com/mariodavid/cuba-components"
+        }
     }
     dependencies {
         classpath "com.haulmont.gradle:cuba-plugin:$cubaVersion"
@@ -57,7 +56,7 @@ dependencies {
     appComponent("de.diedavids.cuba.runtimediagnose:runtime-diagnose-global:1.0.0")
     appComponent("com.company.googledrive:googledrive-global:0.1-SNAPSHOT")
     appComponent("com.groupstp.googleoauth:oauth-global:0.2-SNAPSHOT")
-    appComponent("com.groupstp.workflowstp:wfstp-global:1.1.1")
+    appComponent("com.groupstp.workflowstp:wfstp-global:2.0.0")
 }
 
 def postgres = 'org.postgresql:postgresql:9.4.1212'
@@ -163,7 +162,7 @@ configure(webModule) {
         compile(guiModule)
 
     }
-    
+
     task webArchive(type: Zip) {
         from file("$buildDir/web")
         from file('web')
@@ -225,9 +224,6 @@ configure(webThemesModule) {
         }
     }
 }
-
-
-
 
 
 task undeploy(type: Delete, dependsOn: ":${modulePrefix}-web:cleanConf") {

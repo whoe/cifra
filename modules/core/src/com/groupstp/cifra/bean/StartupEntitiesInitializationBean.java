@@ -1,5 +1,6 @@
 package com.groupstp.cifra.bean;
 
+import com.groupstp.cifra.entity.DocType;
 import com.groupstp.workflowstp.entity.Stage;
 import com.groupstp.workflowstp.entity.Step;
 import com.groupstp.workflowstp.entity.StepDirection;
@@ -44,6 +45,7 @@ public class StartupEntitiesInitializationBean {
     public void init() {
         initRoles();
         initWorkflow();
+        initDocTypes();
     }
 
     private void initRoles() {
@@ -52,6 +54,14 @@ public class StartupEntitiesInitializationBean {
 
     private void initWorkflow() {
         importEntitiesFromJson("com/groupstp/cifra/init/Workflows.json", createWorkflowImportView());
+    }
+
+    private void initDocTypes() {
+        importEntitiesFromJson("com/groupstp/cifra/init/DocTypes.json",
+                new EntityImportView(DocType.class)
+                        .addLocalProperties()
+                        .addProperties("name")
+        );
     }
 
     /**

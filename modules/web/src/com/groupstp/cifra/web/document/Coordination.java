@@ -49,16 +49,20 @@ public class Coordination extends RegisterHelperWindow {
         setFrame("cifra$DocumentContractWorkflow.frame");
         initTabSheets(tabs, "coord");
 
+        if (!isEmployee()) {
+            tabs.getTab("myContracts").setVisible(false);
+            return;
+        }
+
         Action editAction = new ItemTrackingAction(contracts, "editAction")
                 .withCaption(messages.getMessage("com.groupstp.cifra.web.document.workflow", "button.edit"))
                 .withIcon("icons/edit.png")
-                .withHandler(actionPerformedEvent -> {
-                    this.openEditor("cifra$DocumentContract.edit",
-                            contracts.getSingleSelected(),
-                            WindowManager.OpenType.DIALOG,
-                            ParamsMap.of("openType", DocumentContractEdit.OpenType.edit)
-                    );
-                });
+                .withHandler(actionPerformedEvent -> this.openEditor(
+                        "cifra$DocumentContract.edit",
+                        contracts.getSingleSelected(),
+                        WindowManager.OpenType.DIALOG,
+                        ParamsMap.of("openType", DocumentContractEdit.OpenType.edit)
+                ));
 
         contracts.addAction(editAction);
         editBtn.setAction(editAction);
@@ -69,7 +73,7 @@ public class Coordination extends RegisterHelperWindow {
         IrrelevantAction irrelevantAction = new IrrelevantAction(contracts, workflowService);
         irrelevantBtn.setAction(irrelevantAction);
 
-        Action toWorkAction = new ToWorkAction(contracts);
+        Action toWorkAction = new ToWorkAction(contracts, workflowService);
         toWorkBtn.setAction(toWorkAction);
 
         HistoryAction historyAction = new HistoryAction(contracts);

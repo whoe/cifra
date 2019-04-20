@@ -161,5 +161,8 @@
                   view="_minimal"/>
         <property name="status"/>
         <property name="direction"/>
+        <property name="workflow"
+                  view="_minimal"/>
+        <property name="stepName"/>
     </view>
 </views>

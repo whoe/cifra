@@ -132,20 +132,20 @@ public class DocumentContractWorkflowFrame extends AbstractFrame implements UiEv
 
     private void initProblemButton() {
         Button problemButton = componentsFactory.createComponent(Button.class);
-        problemButton.setAction(new ProblemAction(documentsTable));
+        problemButton.setAction(new ProblemAction(documentsTable, workflowService));
         buttonsPanel.add(problemButton);
     }
 
 
     private void initCoordinateButton() {
         Button problemButton = componentsFactory.createComponent(Button.class);
-        problemButton.setAction(new CoordinateAction(documentsTable));
+        problemButton.setAction(new CoordinateAction(documentsTable, workflowService));
         buttonsPanel.add(problemButton);
     }
 
     private void initBrowseButton() {
         Button browseButton = componentsFactory.createComponent(Button.class);
-        browseButton.setAction(new BrowseAction(documentsTable, WindowManager.OpenType.NEW_TAB));
+        browseButton.setAction(new BrowseAction(documentsTable, WindowManager.OpenType.DIALOG));
         buttonsPanel.add(browseButton);
     }
 
