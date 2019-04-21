@@ -11,10 +11,9 @@ import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.components.AbstractWindow;
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.TabSheet;
+import com.haulmont.cuba.gui.components.Table;
 import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.entity.UserRole;
-import com.vaadin.external.org.slf4j.Logger;
-import com.vaadin.external.org.slf4j.LoggerFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -58,12 +57,26 @@ public class RegisterHelperWindow extends AbstractWindow {
                 if (isSatisfyByUser(step.getStage())) {
                     String stageName = step.getStage().getName();
                     String tabKey = stageName.replaceAll("\\s", StringUtils.EMPTY).toLowerCase();
-
                     TabSheet.Tab tab = tabs.addTab(tabKey, createTab(step.getStage()));
                     tab.setCaption(stageName);
                 }
             }
         }
+
+        // обновление таблицы выбранной вкладки
+        tabs.addSelectedTabChangeListener(event -> {
+            try {
+                String tabName = event.getSelectedTab().getName();
+                Component tabComponent = tabs.getTabComponent(tabName);
+                DocumentContractWorkflowFrame frame = (DocumentContractWorkflowFrame) tabComponent;
+                Component table = frame.getComponent("documentsTable");
+                if (table != null) {
+                    ((Table) table).getDatasource().refresh();
+                }
+            } catch(ClassCastException e) {
+                // do nothing, changed tab to myContracts
+            }
+        });
     }
 
     /**

@@ -2,18 +2,12 @@ package com.groupstp.cifra.web.document;
 
 import com.groupstp.cifra.entity.Document;
 import com.groupstp.cifra.web.document.workflow.RegisterHelperWindow;
-import com.groupstp.cifra.web.document.workflow.actions.CreateContractAction;
-import com.groupstp.cifra.web.document.workflow.actions.HistoryAction;
-import com.groupstp.cifra.web.document.workflow.actions.IrrelevantAction;
-import com.groupstp.cifra.web.document.workflow.actions.ToWorkAction;
+import com.groupstp.cifra.web.document.workflow.actions.*;
 import com.groupstp.workflowstp.service.WorkflowService;
-import com.haulmont.bali.util.ParamsMap;
-import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.components.GroupTable;
 import com.haulmont.cuba.gui.components.TabSheet;
-import com.haulmont.cuba.gui.components.actions.ItemTrackingAction;
 
 import javax.inject.Inject;
 import java.util.Map;
@@ -54,17 +48,7 @@ public class Coordination extends RegisterHelperWindow {
             return;
         }
 
-        Action editAction = new ItemTrackingAction(contracts, "editAction")
-                .withCaption(messages.getMessage("com.groupstp.cifra.web.document.workflow", "button.edit"))
-                .withIcon("icons/edit.png")
-                .withHandler(actionPerformedEvent -> this.openEditor(
-                        "cifra$DocumentContract.edit",
-                        contracts.getSingleSelected(),
-                        WindowManager.OpenType.DIALOG,
-                        ParamsMap.of("openType", DocumentContractEdit.OpenType.edit)
-                ));
-
-        contracts.addAction(editAction);
+        Action editAction = new EditContractAction(contracts);
         editBtn.setAction(editAction);
 
         Action createAction = new CreateContractAction(contracts);

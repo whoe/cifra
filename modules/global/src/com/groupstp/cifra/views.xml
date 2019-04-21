@@ -165,4 +165,18 @@
                   view="_minimal"/>
         <property name="stepName"/>
     </view>
+    <view class="com.groupstp.workflowstp.entity.WorkflowInstanceComment"
+          extends="_minimal"
+          name="document-contract-edit-view">
+        <property name="instance"
+                  view="_minimal"/>
+        <property name="task"
+                  view="_minimal">
+            <property name="step"
+                      view="_minimal"/>
+        </property>
+        <property name="author"
+                  view="_minimal"/>
+        <property name="comment"/>
+    </view>
 </views>

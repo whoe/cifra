@@ -19,7 +19,7 @@ public class ToWorkAction extends ItemTrackingAction {
 
     private WorkflowService workflowService;
 
-    Logger log = LoggerFactory.getLogger(ToWorkAction.class);
+    private Logger log = LoggerFactory.getLogger(ToWorkAction.class);
 
     public ToWorkAction(ListComponent target, WorkflowService workflowService) {
         super(target, "toWork");
@@ -41,6 +41,7 @@ public class ToWorkAction extends ItemTrackingAction {
         } catch (WorkflowException e) {
             log.error("when start workflow", e);
         }
+        target.getDatasource().refresh();
     }
 
     private Workflow getCoordinationWorkflow() {

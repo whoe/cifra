@@ -76,4 +76,6 @@
             template="com/groupstp/cifra/web/document/workflow/document-contract-workflow-frame.xml"/>
     <screen id="cifra$DocumentContract.edit"
             template="com/groupstp/cifra/web/document/document-contract-edit.xml"/>
+    <screen id="wfstp$WorkflowInstanceComment.edit"
+            template="/com/groupstp/cifra/web/document/workflow/workflow-instance-comment-edit.xml"/>
 </screen-config>

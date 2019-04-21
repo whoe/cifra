@@ -8,7 +8,6 @@ import com.groupstp.workflowstp.service.WorkflowService;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.WindowParam;
 import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.gui.components.actions.EditAction;
 import com.haulmont.cuba.gui.components.actions.RefreshAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.events.UiEvent;
@@ -95,11 +94,8 @@ public class DocumentContractWorkflowFrame extends AbstractFrame implements UiEv
 
     private void initEditButton() {
         Button editButton = componentsFactory.createComponent(Button.class);
-        Action action = new EditAction(documentsTable)
-                .withCaption(getMessage("button.edit"))
-                .withIcon(CubaIcon.EDIT.source());
+        Action action = new EditContractAction(documentsTable);
         editButton.setAction(action);
-        documentsTable.addAction(action);
         buttonsPanel.add(editButton);
     }
 

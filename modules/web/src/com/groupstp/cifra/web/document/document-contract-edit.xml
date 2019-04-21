@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
-        xmlns:wf="http://schemas.groupstp.com/wf/0.1/wf-schema.xsd"
         caption="msg://editorCaption"
         class="com.groupstp.cifra.web.document.DocumentContractEdit"
         datasource="documentDs"
         focusComponent="fieldGroup"
-        messagesPack="com.groupstp.cifra.web.document">
+        messagesPack="com.groupstp.cifra.web.document"
+        xmlns:wf="http://schemas.groupstp.com/wf/0.1/wf-schema.xsd">
     <dsContext>
         <datasource id="documentDs"
                     class="com.groupstp.cifra.entity.Document"
-                    view="document-contract-view">
-        </datasource>
+                    view="document-contract-view"/>
         <collectionDatasource id="docTypesDs"
                               class="com.groupstp.cifra.entity.DocType"
                               view="_minimal">
@@ -32,29 +31,29 @@
                 <![CDATA[select e from cifra$Company e]]>
             </query>
         </collectionDatasource>
-        <collectionDatasource id="warehousesDs"
-                              class="com.groupstp.cifra.entity.Warehouse"
-                              view="_minimal">
+        <collectionDatasource id="workflowInstanceCommentsDs"
+                              class="com.groupstp.workflowstp.entity.WorkflowInstanceComment"
+                              view="document-contract-edit-view">
             <query>
-                <![CDATA[select e from cifra$Warehouse e]]>
+                <![CDATA[select e from wfstp$WorkflowInstanceComment e
+where e.instance.id = :custom$instanceId]]>
             </query>
         </collectionDatasource>
     </dsContext>
     <dialogMode height="600"
                 width="800"/>
-    <layout expand="scrollBox"
+    <layout expand="comments"
             spacing="true">
-        <scrollBox id="scrollBox"
+        <vbox id="vBox"
                    spacing="true">
             <fieldGroup id="fieldGroup"
                         datasource="documentDs">
                 <column width="250px">
-                    <field property="docType"
-                           editable="false"
-                           enable="false">
-                        <textField
-                            enable="false"
-                            editable="false"/>
+                    <field editable="false"
+                           enable="false"
+                           property="docType">
+                        <textField editable="false"
+                                   enable="false"/>
                     </field>
                     <field property="contragent"/>
                     <field optionsDatasource="companiesDs"
@@ -66,7 +65,16 @@
                     <field property="date"/>
                 </column>
             </fieldGroup>
-        </scrollBox>
+        </vbox>
+        <table id="comments"
+               width="100%">
+            <columns>
+                <column id="author"/>
+                <column id="task.step"/>
+                <column id="comment"/>
+            </columns>
+            <rows datasource="workflowInstanceCommentsDs"/>
+        </table>
         <frame id="windowActions"
                screen="editWindowActions"/>
     </layout>
