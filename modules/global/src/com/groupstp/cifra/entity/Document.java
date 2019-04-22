@@ -34,6 +34,13 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
     @ManyToMany
     protected Set<Tag> tag;
 
+    @JoinTable(name = "CIFRA_DOCUMENT_ATTACHED_FILES_LINK",
+        joinColumns = @JoinColumn(name = "DOCUMENT_ID"),
+        inverseJoinColumns = @JoinColumn(name = "FILE_DESCRIPTOR_ID"))
+    @OnDelete(DeletePolicy.CASCADE)
+    @ManyToMany
+    protected List<FileDescriptor> attachedFiles;
+
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WAREHOUSE_ID")
@@ -141,6 +148,15 @@ public class Document extends StandardEntity implements WorkflowEntity<UUID>, Ta
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "taskableEntity")
     protected List<Task> tasks;
+
+    public void setAttachedFiles(List<FileDescriptor> attachedFiles) {
+        this.attachedFiles = attachedFiles;
+    }
+
+    public List<FileDescriptor> getAttachedFiles() {
+        return attachedFiles;
+    }
+
 
     public void setDirection(Direction direction) {
         this.direction = direction == null ? null : direction.getId();

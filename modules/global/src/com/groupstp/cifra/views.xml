@@ -164,6 +164,8 @@
         <property name="workflow"
                   view="_minimal"/>
         <property name="stepName"/>
+        <property name="attachedFiles"
+                  view="_minimal"/>
     </view>
     <view class="com.groupstp.workflowstp.entity.WorkflowInstanceComment"
           extends="_minimal"

@@ -1,0 +1,5 @@
+create table CIFRA_DOCUMENT_ATTACHED_FILES_LINK (
+    DOCUMENT_ID uuid,
+    FILE_DESCRIPTOR_ID uuid,
+    primary key (DOCUMENT_ID, FILE_DESCRIPTOR_ID)
+);

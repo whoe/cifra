@@ -9,7 +9,10 @@
     <dsContext>
         <datasource id="documentDs"
                     class="com.groupstp.cifra.entity.Document"
-                    view="document-contract-view"/>
+                    view="document-contract-view">
+            <collectionDatasource id="attachedFilesDs"
+                                  property="attachedFiles"/>
+        </datasource>
         <collectionDatasource id="docTypesDs"
                               class="com.groupstp.cifra.entity.DocType"
                               view="_minimal">
@@ -40,12 +43,12 @@ where e.instance.id = :custom$instanceId]]>
             </query>
         </collectionDatasource>
     </dsContext>
-    <dialogMode height="600"
-                width="800"/>
-    <layout expand="comments"
+    <dialogMode height="100%"
+                width="100%"/>
+    <layout expand="commentsUploads"
             spacing="true">
         <vbox id="vBox"
-                   spacing="true">
+              spacing="true">
             <fieldGroup id="fieldGroup"
                         datasource="documentDs">
                 <column width="250px">
@@ -66,15 +69,47 @@ where e.instance.id = :custom$instanceId]]>
                 </column>
             </fieldGroup>
         </vbox>
-        <table id="comments"
-               width="100%">
-            <columns>
-                <column id="author"/>
-                <column id="task.step"/>
-                <column id="comment"/>
-            </columns>
-            <rows datasource="workflowInstanceCommentsDs"/>
-        </table>
+        <hbox id="commentsUploads"
+              spacing="true"
+              width="100%">
+            <table id="comments"
+                   height="100%"
+                   width="100%">
+                <columns>
+                    <column id="author"/>
+                    <column id="task.step"/>
+                    <column id="comment"/>
+                </columns>
+                <rows datasource="workflowInstanceCommentsDs"/>
+            </table>
+            <groupBox id="filesBox"
+                      align="TOP_RIGHT"
+                      caption="msg://attachedFiles"
+                      height="100%">
+                <table id="filesTable"
+                       height="100%"
+                       width="100%">
+                    <actions>
+                        <action id="add"/>
+                        <action id="remove"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                        <column id="createDate"/>
+                        <column id="extension"/>
+                    </columns>
+                    <rows datasource="attachedFilesDs"/>
+                    <buttonsPanel>
+                        <multiUpload id="multiUpload"
+                                     caption="msg://upload"/>
+                        <button caption="msg://download"
+                                invoke="download"/>
+                        <button action="filesTable.add"/>
+                        <button action="filesTable.remove"/>
+                    </buttonsPanel>
+                </table>
+            </groupBox>
+        </hbox>
         <frame id="windowActions"
                screen="editWindowActions"/>
     </layout>

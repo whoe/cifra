@@ -312,3 +312,10 @@ create table CIFRA_COMPANY_DIVISON_USER_DIVISION_LINK (
 alter table SEC_USER add column DTYPE varchar(100) ^
 update SEC_USER set DTYPE = 'cifra$CompanyDivisionUser' where DTYPE is null ^
 -- end SEC_USER
+-- begin CIFRA_DOCUMENT_ATTACHED_FILES_LINK
+create table CIFRA_DOCUMENT_ATTACHED_FILES_LINK (
+    DOCUMENT_ID uuid,
+    FILE_DESCRIPTOR_ID uuid,
+    primary key (DOCUMENT_ID, FILE_DESCRIPTOR_ID)
+)^
+-- end CIFRA_DOCUMENT_ATTACHED_FILES_LINK

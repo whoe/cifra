@@ -7,16 +7,24 @@ import com.groupstp.workflowstp.entity.WorkflowInstance;
 import com.groupstp.workflowstp.entity.WorkflowInstanceComment;
 import com.groupstp.workflowstp.service.WorkflowService;
 import com.haulmont.bali.util.ParamsMap;
+import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.global.AppBeans;
+import com.haulmont.cuba.core.global.FileStorageException;
+import com.haulmont.cuba.gui.AppConfig;
 import com.haulmont.cuba.gui.WindowParam;
 import com.haulmont.cuba.gui.components.AbstractEditor;
 import com.haulmont.cuba.gui.components.FieldGroup;
+import com.haulmont.cuba.gui.components.FileMultiUploadField;
+import com.haulmont.cuba.gui.components.Table;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
+import com.haulmont.cuba.gui.data.DataSupplier;
 import com.haulmont.cuba.gui.data.Datasource;
+import com.haulmont.cuba.gui.upload.FileUploadingAPI;
 import com.haulmont.cuba.web.gui.components.WebAbstractField;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Map;
 import java.util.UUID;
 
 public class DocumentContractEdit extends AbstractEditor<Document> {
@@ -39,6 +47,21 @@ public class DocumentContractEdit extends AbstractEditor<Document> {
     @Inject
     CollectionDatasource<WorkflowInstanceComment, UUID> workflowInstanceCommentsDs;
 
+    @Inject
+    private FileMultiUploadField multiUpload;
+
+    @Inject
+    private FileUploadingAPI fileUploadingAPI;
+
+    @Inject
+    private DataSupplier dataSupplier;
+
+    @Inject
+    private CollectionDatasource<FileDescriptor, UUID> attachedFilesDs;
+
+    @Inject
+    private Table<FileDescriptor> filesTable;
+
     @Override
     public void ready() {
 
@@ -54,16 +77,53 @@ public class DocumentContractEdit extends AbstractEditor<Document> {
 
         docType.setValue(doc.getDocType());
 
-        if (openType.equals(OpenType.browse)) {
+
+        WorkflowService service = AppBeans.get(WorkflowService.class);
+
+        if (openType.equals(OpenType.browse) ||
+                service.isProcessing(doc) &&
+                        !doc.getStepName().equals("Проблемные")) {
             fieldGroup.setEditable(false);
         }
 
-        WorkflowService service = AppBeans.get(WorkflowService.class);
         WorkflowInstance instance = service.getWorkflowInstance(doc);
         if (instance != null) {
             workflowInstanceCommentsDs.refresh(
                     ParamsMap.of("instanceId", instance.getId())
             );
+        }
+
+        multiUpload.addQueueUploadCompleteListener(() -> {
+            for (Map.Entry<UUID, String> entry : multiUpload.getUploadsMap().entrySet()) {
+                UUID fileId = entry.getKey();
+                String fileName = entry.getValue();
+                FileDescriptor fd = fileUploadingAPI.getFileDescriptor(fileId, fileName);
+                // save file to FileStorage
+                try {
+                    fileUploadingAPI.putFileIntoStorage(fileId, fd);
+                } catch (FileStorageException e) {
+                    throw new RuntimeException("Error saving file to FileStorage", e);
+                }
+
+                // save file descriptor to database
+                FileDescriptor committedFd = dataSupplier.commit(fd);
+
+                // save to attachedFiles in document
+                attachedFilesDs.addItem(committedFd);
+            }
+            showNotification("Uploaded files: " + multiUpload.getUploadsMap().values(), NotificationType.HUMANIZED);
+            multiUpload.clearUploads();
+
+            // refresh datasource to show changes
+            attachedFilesDs.commit();
+        });
+    }
+
+    public void download() {
+        if (filesTable.getSelected().size() > 0) {
+            for (FileDescriptor fileDescriptor : filesTable.getSelected()) {
+                AppConfig.createExportDisplay(this).show(fileDescriptor);
+            }
         }
     }
 
