@@ -1,10 +1,8 @@
 package com.groupstp.cifra.web.tasks.tasktemplate;
 
-import com.groupstp.cifra.entity.Document;
 import com.groupstp.cifra.entity.tasks.TaskTemplate;
 import com.groupstp.cifra.entity.tasks.TaskTypical;
 import com.haulmont.bali.util.ParamsMap;
-import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Security;
@@ -15,6 +13,7 @@ import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.EntityCombinedScreen;
 import com.haulmont.cuba.gui.components.Table;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
+import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.security.entity.EntityOp;
 import com.haulmont.cuba.web.gui.components.WebTable;
 import org.slf4j.Logger;
@@ -34,6 +33,9 @@ public class TaskTemplateBrowse extends EntityCombinedScreen {
 
     @Inject
     private Table<TaskTypical> taskTypicalTable;
+
+    @Inject
+    private CollectionDatasource<TaskTypical, UUID> taskTypicalsDs;
 
     @Inject
     private DataManager dataManager;
@@ -81,16 +83,16 @@ public class TaskTemplateBrowse extends EntityCombinedScreen {
 
         currentTemplate = taskTemplate;
 
-        getComponent("lookupBox").setEnabled(!flag);
-        getComponent("editBox").setEnabled(flag);
+        getComponentNN("lookupBox").setEnabled(!flag);
+        getComponentNN("editBox").setEnabled(flag);
 
         boolean entityOpPermitted = AppBeans.get(Security.class).isEntityOpPermitted(TaskTemplate.class, EntityOp.UPDATE);
-        getComponent("taskTypicalTable").setEnabled(entityOpPermitted);
-        getComponent("save").setEnabled(entityOpPermitted);
+        getComponentNN("taskTypicalTable").setEnabled(entityOpPermitted);
+        getComponentNN("save").setEnabled(entityOpPermitted);
 
 
-        taskTypicalTable.getDatasource().refresh();
-        taskTypicalTable.getDatasource().clear();
+        taskTypicalsDs.refresh();
+        taskTypicalsDs.clear();
 
         if (currentTemplate != null) {
             loadTemplate();
@@ -105,23 +107,20 @@ public class TaskTemplateBrowse extends EntityCombinedScreen {
      * In other words load current template
      */
     private void loadTemplate() {
-        currentTemplate.getTasks().forEach(taskTypical ->
-                taskTypicalTable.getDatasource().addItem(taskTypical)
-        );
+        currentTemplate.getTasks().forEach(taskTypical -> taskTypicalsDs.addItem(taskTypical));
 
     }
 
     /**
      * Action on ADD button
      * Add typical task(s) to table
-     *
-     * @param source - don't used
      */
-    public void onAddButton(Component source) {
+    public void onAddButton() {
         openLookup(TaskTypical.class, items -> {
-            items.forEach(entity -> {
-                taskTypicalTable.getDatasource().addItem((TaskTypical) entity);
-            });
+            for (Object e :
+                    items) {
+                taskTypicalsDs.addItem((TaskTypical) e);
+            }
         }, WindowManager.OpenType.DIALOG, ParamsMap.of(MULTIPLE_SELECT_ON, ""));
     }
 
@@ -129,12 +128,11 @@ public class TaskTemplateBrowse extends EntityCombinedScreen {
      * Action on DELETE button
      * Remove current typical task from table
      *
-     * @param source - don't used
      */
-    public void onDeleteButton(Component source) {
-        Entity selectedLine = (Entity) ((WebTable) getComponent("taskTypicalTable")).getSelected().stream().findFirst().orElse(null);
-        if (selectedLine != null) {
-            taskTypicalTable.getDatasource().removeItem(selectedLine);
+    public void onDeleteButton() {
+        Iterator<TaskTypical> iterator = taskTypicalTable.getSelected().iterator();
+        if (iterator.hasNext()) {
+            taskTypicalsDs.removeItem(iterator.next());
         }
     }
 
@@ -142,20 +140,17 @@ public class TaskTemplateBrowse extends EntityCombinedScreen {
      * Action on CLEAR button
      * Clear typical tasks table
      *
-     * @param source - don't used
      */
-    public void onClearButton(Component source) {
+    public void onClearButton() {
         taskTypicalTable.getDatasource().clear();
     }
 
     /**
      * Save current selected typical tasks to current selected template
      * Change to left work space
-     *
-     * @param source - don't used
      */
-    public void saveTemplate(Component source) {
-        List<TaskTypical> items = new ArrayList(taskTypicalTable.getDatasource().getItems());
+    public void saveTemplate() {
+        List<TaskTypical> items = new ArrayList<>(taskTypicalsDs.getItems());
         currentTemplate.setTasks(items);
         dataManager.commit(currentTemplate);
         log.info("Template {} was saved", currentTemplate.getName());
@@ -165,10 +160,8 @@ public class TaskTemplateBrowse extends EntityCombinedScreen {
     /**
      * Clear typical tasks table
      * Change to left work space
-     *
-     * @param source - don't used
      */
-    public void cancelTemplate(Component source) {
+    public void cancelTemplate() {
         selectActiveTemplate(null);
     }
 }

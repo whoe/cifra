@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
-        caption="msg://editorCaption"
+        caption="msg://commentEditor.caption"
         class="com.groupstp.cifra.web.document.workflow.WorkflowInstanceCommentEdit"
         datasource="workflowInstanceCommentDs"
         focusComponent="fieldGroup"
@@ -10,19 +10,18 @@
                     class="com.groupstp.workflowstp.entity.WorkflowInstanceComment"
                     view="workflowInstanceComment-edit"/>
     </dsContext>
-    <dialogMode height="600"
+    <dialogMode height="auto"
                 width="800"/>
     <layout expand="windowActions"
             spacing="true">
         <fieldGroup id="fieldGroup"
-                    datasource="workflowInstanceCommentDs">
-            <column width="250px">
-                <field property="instance" visible="false"/>
-                <field property="task" visible="false"/>
-                <field property="author" visible="false"/>
+                    datasource="workflowInstanceCommentDs"
+                    width="100%">
+            <column width="100%">
                 <field property="comment"
-                       rows="5"/>
-                <field property="attachment"/>
+                       rows="10"
+                       width="100%"
+                       required="true"/>
             </column>
         </fieldGroup>
         <frame id="windowActions"

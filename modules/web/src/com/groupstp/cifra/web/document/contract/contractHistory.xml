@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://history"
+        class="com.groupstp.cifra.web.document.contract.ContractHistory"
+        messagesPack="com.groupstp.cifra.web.document.contract">
+    <dsContext>
+        <collectionDatasource id="contractHistoryItemsDs"
+                              allowCommit="false"
+                              class="com.groupstp.cifra.entity.ContractHistoryItem"
+                              refreshMode="NEVER"/>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout>
+        <table id="historyTable"
+               caption="msg://history"
+               height="100%"
+               width="100%">
+            <columns>
+                <column id="performer"/>
+                <column id="from"/>
+                <column id="to"/>
+                <column id="when"/>
+            </columns>
+            <rows datasource="contractHistoryItemsDs"/>
+        </table>
+    </layout>
+</window>

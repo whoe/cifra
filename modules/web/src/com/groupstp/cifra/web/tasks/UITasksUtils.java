@@ -1,6 +1,9 @@
 package com.groupstp.cifra.web.tasks;
 
-import com.groupstp.cifra.entity.tasks.*;
+import com.groupstp.cifra.entity.tasks.IntervalType;
+import com.groupstp.cifra.entity.tasks.Task;
+import com.groupstp.cifra.entity.tasks.TaskTypical;
+import com.groupstp.cifra.entity.tasks.TaskableEntity;
 import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.groupstp.cifra.web.tasks.task.TaskEdit;
 import com.haulmont.bali.util.ParamsMap;
@@ -8,33 +11,36 @@ import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.gui.WindowManager;
-import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.components.Button;
+import com.haulmont.cuba.gui.components.ButtonsPanel;
+import com.haulmont.cuba.gui.components.Frame;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import org.apache.commons.lang.time.DateUtils;
+import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.util.Date;
 import java.util.Iterator;
 
-public class UITasksUtils extends AbstractFrame{
+@Component
+public class UITasksUtils {
 
-    //Singleton
-    public static final UITasksUtils INSTANCE = new UITasksUtils();
+    @Inject
+    private DataManager dataManager;
 
-    private final DataManager dataManager = AppBeans.get(DataManager.class);
-    private final Metadata metadata = AppBeans.get(Metadata.class);
-
+    @Inject
+    private Metadata metadata;
 
     /**
-     * @param startDate
+     * @param startDate    Start date
      * @param interval     Integer
      * @param intervalType Hour,Day,Month....
      * @return - startDate + interval of intervalType (example: 01.01.2018 + 3 of Day = 04.01.2018)
      */
     public static Date countEndDateFromStartDate(Date startDate, Integer interval, IntervalType intervalType) {
         if (startDate == null || interval == null || intervalType == null) return null;
-
         switch (intervalType) {
             case Days:
                 return DateUtils.addDays(startDate, interval);
@@ -51,13 +57,13 @@ public class UITasksUtils extends AbstractFrame{
      *
      * @param cubaIcon     - example CubaIcon.CHECK.source()
      * @param action       - Pattern Strategy
-     * @param capture
-     * @param buttonsPanel
+     * @param caption      - caption
+     * @param buttonsPanel - buttonsPanel
      */
-    public void makeButton(CubaIcon cubaIcon, BaseAction action, String capture, ButtonsPanel buttonsPanel) {
+    public void makeButton(CubaIcon cubaIcon, BaseAction action, String caption, ButtonsPanel buttonsPanel) {
         Button button = AppBeans.get(ComponentsFactory.class).createComponent(Button.class);
         button.setAction(action);
-        button.setCaption(capture);
+        button.setCaption(caption);
         button.setIcon(cubaIcon.source());
         buttonsPanel.add(button);
     }
@@ -90,13 +96,12 @@ public class UITasksUtils extends AbstractFrame{
     /**
      * Create one task fot document and open windows form
      *
-     * @param document
-     * @param iteratorTemplate
-     * @return
+     * @param document    Document
+     * @param iteratorTemplate Iterator
+     * @return TaskEdit
      */
-    public TaskEdit createTaskInWindows(TaskableEntity document, Iterator<TaskTypical> iteratorTemplate, Frame frame) {
-        TaskTypical taskTypical;
-        taskTypical = iteratorTemplate.next();
+    public TaskEdit createTaskInWindows(TaskableEntity document, Iterator iteratorTemplate, Frame frame) {
+        TaskTypical taskTypical = (TaskTypical) iteratorTemplate.next();
         Task newTask = metadata.create(Task.class);
 
         return (TaskEdit) frame.openEditor(newTask, WindowManager.OpenType.DIALOG, ParamsMap.of("taskTypical", taskTypical, "taskableEntity", document));

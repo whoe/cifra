@@ -1,30 +1,27 @@
 package com.groupstp.cifra.entity;
 
 import com.google.gson.JsonObject;
-import com.haulmont.chile.core.model.MetaClass;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.LoadContext;
-import com.haulmont.cuba.core.global.Metadata;
 
-import javax.inject.Inject;
-import javax.swing.text.html.parser.Entity;
+import java.util.List;
 
-public abstract class Import {
-    public void updateInsertEntity(Class type, String id, JsonObject o) throws Exception {
-        LoadContext<StandardEntity> c = LoadContext.create(type).setQuery(
-                LoadContext.createQuery("select c from cifra$"+type.getSimpleName()+" c where c.externalId=:id")
-                        .setParameter("id", id)
-        );
-        StandardEntity e = AppBeans.get(DataManager.class).load(c);
-        if(e==null)
-            insert(id, o);
-        else
+abstract class Import {
+    <T extends StandardEntity> void updateInsertEntity(Class<T> type, String id, JsonObject o) throws Exception {
+        DataManager dataManager = AppBeans.get(DataManager.class);
+        List<? extends StandardEntity> entities = dataManager.load(type)
+                .query("select c from cifra$" + type.getSimpleName() + " c where c.externalId=:id")
+                .parameter("id", id)
+                .list();
+        if (entities.size() >= 1)
             update(id, o);
+        else
+            insert(id, o);
     }
 
     abstract void update(String id, JsonObject o);
+
     abstract void insert(String id, JsonObject o) throws Exception;
 }
 

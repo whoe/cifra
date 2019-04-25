@@ -1046,6 +1046,7 @@
                   "_entityName": "wfstp$StepDirection",
                   "id": "5ceeaba8-2331-0a9f-732d-741abd91b201",
                   "version": 2,
+                  "conditionGroovyScript": "\u0027Юристы\u0027.equals(${stageName})",
                   "from": {
                     "_entityName": "wfstp$Step",
                     "id": "e774c352-8681-95f2-72e6-eeec08fc3853"
@@ -1060,6 +1061,7 @@
                   "_entityName": "wfstp$StepDirection",
                   "id": "7d6a0aab-8d20-c448-5475-3dfd872e9443",
                   "version": 2,
+                  "conditionGroovyScript": "\u0027Финансисты\u0027.equals(${stageName})",
                   "from": {
                     "_entityName": "wfstp$Step",
                     "id": "e774c352-8681-95f2-72e6-eeec08fc3853"
@@ -1409,6 +1411,7 @@
                   "_entityName": "wfstp$StepDirection",
                   "id": "fda1dfdf-aa7a-a96c-389e-45732ce35671",
                   "version": 2,
+                  "conditionGroovyScript": "\u0027Бухгалтеры\u0027.equals(${stageName})",
                   "from": {
                     "_entityName": "wfstp$Step",
                     "id": "e774c352-8681-95f2-72e6-eeec08fc3853"
@@ -1423,6 +1426,7 @@
                   "_entityName": "wfstp$StepDirection",
                   "id": "34306b89-dd7f-3e10-0e5d-c9bf1b5348ac",
                   "version": 2,
+                  "conditionGroovyScript": "\u0027Директор\u0027.equals(${stageName})",
                   "from": {
                     "_entityName": "wfstp$Step",
                     "id": "e774c352-8681-95f2-72e6-eeec08fc3853"
@@ -1437,6 +1441,7 @@
                   "_entityName": "wfstp$StepDirection",
                   "id": "fabb5636-c458-b167-88db-34bfa18dd52e",
                   "version": 2,
+                  "conditionGroovyScript": "\u0027Бухгалтер по договорам\u0027.equals(${stageName})",
                   "from": {
                     "_entityName": "wfstp$Step",
                     "id": "e774c352-8681-95f2-72e6-eeec08fc3853"

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <metadata xmlns="http://schemas.haulmont.com/cuba/metadata.xsd">
-
-    <metadata-model root-package="com.groupstp.cifra" namespace="cifra"/>
-
+    <metadata-model namespace="cifra"
+                    root-package="com.groupstp.cifra">
+        <class>com.groupstp.cifra.entity.ContractHistoryItem</class>
+    </metadata-model>
 </metadata>

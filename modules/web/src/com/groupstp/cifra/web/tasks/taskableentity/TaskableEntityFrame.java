@@ -7,7 +7,6 @@ import com.groupstp.cifra.entity.tasks.TaskableEntity;
 import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.groupstp.cifra.web.tasks.UITasksUtils;
 import com.groupstp.cifra.web.tasks.task.TaskEdit;
-import com.groupstp.cifra.web.tasks.task.TaskListFrame;
 import com.haulmont.cuba.core.entity.annotation.Listeners;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
@@ -15,8 +14,6 @@ import com.haulmont.cuba.gui.components.actions.BaseAction;
 import com.haulmont.cuba.gui.components.actions.EditAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.icons.CubaIcon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 
 import javax.inject.Inject;
@@ -28,8 +25,6 @@ import java.util.*;
 @Listeners("myListener")
 public class TaskableEntityFrame extends AbstractFrame {
 
-    private static final Logger log = LoggerFactory.getLogger(TaskListFrame.class);
-
     @Inject
     private Table<Document> entitiesTable;
 
@@ -39,7 +34,8 @@ public class TaskableEntityFrame extends AbstractFrame {
     @Inject
     private ButtonsPanel buttonsPanel;
 
-    private final UITasksUtils uiTasksUtils = UITasksUtils.INSTANCE;
+    @Inject
+    private UITasksUtils uiTasksUtils;
 
     @EventListener
     public void onCifraUiEvent(CifraUiEvent event) {
@@ -104,10 +100,10 @@ public class TaskableEntityFrame extends AbstractFrame {
     /**
      * Assign task to document on template
      *
-     * @param document
-     * @param template
+     * @param document document
+     * @param template template
      */
-    public void assignTaskOnTemplate(TaskableEntity document, TaskTemplate template, Frame frame) {
+    private void assignTaskOnTemplate(TaskableEntity document, TaskTemplate template, Frame frame) {
 
         if (template.getTasks().size() == 0) return;
 

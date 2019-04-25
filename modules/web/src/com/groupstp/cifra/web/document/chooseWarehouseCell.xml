@@ -22,7 +22,7 @@
     <dialogMode forceDialog="true"/>
     <layout expand="btnsbox">
         <lookupPickerField id="warehouse"
-                           caption="msg://Склад"
+                           caption="msg://Warehouse"
                            optionsDatasource="warehousesDs"
                            width="400px"/>
         <textField id="cell"

@@ -17,6 +17,6 @@
         <class>com.groupstp.cifra.entity.tasks.Task</class>
         <class>com.groupstp.cifra.entity.tasks.TaskTemplate</class>
         <class>com.groupstp.cifra.entity.tasks.TaskTypical</class>
-        <class>com.groupstp.cifra.entity.CompanyDivisonUser</class>
+        <class>com.groupstp.cifra.entity.CompanyDivisionUser</class>
     </persistence-unit>
 </persistence>

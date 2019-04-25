@@ -5,8 +5,8 @@
         <item screen="cifra$Document.browse"/>
         <item screen="cifra$Coordination"/>
         <separator/>
-        <item screen="IncomingRegister"/>
-        <item screen="OutgoingRegister"/>
+        <item screen="cifra$IncomingRegister"/>
+        <item screen="cifra$OutgoingRegister"/>
         <separator/>
         <item screen="cifra$DocType.browse"/>
         <item screen="cifra$Tag.browse"/>

@@ -14,13 +14,11 @@ import com.groupstp.cifra.web.entity.CifraUiEvent;
 import com.groupstp.cifra.web.tasks.UITasksUtils;
 import com.groupstp.cifra.web.tasks.task.TaskEdit;
 import com.groupstp.workflowstp.entity.StepDirection;
+import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
 import com.haulmont.bali.util.ParamsMap;
-import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.EntityStates;
-import com.haulmont.cuba.core.global.Security;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
@@ -31,7 +29,6 @@ import com.haulmont.cuba.gui.data.impl.CollectionPropertyDatasourceImpl;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import com.haulmont.cuba.security.entity.EntityOp;
-import com.haulmont.cuba.web.gui.components.WebLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,17 +58,11 @@ public class DocumentEdit extends AbstractEditor<Document> {
     @Inject
     private CheckListService checkListService;
 
-    @Named("fieldGroup.docType")
-    private PickerField docType;
-
     @Named("fieldGroup.dateLoad")
     private DateField dateLoad;
 
     @Named("fieldGroup.company")
     private LookupPickerField company;
-
-    @Named("fieldGroup.tag")
-    private TokenList tags;
 
     @Inject
     private DsContext dsContext;
@@ -97,17 +88,22 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     private boolean checkListStateWhenFrameWasOpened;
 
-    private final UITasksUtils uiTasksUtils = UITasksUtils.INSTANCE;
-
-    @Override
-    protected void initNewItem(Document item) {
-        super.initNewItem(item);
-    }
+    @Inject
+    DataGrid<CheckList> checkListDataGrid;
+    @Inject
+    Table<Task> tasksListDataGrid;
+    @Inject
+    Label labelCurrentWorkflowStage;
+    @Inject
+    Label labelTasks;
+    @Inject
+    ButtonsPanel workflowButtonsPanel;
+    @Named("cifra_UITasksUtils")
+    private UITasksUtils uiTasksUtils;
 
     @Override
     public void init(Map<String, Object> params) {
         addListenerForComponents();
-
         company.addLookupAction();
         company.addOpenAction();
         company.addClearAction();
@@ -130,7 +126,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
             }
         });
 
-        ((DataGrid<CheckList>) getComponent("checkListDataGrid")).addItemClickListener(event -> {
+        checkListDataGrid.addItemClickListener(event -> {
             if ("checked".equals(event.getColumnId())) {
                 CheckList item = event.getItem();
                 item.setChecked(!item.getChecked());
@@ -138,10 +134,10 @@ public class DocumentEdit extends AbstractEditor<Document> {
             }
         });
 
-        ((Table<Task>) getComponent("tasksListDataGrid")).setItemClickAction(new BaseAction("taskOpen") {
+        tasksListDataGrid.setItemClickAction(new BaseAction("taskOpen") {
             @Override
             public void actionPerform(Component component) {
-                Task selectedTask = ((Table<Task>) getComponent("tasksListDataGrid")).getSelected().iterator().next();
+                Task selectedTask = tasksListDataGrid.getSelected().iterator().next();
                 AbstractEditor abstractEditor = openEditor(selectedTask, WindowManager.OpenType.DIALOG);
                 abstractEditor.addCloseWithCommitListener(() -> tasksDs.refresh());
             }
@@ -160,7 +156,11 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 return;
             }
 
-            document = (Document) result.stream().filter(entity -> entity.getClass() == Document.class).findFirst().get();
+            if (result.size() == 1) {
+                document = (Document) result.iterator().next();
+            } else {
+                throw new DevelopmentException("More than one result commit");
+            }
 
             workflowRunProcessing();
             CifraUiEvent.push("documentCommitted");
@@ -350,7 +350,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                     getComponent("workflowButtonsPanel"),
                     getComponent("tasksButtonsPanel"));
             disableComponents(componentsToDisable);
-            List<Component> componentsToEnable = Arrays.asList(getComponent(Utils.STEP_INCOMING_NAME));
+            List<Component> componentsToEnable = Collections.singletonList(getComponent(Utils.STEP_INCOMING_NAME));
             enableComponents(componentsToEnable);
         }
     }
@@ -396,15 +396,19 @@ public class DocumentEdit extends AbstractEditor<Document> {
         refreshLabelCurrentWorkflowStage();
         refreshLabelTask();
     }
+
     /**
      * set label with current workflow's step name
      */
     private void refreshLabelCurrentWorkflowStage() {
         List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document);
-        WorkflowInstanceTask task = tasks.stream().findFirst().orElse(null);
-        if (task != null) {
-            ((WebLabel) getComponent("labelCurrentWorkflowStage")).setValue(getMessage("workflow.currentStep") + ": " + task.getStep().getStage().getName());
-        }
+        tasks.stream().findFirst().ifPresent(task ->
+                labelCurrentWorkflowStage.setValue(
+                        String.format("%s: %s",
+                                getMessage("workflow.currentStep"),
+                                task.getStep().getStage().getName())
+                )
+        );
     }
 
     /**
@@ -412,7 +416,10 @@ public class DocumentEdit extends AbstractEditor<Document> {
      */
     private void refreshLabelTask() {
         TaskService taskService = AppBeans.get(TaskService.class);
-        ((WebLabel) getComponent("labelTasks")).setValue(getMessage(taskService.isItActiveTaskForDocument(document)? "tasks.HasActive":"tasks.NoActive"));
+        labelTasks.setValue(getMessage(taskService.isItActiveTaskForDocument(document) ?
+                "tasks.HasActive" :
+                "tasks.NoActive")
+        );
     }
 
 
@@ -433,48 +440,51 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
         List<WorkflowInstanceTask> tasks = workflowService.loadTasks(document);
 
-        if(tasks==null) return;
+        if (tasks == null) return;
 
-            if (tasks.size() == 0) {
-                //no workflow task for current document, start new
-                try {
-                    workflowService.startWorkflow(document, workflowService.getActiveWorkflow());
-                } catch (WorkflowException ex) {
-                    throw new RuntimeException(getMessage("workflow.Error"), ex);
-                }
-                if (document.getFile() != null) {
-                    continueWorkflow();
-                } else {
-                    notifyUser();
-                }
-                return;
+        if (tasks.size() == 0) {
+            //no workflow task for current document, start new
+            try {
+                Workflow wf = workflowService.getActiveWorkflow();
+                workflowService.startWorkflow(document, wf);
+            } catch (WorkflowException ex) {
+                // todo exception when open document.edit at first time
+                // throw new RuntimeException(getMessage("workflow.Error"), ex);
+                log.error("todo fix that", ex);
             }
+            if (document.getFile() != null) {
+                continueWorkflow();
+            } else {
+                notifyUser();
+            }
+            return;
+        }
 
-            WorkflowInstanceTask lastTask = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
+        WorkflowInstanceTask lastTask = tasks.stream().filter(t -> t.getEndDate() == null).findFirst().orElse(null);
 
-            //tasks exist, but not exist open task = workflow finished
-            if (lastTask == null) return;
+        //tasks exist, but not exist open task = workflow finished
+        if (lastTask == null) return;
 
-            //document has no file, no next step
-            if (document.getFile() == null) return;
+        //document has no file, no next step
+        if (document.getFile() == null) return;
 
-            String lastTaskName = lastTask.getStep().getStage().getName();
-            if (Utils.STEP_INCOMING_NAME.equals(lastTaskName) && (isFileAttachedChanged())) {
+        String lastTaskName = lastTask.getStep().getStage().getName();
+        if (Utils.STEP_INCOMING_NAME.equals(lastTaskName) && (isFileAttachedChanged())) {
+            continueWorkflow();
+        }
+
+        // step equal Обработано or Проблемы and was have change(file attached or checkListDataGrid changed), we must run workflow
+        if (Utils.STEP_PROCESSING_NAME.equals(lastTaskName) || Utils.STEP_PROBLEM_NAME.equals(lastTaskName)) {
+            if (isFileAttachedChanged() || isCheckListChanged()) {
                 continueWorkflow();
             }
-
-            // step equal Обработано or Проблемы and was have change(file attached or checkListDataGrid changed), we must run workflow
-            if (Utils.STEP_PROCESSING_NAME.equals(lastTaskName) || Utils.STEP_PROBLEM_NAME.equals(lastTaskName)) {
-                if (isFileAttachedChanged() || isCheckListChanged()) {
-                    continueWorkflow();
-                }
-            }
+        }
     }
 
     /**
      * Check condition
      *
-     * @return
+     * @return boolean
      */
     private boolean isConditionForArchive() {
         return document.getWarehouse() != null && !document.getCell().isEmpty();
@@ -482,8 +492,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     /**
      * Build map with common parameters and continue workflow
-     *
-     * @throws WorkflowException
      */
     private void continueWorkflow() {
         continueWorkflow(null);
@@ -493,7 +501,6 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * Build map with common and input parameters, after that continue workflow
      *
      * @param paramsMap map of input parameters for workflow step conditions
-     * @throws WorkflowException
      */
     private void continueWorkflow(Map<String, Object> paramsMap) {
         commitIfNeeded();
@@ -514,7 +521,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
     /**
      * Build Map with common parameters (keys) for continue workflow
      *
-     * @return
+     * @return HashMap<String, String>
      */
     private HashMap<String, String> buildParametersMapWorkflow() {
         HashMap<String, String> map = new HashMap<>();
@@ -556,26 +563,27 @@ public class DocumentEdit extends AbstractEditor<Document> {
     }
 
 
-
     /**
      * Make button(action, caption, icon) and place it to buttonsPanel
+     *
      * @param action Strategy pattern
      */
-    public void makeButtonWorkflow(Action action) {
+    private void makeButtonWorkflow(Action action) {
 
         if (isHasNextStep(action.getId())) {
             Button button = componentsFactory.createComponent(Button.class);
             button.setId(action.getId());
             button.setAction(action);
-            ((ButtonsPanel) getComponent("workflowButtonsPanel")).add(button);
+            workflowButtonsPanel.add(button);
             this.addAction(action);
         }
     }
 
     /**
      * Check document's current workflow task has next step with defined name
+     *
      * @param nextStep name of next step
-     * @return
+     * @return boolean
      */
     private boolean isHasNextStep(String nextStep) {
 
@@ -594,10 +602,8 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     /**
      * Action on Ok button (commit and close screen)
-     *
-     * @param ignore
      */
-    public void onOkBtnClick(Component ignore) {
+    public void onOkBtnClick() {
         if (checkCheckListFilledOrHasCommentary()) {
             commitAndClose();
         }
@@ -610,11 +616,11 @@ public class DocumentEdit extends AbstractEditor<Document> {
      * @return true, if conditions are satisfied, false - otherwise
      */
     private boolean checkCheckListFilledOrHasCommentary() {
-        Boolean gotOriginal = document.getGotOriginal() == null ? false : document.getGotOriginal();
+        boolean gotOriginal = document.getGotOriginal() == null ? false : document.getGotOriginal();
         if (gotOriginal) {
             for (CheckList object : checklistDs.getItems()) {
-                Boolean checked = object.getChecked() == null ? false : object.getChecked();
-                Boolean commented = object.getComment() != null;
+                boolean checked = object.getChecked() == null ? false : object.getChecked();
+                boolean commented = object.getComment() != null;
                 if (!checked && !commented) {
                     showNotification("Введите комментарии в чек-лист");
                     return false;
@@ -624,7 +630,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
         return true;
     }
 
-    public void onCancelBtnClick(Component ignore) {
+    public void onCancelBtnClick() {
         CifraUiEvent.push("documentCommitted");
         this.close("close");
     }
@@ -678,10 +684,10 @@ public class DocumentEdit extends AbstractEditor<Document> {
     /**
      * Assign task to document on template
      *
-     * @param document
-     * @param template
+     * @param document document
+     * @param template template
      */
-    public void assignTaskOnTemplate(TaskableEntity document, TaskTemplate template, Frame frame) {
+    private void assignTaskOnTemplate(TaskableEntity document, TaskTemplate template, Frame frame) {
 
         if (template.getTasks().size() == 0) return;
 

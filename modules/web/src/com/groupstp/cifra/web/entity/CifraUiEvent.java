@@ -11,7 +11,7 @@ public class CifraUiEvent extends ApplicationEvent implements UiEvent {
      *
      * @param source the object on which the event initially occurred (never {@code null})
      */
-    public CifraUiEvent(Object source) {
+    private CifraUiEvent(Object source) {
         super(source);
     }
 

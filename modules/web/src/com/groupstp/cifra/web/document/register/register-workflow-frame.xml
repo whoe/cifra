@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        class="com.groupstp.cifra.web.document.register.RegisterWorkflowFrame"
+        messagesPack="com.groupstp.cifra.web.document.register">
+    <dsContext>
+        <collectionDatasource id="documentDs"
+                              class="com.groupstp.cifra.entity.Document"
+                              view="document-wf-register-view"/>
+    </dsContext>
+    <dialogMode width="100%"
+                height="100%"/>
+    <layout expand="documentsTable"
+            spacing="true"
+            width="100%">
+        <filter applyTo="documentsTable"
+                datasource="documentDs"
+                margin="true,false,false,false"/>
+        <table id="documentsTable"
+               width="100%">
+            <columns>
+                <column id="company"/>
+                <column id="division"/>
+                <column id="docType"/>
+                <column id="date"/>
+                <column id="contragent"/>
+                <column id="description"/>
+                <column id="number"/>
+                <column id="dateLoad"/>
+                <column id="fixDue"/>
+                <column id="warehouse"/>
+            </columns>
+            <rows datasource="documentDs"/>
+            <buttonsPanel id="buttonsPanel">
+                <button caption="msg://runButton"
+                        icon="icons/ok.png"
+                        invoke="run"/>
+                <button caption="msg://cancelButton"
+                        icon="icons/cancel.png"
+                        invoke="problem"/>
+            </buttonsPanel>
+        </table>
+    </layout>
+</window>

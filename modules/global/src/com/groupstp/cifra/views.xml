@@ -124,19 +124,25 @@
                       view="_minimal"/>
         </property>
     </view>
+    <view class="com.groupstp.workflowstp.entity.Stage"
+          extends="_minimal"
+          name="stage-with-actors-and-actorsRoles-view">
+        <property name="actorsRoles"
+                  view="_minimal"/>
+        <property name="actors"
+                  view="_minimal"/>
+    </view>
+    <view class="com.groupstp.workflowstp.entity.Step"
+          extends="_minimal"
+          name="step-with-stage">
+        <property name="stage"
+                  view="stage-with-actors-and-actorsRoles-view"/>
+    </view>
     <view class="com.groupstp.workflowstp.entity.Workflow"
           extends="workflow-browse"
           name="workflow-browse">
-        <property name="steps">
-            <property name="stage"
-                      view="_minimal">
-                <property name="actorsRoles"
-                          view="_minimal"/>
-                <property name="browseScreenGroovyScript"/>
-                <property name="actors"
-                          view="_minimal"/>
-            </property>
-        </property>
+        <property name="steps"
+                  view="step-with-stage"/>
     </view>
     <view class="com.groupstp.workflowstp.entity.Workflow"
           extends="workflow-browse"
@@ -180,5 +186,18 @@
         <property name="author"
                   view="_minimal"/>
         <property name="comment"/>
+    </view>
+    <view class="com.groupstp.workflowstp.entity.WorkflowInstanceTask"
+          extends="_minimal"
+          name="workflowInstanceTask-step-stage-view">
+        <property name="step"
+                  view="_minimal">
+        </property>
+    </view>
+    <view class="com.groupstp.workflowstp.entity.WorkflowInstanceTask"
+          extends="workflowInstanceTask-step-stage-view"
+          name="workflowInstanceTask-contract-history-view">
+        <property name="updatedBy"/>
+        <property name="endDate"/>
     </view>
 </views>
