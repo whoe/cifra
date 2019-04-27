@@ -18,7 +18,11 @@ import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
 import com.haulmont.bali.util.ParamsMap;
-import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.core.entity.Entity;
+import com.haulmont.cuba.core.global.AppBeans;
+import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.EntityStates;
+import com.haulmont.cuba.core.global.Security;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.BaseAction;
@@ -29,8 +33,6 @@ import com.haulmont.cuba.gui.data.impl.CollectionPropertyDatasourceImpl;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import com.haulmont.cuba.security.entity.EntityOp;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -39,8 +41,6 @@ import java.util.*;
 import static com.groupstp.cifra.web.UIUtils.*;
 
 public class DocumentEdit extends AbstractEditor<Document> {
-
-    private static final Logger log = LoggerFactory.getLogger(DocumentEdit.class);
 
     public static final String EDITABLE = "editable";
     public static final String STAGE = "stage";
@@ -156,10 +156,12 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 return;
             }
 
-            if (result.size() == 1) {
-                document = (Document) result.iterator().next();
-            } else {
-                throw new DevelopmentException("More than one result commit");
+            for (Entity entity:
+                 result) {
+                if (entity.getClass() == Document.class) {
+                    document = (Document)entity;
+                    break;
+                }
             }
 
             workflowRunProcessing();
@@ -448,9 +450,7 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 Workflow wf = workflowService.getActiveWorkflow();
                 workflowService.startWorkflow(document, wf);
             } catch (WorkflowException ex) {
-                // todo exception when open document.edit at first time
-                // throw new RuntimeException(getMessage("workflow.Error"), ex);
-                log.error("todo fix that", ex);
+                throw new RuntimeException(getMessage("workflow.Error"), ex);
             }
             if (document.getFile() != null) {
                 continueWorkflow();

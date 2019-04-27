@@ -12,7 +12,7 @@
         "stage": {
           "_entityName": "wfstp$Stage",
           "id": "4a827eb3-e652-fb59-aa84-5e648b18d45c",
-          "executionGroovyScript": "import com.groupstp.cifra.entity.*;\nimport com.groupstp.workflowstp.entity.*;\nimport com.haulmont.cuba.core.global.*;\nimport com.groupstp.workflowstp.service.WorkflowService;\n\ntask \u003d workflowInstanceTask;\n\nWorkflowService service \u003d AppBeans.get(WorkflowService.NAME);\n\ntry {\n    String direction \u003d Direction.Income.equals(entity.getDirection()) ? \"doc_flow_incoming\" : \"doc_flow_outgoing\"\n    service.finishTask(task, [(Direction.Income.equals(entity.getDirection()) ? \"doc_flow_incoming\" : \"doc_flow_outgoing\"):\"true\"]);\n} catch (Exception e) {\n        throw new RuntimeException(\"Ошибка обработки заявки\", e);\n}\n",
+          "executionGroovyScript": "import com.groupstp.cifra.entity.*;\nimport com.groupstp.workflowstp.entity.*;\nimport com.haulmont.cuba.core.global.*;\nimport com.groupstp.workflowstp.service.WorkflowService;\n\ntask \u003d workflowInstanceTask;\n\nWorkflowService service \u003d AppBeans.get(WorkflowService.NAME);\n\ntry {\n    String direction \u003d Direction.Income.equals(entity.getDirection()) ? \"doc_flow_incoming\" : \"doc_flow_outgoing\"\n    service.finishTask(task, [(Direction.Income.equals(entity.getDirection()) ? \"doc_flow_incoming\" : \"doc_flow_outgoing\"):\"true\"]);\n} catch (Exception e) {\n        throw new RuntimeException(\"Ошибка обработки заявки\", e);\n}\nreturn false;\n",
           "type": "ALGORITHM_EXECUTION",
           "version": 1,
           "actors": [],

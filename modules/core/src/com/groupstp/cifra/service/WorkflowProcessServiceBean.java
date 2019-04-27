@@ -70,7 +70,7 @@ public class WorkflowProcessServiceBean implements WorkflowProcessService {
     /**
      * Load all tasks for document for workflow
      *
-     * @param document
+     * @param document document entity
      * @return list of tasks, if no founded return empty list
      */
     public List<WorkflowInstanceTask> loadTasks(final Document document) {

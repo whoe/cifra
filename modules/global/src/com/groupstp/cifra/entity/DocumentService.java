@@ -6,6 +6,7 @@ import java.util.List;
 public interface DocumentService {
     String NAME = "cifra_DocumentService";
 
-    List<Tag> requestTopTags();
+    // todo: not used, may be delete (as class)
+    List requestTopTags();
 
 }

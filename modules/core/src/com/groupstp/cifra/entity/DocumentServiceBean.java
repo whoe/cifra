@@ -7,7 +7,6 @@ import com.haulmont.cuba.core.Query;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service(DocumentService.NAME)
@@ -20,19 +19,11 @@ public class DocumentServiceBean implements DocumentService {
 
 
     @Override
-    public List<Tag> requestTopTags() {
+    public List requestTopTags() {
         EntityManager em = persistence.getEntityManager();
         Query query = em.createQuery(
                 "select o from cifra$Tag o join o.documents doc group by o.id order by count(o.id) desc");
-        List resultList = query.setMaxResults(NUMBER_OF_TOP_TAGS)
+        return query.setMaxResults(NUMBER_OF_TOP_TAGS)
                 .getResultList();
-
-        ArrayList<Tag> topTags = new ArrayList<>();
-        for (Object object :
-                resultList) {
-            topTags.add((Tag) object);
-        }
-
-        return topTags;
     }
 }
