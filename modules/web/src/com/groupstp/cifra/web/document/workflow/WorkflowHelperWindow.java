@@ -55,7 +55,11 @@ public class WorkflowHelperWindow extends AbstractWindow {
         // todo delete, probably should use CifraUiEvent
         tabs.addSelectedTabChangeListener(event -> {
             try {
-                String tabName = event.getSelectedTab().getName();
+                TabSheet.Tab selectedTab = event.getSelectedTab();
+                if (selectedTab == null) {
+                    return;
+                }
+                String tabName = selectedTab.getName();
                 Component tabComponent = tabs.getTabComponent(tabName);
                 ContractWorkflowFrame frame = (ContractWorkflowFrame) tabComponent;
                 Component table = frame.getComponent("documentsTable");
