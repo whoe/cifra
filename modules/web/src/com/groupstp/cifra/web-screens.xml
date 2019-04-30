@@ -80,4 +80,6 @@
             template="com/groupstp/cifra/web/document/contract/contractEnterNumber.xml"/>
     <screen id="cifra$ContractHistory"
             template="com/groupstp/cifra/web/document/contract/contractHistory.xml"/>
+    <screen id="cifra$EditWindowActions"
+            template="/com/groupstp/cifra/web/entity/cifraEditWindowActions.xml"/>
 </screen-config>

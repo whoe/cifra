@@ -113,6 +113,6 @@ where e.instance.id = :custom$instanceId]]>
             </groupBox>
         </hbox>
         <frame id="windowActions"
-               screen="editWindowActions"/>
+               screen="cifra$EditWindowActions"/>
     </layout>
 </window>
