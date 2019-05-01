@@ -82,4 +82,6 @@
             template="com/groupstp/cifra/web/document/contract/contractHistory.xml"/>
     <screen id="cifra$EditWindowActions"
             template="/com/groupstp/cifra/web/entity/cifraEditWindowActions.xml"/>
+    <screen id="sec$User.edit"
+            template="/com/groupstp/cifra/web/entity/companyDivisionUser.edit.xml"/>
 </screen-config>

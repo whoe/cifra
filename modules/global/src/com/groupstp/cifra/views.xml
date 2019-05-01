@@ -200,4 +200,20 @@
         <property name="updatedBy"/>
         <property name="endDate"/>
     </view>
+    <view class="com.groupstp.cifra.entity.CompanyDivisionUser"
+          extends="user.edit"
+          name="user.edit">
+        <property name="companies"
+                  view="_minimal"/>
+        <property name="divisions"
+                  view="_minimal"/>
+    </view>
+    <view class="com.groupstp.cifra.entity.CompanyDivisionUser"
+          extends="_local"
+          name="user-with-companies-division-view">
+        <property name="companies"
+                  view="_minimal"/>
+        <property name="divisions"
+                  view="_minimal"/>
+    </view>
 </views>

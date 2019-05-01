@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        class="com.haulmont.cuba.gui.app.security.user.edit.UserEditor"
+        extends="/com/haulmont/cuba/gui/app/security/user/edit/user-edit.xml"
+        xmlns:ext="http://schemas.haulmont.com/cuba/window-ext.xsd">
+    <dsContext>
+        <datasource id="userDs">
+            <collectionDatasource id="companiesDs"
+                                  property="companies"/>
+            <collectionDatasource id="divisionsDs"
+                                  property="divisions"/>
+        </datasource>
+    </dsContext>
+    <layout>
+        <groupBox id="propertiesBox">
+            <grid id="propertiesGrid">
+                <columns>
+                    <column id="fieldGroupLeftColumn" flex="0.1"/>
+                    <column id="fieldGroupRightColumn" flex="0.1"/>
+                    <column flex="1"/>
+                </columns>
+                <rows>
+                    <row id="propertiesRow">
+                        <fieldGroup id="fieldGroupLeft"/>
+                        <fieldGroup id="fieldGroupRight"/>
+                        <vbox id="companyDivVbox" spacing="true">
+                            <vbox expand="divTable" spacing="true" height="50%">
+                                <buttonsPanel>
+                                    <button id="divTableAddBtn"
+                                            action="divTable.add"/>
+                                    <button id="divTableEditBtn"
+                                            action="divTable.edit"/>
+                                    <button id="divTableRemoveBtn"
+                                            action="divTable.remove"/>
+                                </buttonsPanel>
+                                <table id="divTable"
+                                       multiselect="true"
+                                       width="100%">
+                                    <actions>
+                                        <action id="add"/>
+                                        <action id="edit"/>
+                                        <action id="remove"/>
+                                    </actions>
+                                    <columns>
+                                        <column id="name"
+                                                caption="msg://divisionName"/>
+                                    </columns>
+                                    <rows datasource="divisionsDs"/>
+                                </table>
+                            </vbox>
+                            <vbox expand="compTable" spacing="true" height="50%">
+                                <buttonsPanel>
+                                    <button id="compTableAddBtn"
+                                            action="compTable.add"/>
+                                    <button id="compTableEditBtn"
+                                            action="compTable.edit"/>
+                                    <button id="compTableRemoveBtn"
+                                            action="compTable.remove"/>
+                                </buttonsPanel>
+                                <table id="compTable"
+                                       multiselect="true"
+                                       width="100%">
+                                    <actions>
+                                        <action id="add"/>
+                                        <action id="edit"/>
+                                        <action id="remove"/>
+                                    </actions>
+                                    <columns>
+                                        <column id="name"
+                                                caption="msg://companyName"/>
+                                    </columns>
+                                    <rows datasource="companiesDs"/>
+                                </table>
+                            </vbox>
+                        </vbox>
+                    </row>
+                </rows>
+            </grid>
+        </groupBox>
+
+        <split id="split">
+            <vbox id="rolesPanel"/>
+            <vbox id="substPanel"/>
+        </split>
+    </layout>
+</window>

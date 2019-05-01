@@ -6,6 +6,14 @@
         <collectionDatasource id="documentDs"
                               class="com.groupstp.cifra.entity.Document"
                               view="document-contract-view"/>
+        <collectionDatasource id="companyDivisionUsersDs"
+                              class="com.groupstp.cifra.entity.CompanyDivisionUser"
+                              view="user-with-companies-division-view">
+            <query>
+                <![CDATA[select e from cifra$CompanyDivisionUser e
+where e.id = :session$userId]]>
+            </query>
+        </collectionDatasource>
     </dsContext>
     <layout expand="documentsTable"
             spacing="true">

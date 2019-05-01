@@ -1,10 +1,12 @@
 package com.groupstp.cifra.web.document.contract;
 
+import com.groupstp.cifra.entity.CompanyDivisionUser;
 import com.groupstp.cifra.entity.Document;
 import com.groupstp.cifra.web.document.contract.actions.*;
 import com.groupstp.workflowstp.entity.Stage;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.service.WorkflowService;
+import com.haulmont.bali.util.ParamsMap;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.WindowParam;
 import com.haulmont.cuba.gui.components.*;
@@ -49,10 +51,18 @@ public class ContractWorkflowFrame extends AbstractFrame {
     @Inject
     WorkflowService workflowService;
 
+    @Inject
+    CollectionDatasource<CompanyDivisionUser, UUID> companyDivisionUsersDs;
+
     @Override
     public void init(Map<String, Object> params) {
         super.init(params);
-        initSqlQuery();
+        // директор
+        if (stage.getUuid().equals(UUID.fromString("ff416b2d-c038-de26-baf5-a8bae62f80f4"))) {
+            initSqlQueryForDirector();
+        } else {
+            initSqlQuery();
+        }
 
         // неактуальные и согласованные
         Set<UUID> withoutButtons = new HashSet<>();
@@ -150,6 +160,18 @@ public class ContractWorkflowFrame extends AbstractFrame {
         sqlQuery = sqlQuery + "where e.stepName = '" + stage.getName() + "' and e.workflow.code = '" + workflow.getCode() + "'";
         documentDs.setQuery(sqlQuery);
         documentDs.refresh();
+    }
+
+    private void initSqlQueryForDirector() {
+        companyDivisionUsersDs.refresh();
+        CompanyDivisionUser user = companyDivisionUsersDs.getItems().iterator().next();
+        String sqlQuery = "select e from cifra$Document e ";
+        sqlQuery = sqlQuery + "where e.stepName = '" + stage.getName() + "' and e.workflow.code = '" + workflow.getCode() + "'"
+                + " and e.company.id in :custom$companies and " +
+                "(e.division.id in :custom$divisions or e.division is null)";
+        documentDs.setQuery(sqlQuery);
+        documentDs.refresh(ParamsMap.of("companies", user.getCompanies(),
+                "divisions", user.getDivisions()));
     }
 
 }
