@@ -1,22 +1,25 @@
 package com.groupstp.cifra.web.document.contract;
 
 import com.groupstp.cifra.entity.Document;
+import com.groupstp.cifra.events.NotificationEventBroadcaster;
+import com.groupstp.cifra.events.NotificationGlobalEvent;
 import com.groupstp.cifra.web.document.contract.actions.*;
 import com.groupstp.cifra.web.document.workflow.WorkflowHelperWindow;
 import com.groupstp.workflowstp.entity.WorkflowEntityStatus;
 import com.groupstp.workflowstp.service.WorkflowService;
-import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.components.Button;
-import com.haulmont.cuba.gui.components.GroupTable;
-import com.haulmont.cuba.gui.components.TabSheet;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.data.GroupDatasource;
+import com.haulmont.cuba.gui.executors.BackgroundWorker;
+import com.haulmont.cuba.gui.executors.UIAccessor;
 import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.entity.UserRole;
 
 import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class Coordination extends WorkflowHelperWindow {
     @Inject
@@ -49,7 +52,26 @@ public class Coordination extends WorkflowHelperWindow {
     @Inject
     private GroupDatasource<Document, UUID> documentsDs;
 
+    @Inject
+    private NotificationEventBroadcaster broadcaster;
+
+    @Inject
+    ButtonsPanel buttonsPanel;
+
+    @Inject
+    BackgroundWorker backgroundWorker;
+
     private HashSet<UUID> allowedRolesForMyContracts;
+
+    private final HashMap<String, String> stageToMessageKey = new HashMap<String, String>() {{
+        put("проблемные", "notifications.problem");
+        put("бухгалтерподоговорам", "notifications.enterTo1C");
+    }};
+
+
+    // must be field to gc do not delete weak reference in NotificationEventBroadcaster
+    @SuppressWarnings("FieldCanBeLocal")
+    private Consumer<NotificationGlobalEvent> notificationHandler;
 
     @Override
     public void init(Map<String, Object> params) {
@@ -64,6 +86,10 @@ public class Coordination extends WorkflowHelperWindow {
         allowedRolesForMyContracts.add(UUID.fromString("4541b2a3-c836-c007-c963-83cc117ec3ca"));
         // Сотрудник компании
         allowedRolesForMyContracts.add(UUID.fromString("1422bdb4-b49b-237d-49b7-6cbd4135ccb2"));
+
+        UIAccessor uiAccessor = backgroundWorker.getUIAccessor();
+        notificationHandler = event -> uiAccessor.access(handleNotificationEvent(event));
+        broadcaster.subscribe(notificationHandler);
 
         if (!isEmployee()) {
             tabs.getTab("myContracts").setVisible(false);
@@ -114,4 +140,31 @@ public class Coordination extends WorkflowHelperWindow {
 
         return false;
     }
+
+    private Runnable handleNotificationEvent(NotificationGlobalEvent event) {
+        return () -> {
+            String stageName = event.getStage().getName();
+            String tabKey = stageName.replaceAll("\\s", "")
+                    .toLowerCase();
+
+            if (!hasTab(tabKey)) {
+                return;
+            }
+
+            showNotification(
+                    getMessage(stageToMessageKey.getOrDefault(tabKey, "notifications.coordinate"))
+            );
+        };
+    }
+
+    private boolean hasTab(String tabKey) {
+        for (TabSheet.Tab tab :
+                tabs.getTabs()) {
+            if (tab.getName().equals(tabKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

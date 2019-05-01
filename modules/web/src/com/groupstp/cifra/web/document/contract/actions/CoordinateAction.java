@@ -1,9 +1,11 @@
 package com.groupstp.cifra.web.document.contract.actions;
 
 import com.groupstp.cifra.entity.Document;
+import com.groupstp.cifra.events.NotificationEventBroadcaster;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
 import com.groupstp.workflowstp.service.WorkflowService;
+import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.ListComponent;
 import com.haulmont.cuba.gui.components.actions.ItemTrackingAction;
@@ -34,6 +36,7 @@ public class CoordinateAction extends ItemTrackingAction {
             WorkflowInstanceTask wit = workflowService.getWorkflowInstanceTask(document);
             try {
                 workflowService.finishTask(wit);
+                AppBeans.get(NotificationEventBroadcaster.class).publish(this, document);
             } catch (WorkflowException e) {
                 log.error("Coordinate action perform", e);
             }

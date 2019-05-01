@@ -1,6 +1,7 @@
 package com.groupstp.cifra.web.document.contract.actions;
 
 import com.groupstp.cifra.entity.Document;
+import com.groupstp.cifra.events.NotificationEventBroadcaster;
 import com.groupstp.workflowstp.entity.Workflow;
 import com.groupstp.workflowstp.exception.WorkflowException;
 import com.groupstp.workflowstp.service.WorkflowService;
@@ -11,10 +12,11 @@ import com.haulmont.cuba.gui.components.Frame;
 import com.haulmont.cuba.gui.components.ListComponent;
 import com.haulmont.cuba.gui.components.actions.ItemTrackingAction;
 import com.haulmont.cuba.gui.icons.CubaIcon;
-import com.vaadin.external.org.slf4j.Logger;
-import com.vaadin.external.org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
+
 
 public class ToWorkAction extends ItemTrackingAction {
 
@@ -43,7 +45,12 @@ public class ToWorkAction extends ItemTrackingAction {
                     String caption = messages.getMessage("com.groupstp.cifra.web.document.contract", "contractIsProcessing");
                     target.getFrame().showNotification(caption, Frame.NotificationType.HUMANIZED);
                 } else {
-                    workflowService.startWorkflow((Document) doc, workflow);
+                    workflowService.startWorkflow(document, workflow);
+
+                    // publish NotificationGlobalEvent
+                    // setting workflow for document to getWorkflowInstanceTask work properly
+                    document.setWorkflow(workflowService.getWorkflow(document));
+                    AppBeans.get(NotificationEventBroadcaster.class).publish(this, document);
                 }
             }
         } catch (WorkflowException e) {

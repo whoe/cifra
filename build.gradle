@@ -1,5 +1,5 @@
 buildscript {
-    ext.cubaVersion = '6.10.2'
+    ext.cubaVersion = '6.10.9'
     repositories {
 
         mavenLocal()
@@ -57,6 +57,7 @@ dependencies {
     appComponent("com.company.googledrive:googledrive-global:0.1-SNAPSHOT")
     appComponent("com.groupstp.googleoauth:oauth-global:0.2-SNAPSHOT")
     appComponent("com.groupstp.workflowstp:wfstp-global:2.0.1")
+    appComponent("com.haulmont.addon.globalevents:cubaglevt-global:0.3.0")
 }
 
 def postgres = 'org.postgresql:postgresql:9.4.1212'

@@ -1,6 +1,7 @@
 package com.groupstp.cifra.web.document.contract.actions;
 
 import com.groupstp.cifra.entity.Document;
+import com.groupstp.cifra.events.NotificationEventBroadcaster;
 import com.groupstp.workflowstp.entity.WorkflowInstance;
 import com.groupstp.workflowstp.entity.WorkflowInstanceComment;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
@@ -61,9 +62,11 @@ public class RepeatContractAction extends ItemTrackingAction {
                                             wit,
                                             params
                                     );
+                                    AppBeans.get(NotificationEventBroadcaster.class).publish(this, document);
                                 } catch (WorkflowException ex) {
                                     log.error("error finish task in repeatContractAction", ex);
                                 }
+                                target.getDatasource().refresh();
                             }
                     );
         }

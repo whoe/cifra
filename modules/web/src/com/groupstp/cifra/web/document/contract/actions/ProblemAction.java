@@ -1,6 +1,7 @@
 package com.groupstp.cifra.web.document.contract.actions;
 
 import com.groupstp.cifra.entity.Document;
+import com.groupstp.cifra.events.NotificationEventBroadcaster;
 import com.groupstp.workflowstp.entity.WorkflowInstanceComment;
 import com.groupstp.workflowstp.entity.WorkflowInstanceTask;
 import com.groupstp.workflowstp.exception.WorkflowException;
@@ -54,6 +55,7 @@ public class ProblemAction extends ItemTrackingAction {
                             }
                             params.put("from", wit.getStep().getStage().getName());
                             workflowService.finishTask(wit, params);
+                            AppBeans.get(NotificationEventBroadcaster.class).publish(this, document);
                         } catch (WorkflowException e) {
                             log.error("Problem action perform", e);
                         }

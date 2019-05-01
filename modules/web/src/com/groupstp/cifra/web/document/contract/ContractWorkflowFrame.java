@@ -10,7 +10,6 @@ import com.haulmont.cuba.gui.WindowParam;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.RefreshAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
-import com.haulmont.cuba.gui.events.UiEvent;
 import com.haulmont.cuba.gui.icons.CubaIcon;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 
@@ -23,7 +22,7 @@ import java.util.UUID;
 /**
  * This frame using for create view for each stage of workflow
  */
-public class ContractWorkflowFrame extends AbstractFrame implements UiEvent {
+public class ContractWorkflowFrame extends AbstractFrame {
     // private static final Logger log = LoggerFactory.getLogger(ContractWorkflowFrame.class);
 
     private static final String STAGE = "stage";
