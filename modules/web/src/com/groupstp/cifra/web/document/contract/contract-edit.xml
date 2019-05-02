@@ -107,7 +107,7 @@ where e.instance.id = :custom$instanceId]]>
                                 invoke="download"
                                 icon="icons/download.png"/>
                         <button action="filesTable.add"/>
-                        <button action="filesTable.remove"/>
+                        <button id="filesTableRemoveButton" action="filesTable.remove"/>
                     </buttonsPanel>
                 </table>
             </groupBox>

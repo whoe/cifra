@@ -24,7 +24,7 @@
                         <fieldGroup id="fieldGroupLeft"/>
                         <fieldGroup id="fieldGroupRight"/>
                         <vbox id="companyDivVbox" spacing="true">
-                            <vbox expand="divTable" spacing="true" height="50%">
+                            <vbox spacing="true">
                                 <buttonsPanel>
                                     <button id="divTableAddBtn"
                                             action="divTable.add"/>
@@ -48,7 +48,7 @@
                                     <rows datasource="divisionsDs"/>
                                 </table>
                             </vbox>
-                            <vbox expand="compTable" spacing="true" height="50%">
+                            <vbox spacing="true">
                                 <buttonsPanel>
                                     <button id="compTableAddBtn"
                                             action="compTable.add"/>

@@ -59,8 +59,8 @@ public class ContractEdit extends AbstractEditor<Document> {
     @Inject
     private Table<FileDescriptor> filesTable;
 
-    @Named("filesTable.remove")
-    Action removeAttachedFileAction;
+    @Inject
+    Button filesTableRemoveButton;
 
     @Override
     public void ready() {
@@ -84,7 +84,7 @@ public class ContractEdit extends AbstractEditor<Document> {
                 service.isProcessing(doc) &&
                         !doc.getStepName().equals("Проблемные")) {
             fieldGroup.setEditable(false);
-            attachedFilesDs.addCollectionChangeListener(e -> removeAttachedFileAction.setVisible(false));
+            filesTableRemoveButton.setVisible(false);
         }
 
 
