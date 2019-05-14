@@ -117,10 +117,14 @@ public class Coordination extends WorkflowHelperWindow {
         documentsDs.addItemChangeListener(doc -> {
             if (doc == null || doc.getItem() == null) return;
             WorkflowEntityStatus status = doc.getItem().getStatus();
-            if (WorkflowEntityStatus.IN_PROGRESS.equals(status))
+            if (WorkflowEntityStatus.IN_PROGRESS.equals(status)) {
                 removeBtn.setEnabled(false);
-            else
+                irrelevantBtn.setEnabled(true);
+            }
+            else {
                 removeBtn.setEnabled(true);
+                irrelevantBtn.setEnabled(false);
+            }
         });
 
     }

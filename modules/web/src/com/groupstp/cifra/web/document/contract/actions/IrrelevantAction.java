@@ -45,10 +45,14 @@ public class IrrelevantAction extends ItemTrackingAction {
         try {
             for (Object entity :
                     this.getTarget().getSelected()) {
-                WorkflowInstanceTask instanceTask = workflowService.getWorkflowInstanceTask((WorkflowEntity) entity);
+                WorkflowEntity document = (WorkflowEntity) entity;
+                WorkflowInstanceTask instanceTask = workflowService.getWorkflowInstanceTask(document);
                 workflowService.finishTask(instanceTask, params);
-            }
 
+                instanceTask = workflowService.getWorkflowInstanceTask(document);
+                workflowService.finishTask(instanceTask);
+            }
+            target.getDatasource().refresh();
         } catch (WorkflowException e) {
             log.error("Irrelevant", e);
         }
