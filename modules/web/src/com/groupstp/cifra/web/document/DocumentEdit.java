@@ -90,15 +90,20 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     @Inject
     DataGrid<CheckList> checkListDataGrid;
+
     @Inject
     Table<Task> tasksListDataGrid;
+
     @Inject
     Label labelCurrentWorkflowStage;
+
     @Inject
     Label labelTasks;
+
     @Inject
     ButtonsPanel workflowButtonsPanel;
-    @Named("cifra_UITasksUtils")
+
+    @Inject
     private UITasksUtils uiTasksUtils;
 
     @Override
@@ -156,10 +161,10 @@ public class DocumentEdit extends AbstractEditor<Document> {
                 return;
             }
 
-            for (Entity entity:
-                 result) {
+            for (Entity entity :
+                    result) {
                 if (entity.getClass() == Document.class) {
-                    document = (Document)entity;
+                    document = (Document) entity;
                     break;
                 }
             }
@@ -369,19 +374,12 @@ public class DocumentEdit extends AbstractEditor<Document> {
 
     /**
      * fill empty checklist after document was open first time
-     * start workflow after document was open first time
      */
     private void checkAndInitializeEmptyFields() {
 
         EntityStates entityStates = AppBeans.get(EntityStates.class);
         if (entityStates.isNew(document)) {
             return;
-        }
-
-        if (workflowService.loadTasks(document).size() == 0) {
-            workflowRunProcessing();
-            notifyUser();
-            documentDs.refresh();
         }
 
         if (checklistDs.getItems().size() == 0) {
